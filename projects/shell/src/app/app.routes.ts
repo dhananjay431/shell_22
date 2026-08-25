@@ -4,13 +4,16 @@ import { loadRemoteModule } from '@angular-architects/native-federation';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   {
-    path: 'home',
+    path: '',
     loadComponent: () => import('./home.component').then((m) => m.HomeComponent),
+    children: [
+      {
+        path: 'mfe1',
+        loadComponent: () => loadRemoteModule('mfe1', './Component').then((module) => module.App),
+      },
+    ],
   },
-  {
-    path: 'mfe1',
-    loadComponent: () => loadRemoteModule('mfe1', './Component').then((module) => module.App),
-  },
+
   {
     path: 'login',
     loadComponent: () => import('./login.component').then((m) => m.LoginComponent),
