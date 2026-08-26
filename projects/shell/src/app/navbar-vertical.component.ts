@@ -1,10 +1,20 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { CommonService } from '../../../shared/common.service';
+import { AsyncPipe } from '@angular/common';
+import { forkJoin, map, mergeMap } from 'rxjs';
+import { MenuItem, MenuItemComponent } from './menu-item.component';
+
+type ApiMenuItem = Omit<MenuItem, 'children'>;
+type TargetItem = {
+  Id: string;
+  Type: string;
+  DisplayName: string;
+};
 
 @Component({
   selector: 'app-navbar-vertical',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [AsyncPipe, MenuItemComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
@@ -46,60 +56,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       </div>
 
       <nav class="nav nav-pills flex-column gap-1 p-2">
-        <a
-          class="nav-link"
-          routerLink="/home"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="closeMobile()"
-        >
-          <span class="menu-icon" aria-hidden="true">⌂</span><span class="menu-label">Home</span>
-        </a>
-
-        <button
-          class="nav-link menu-button"
-          type="button"
-          [attr.aria-expanded]="isApplicationsOpen()"
-          aria-controls="applications-submenu"
-          (click)="toggleApplications()"
-        >
-          <span class="menu-icon" aria-hidden="true">▣</span
-          ><span class="menu-label">Applications</span>
-          <span class="submenu-icon" aria-hidden="true">{{
-            isApplicationsOpen() ? '⌃' : '⌄'
-          }}</span>
-        </button>
-
-        @if (isApplicationsOpen() && !isCollapsed()) {
-          <div
-            id="applications-submenu"
-            class="submenu nav flex-column"
-            aria-label="Applications submenu"
-          >
-            <a
-              class="nav-link"
-              routerLink="/home/mfe1"
-              routerLinkActive="active"
-              (click)="closeMobile()"
-            >
-              <span class="menu-icon" aria-hidden="true">•</span
-              ><span class="menu-label">MFE 1</span>
-            </a>
-            <a
-              class="nav-link"
-              routerLink="/mfe2"
-              routerLinkActive="active"
-              (click)="closeMobile()"
-            >
-              <span class="menu-icon" aria-hidden="true">•</span
-              ><span class="menu-label">MFE 2</span>
-            </a>
-          </div>
+        @if (menuItems$ | async; as menuItems) {
+          @for (item of menuItems; track item.ID) {
+            <app-menu-item [item]="item" [collapsed]="isCollapsed()" (navigate)="closeMobile()" />
+          }
+        } @else {
+          <p class="menu-status">Loading menu…</p>
         }
-
-        <a class="nav-link" routerLink="/login" routerLinkActive="active" (click)="closeMobile()">
-          <span class="menu-icon" aria-hidden="true">↪</span><span class="menu-label">Sign in</span>
-        </a>
       </nav>
     </aside>
   `,
@@ -141,30 +104,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     .collapsed .nav-link {
       justify-content: center;
     }
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-    }
-    .menu-button {
-      width: 100%;
-      border: 0;
-      text-align: left;
-      cursor: pointer;
-    }
-    .menu-icon {
-      width: 1.25rem;
-      flex: 0 0 1.25rem;
-      text-align: center;
-      font-size: 1.1rem;
-    }
-    .submenu-icon {
-      margin-left: auto;
-    }
-    .submenu {
-      margin-left: 1rem;
-      padding-left: 0.5rem;
-      border-left: 1px solid #dee2e6;
+    .menu-status {
+      padding: 0.75rem;
+      color: #64748b;
     }
     .sidebar-toggle {
       border: 1px solid #cbd5e1;
@@ -234,14 +176,159 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class NavbarVerticalComponent {
   readonly isCollapsed = signal(false);
-  readonly isApplicationsOpen = signal(false);
   readonly isMobileOpen = signal(false);
+  /*  
+<SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP:Body>
+        <GetSprintAPMenuForUser xmlns="http://schemas.cordys.com/purchaseorderdatabasemetadata">
+            <userName>Indexer</userName>
+            <accessBy>role</accessBy>
+        </GetSprintAPMenuForUser>
+    </SOAP:Body>
+</SOAP:Envelope>
+<SOAP:Envelope xmlns:SOAP='http://schemas.xmlsoap.org/soap/envelope/'>
+    <SOAP:Body>
+        <GetUserDetails xmlns='http://schemas.cordys.com/UserManagement/1.0/User'></GetUserDetails>
+    </SOAP:Body>
+</SOAP:Envelope>
+  */
 
+  cs = inject(CommonService);
+  getalltargets = this.cs.ajax(
+    'GetAllTargets.Target',
+    'http://schemas.cordys.com/notification/workflow/1.0',
+    {},
+  );
+  getsprintapmenuforuser = this.cs
+    .ajax('GetUserDetails.User', 'http://schemas.cordys.com/UserManagement/1.0/User', {})
+    .pipe(
+      mergeMap((r1: any) =>
+        this.cs.ajax(
+          'GetSprintAPMenuForUser.tuple',
+          'http://schemas.cordys.com/purchaseorderdatabasemetadata',
+          {
+            userName: r1[0].UserName,
+            accessBy: 'role',
+          },
+        ),
+      ),
+    );
+  readonly menuItems$ = forkJoin({
+    menu: this.getsprintapmenuforuser,
+    targets: this.getalltargets,
+  }).pipe(
+    map(({ menu, targets }) =>
+      this.buildMenuTree(
+        this.addTargetSubmenus(
+          Array.isArray(menu) ? (menu as ApiMenuItem[]) : [],
+          Array.isArray(targets) ? (targets as TargetItem[]) : [],
+        ),
+      ),
+    ),
+  );
+
+  private addTargetSubmenus(items: ApiMenuItem[], targets: TargetItem[]): ApiMenuItem[] {
+    const menuItems = items.map((item) => ({ ...item }));
+    const sprintAp = menuItems.find((item) => item.MENU_ID === '9');
+
+    if (!sprintAp) {
+      return menuItems;
+    }
+
+    const targetGroups = [
+      {
+        menuId: '12',
+        title: 'Touchless Queue',
+        matches: (name: string) => name.includes('TP_Verify') || name.includes('TP_No GRN'),
+      },
+      {
+        menuId: '15',
+        title: 'Quality Check Queue',
+        matches: (name: string) =>
+          name.includes('New for QC') ||
+          name.includes('After QR') ||
+          name.includes('After QC Head') ||
+          name.includes('QC Head'),
+      },
+      {
+        menuId: '13',
+        title: 'Indexing (Manual)',
+        matches: (name: string) =>
+          !name.includes('Audit_Queue') &&
+          !name.includes('New for QC') &&
+          !name.includes('After QR') &&
+          !name.includes('After QC Head') &&
+          !name.includes('QC Head') &&
+          !name.includes('TP_Verify') &&
+          !name.includes('TP_No GRN'),
+      },
+    ];
+
+    const eligibleTargets = targets.filter(
+      (target) =>
+        (target.Type === 'team' || target.Type === 'user') &&
+        target.DisplayName &&
+        target.DisplayName !== 'Verification Queue' &&
+        target.DisplayName !== 'Whitelisting Approval',
+    );
+
+    for (const group of targetGroups) {
+      const parent = menuItems.find(
+        (item) => item.PARENT_ID === sprintAp.ID && item.MENU_ID === group.menuId,
+      );
+
+      if (!parent) {
+        continue;
+      }
+
+      const children = eligibleTargets
+        .filter((target) => group.matches(target.DisplayName))
+        .sort((a, b) => a.DisplayName.localeCompare(b.DisplayName))
+        .map((target, index) => ({
+          ID: `target-${group.menuId}-${target.Id}`,
+          MENU_LABEL: target.DisplayName,
+          MENU_LINK: '/payx/dashboard',
+          TIP: 'sort',
+          MODULE: '',
+          PARENT_ID: parent.ID,
+          MENU_LEVEL: '',
+          PRIORITY: String(index),
+          MENU_ID: '',
+        }));
+
+      menuItems.push(...children);
+    }
+
+    return menuItems;
+  }
+
+  private buildMenuTree(items: ApiMenuItem[]): MenuItem[] {
+    const nodes = new Map<string, MenuItem>();
+
+    for (const item of items ?? []) {
+      nodes.set(item.ID, { ...item, children: [] });
+    }
+
+    const roots: MenuItem[] = [];
+    for (const node of nodes.values()) {
+      const parent = nodes.get(node.PARENT_ID);
+      if (node.PARENT_ID === '0' || !parent) {
+        roots.push(node);
+      } else {
+        parent.children.push(node);
+      }
+    }
+
+    const sort = (menuItems: MenuItem[]): void => {
+      menuItems.sort((a, b) => Number(a.PRIORITY) - Number(b.PRIORITY));
+      menuItems.forEach((item) => sort(item.children));
+    };
+
+    sort(roots);
+    return roots;
+  }
   toggleCollapsed(): void {
     this.isCollapsed.update((collapsed) => !collapsed);
-  }
-  toggleApplications(): void {
-    this.isApplicationsOpen.update((open) => !open);
   }
   toggleMobile(): void {
     this.isMobileOpen.update((open) => !open);
@@ -249,4 +336,6 @@ export class NavbarVerticalComponent {
   closeMobile(): void {
     this.isMobileOpen.set(false);
   }
+
+  ngOnInit() {}
 }

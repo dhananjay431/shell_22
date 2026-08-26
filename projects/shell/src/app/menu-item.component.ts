@@ -1,0 +1,125 @@
+import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+export interface MenuItem {
+  ID: string;
+  MENU_LABEL: string;
+  MENU_LINK: string;
+  TIP: string;
+  MODULE: string;
+  PARENT_ID: string;
+  MENU_LEVEL: string;
+  PRIORITY: string;
+  MENU_ID: string;
+  children: MenuItem[];
+}
+
+@Component({
+  selector: 'app-menu-item',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    @if (hasChildren()) {
+      <button
+        class="nav-link menu-button"
+        type="button"
+        [attr.aria-expanded]="isOpen()"
+        [attr.aria-controls]="submenuId()"
+        (click)="toggle()"
+      >
+        <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
+        <span class="menu-label">{{ item().MENU_LABEL }}</span>
+        <span class="submenu-icon" aria-hidden="true">{{ isOpen() ? '⌃' : '⌄' }}</span>
+      </button>
+
+      @if (isOpen() && !collapsed()) {
+        <div
+          [id]="submenuId()"
+          class="submenu nav flex-column"
+          [attr.aria-label]="item().MENU_LABEL + ' submenu'"
+        >
+          @for (child of item().children; track child.ID) {
+            <app-menu-item [item]="child" [collapsed]="collapsed()" (navigate)="navigate.emit()" />
+          }
+        </div>
+      }
+    } @else if (isExternalLink()) {
+      <a
+        class="nav-link"
+        [href]="item().MENU_LINK"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="navigate.emit()"
+      >
+        <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
+        <span class="menu-label">{{ item().MENU_LABEL }}</span>
+      </a>
+    } @else {
+      <a
+        class="nav-link"
+        [routerLink]="item().MENU_LINK"
+        routerLinkActive="active"
+        (click)="navigate.emit()"
+      >
+        <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
+        <span class="menu-label">{{ item().MENU_LABEL }}</span>
+      </a>
+    }
+  `,
+  styles: `
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .menu-button {
+      width: 100%;
+      border: 0;
+      text-align: left;
+      cursor: pointer;
+    }
+    .menu-icon {
+      width: 1.25rem;
+      flex: 0 0 1.25rem;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    .submenu-icon {
+      margin-left: auto;
+    }
+    .submenu {
+      margin-left: 1rem;
+      padding-left: 0.5rem;
+      border-left: 1px solid #dee2e6;
+    }
+  `,
+})
+export class MenuItemComponent {
+  readonly item = input.required<MenuItem>();
+  readonly collapsed = input(false);
+  readonly navigate = output<void>();
+  readonly isOpen = signal(false);
+
+  readonly hasChildren = () => this.item().children.length > 0;
+  readonly isExternalLink = () => /^https?:\/\//i.test(this.item().MENU_LINK);
+  readonly submenuId = () => `submenu-${this.item().ID}`;
+
+  iconFor(tip: string): string {
+    return (
+      {
+        'icon-Home': '⌂',
+        'icon-Liabilities': '▣',
+        'icon-admin': '⚙',
+        'icon-Analytics': '▥',
+        'icon-Ai-Doc': '✦',
+        'icon-Help': '?',
+        'icon-Settings': '⚙',
+      }[tip] ?? '•'
+    );
+  }
+
+  toggle(): void {
+    this.isOpen.update((open) => !open);
+  }
+}

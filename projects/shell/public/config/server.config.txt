@@ -1,7 +1,7 @@
 
 {
 	"endPointURL":"/home/PTP/com.eibus.web.soap.Gateway.wcp",
-	"devEndPointURL":"/com.eibus.web.soap.Gateway.wcp?organization=o=PTP,cn=cordys,cn=uatInst,o=olamdomain.com&SAMLart=e0pBVkEtQUVTL0dDTS9Ob1BhZGRpbmd9GyDU0OZY0UKNWI8k/DJyXqTbFDhjOtGkz7UmkncyzlrtD60y3aNTTW0uKnIafcKtO/GG0KKXfRWvjlivmNA9XFl1I49EG8um7NE2bZl1Q3QyS9g=",
+	"devEndPointURL":"/com.eibus.web.soap.Gateway.wcp?organization=o=PTP,cn=cordys,cn=uatInst,o=olamdomain.com&SAMLart=e0pBVkEtQUVTL0dDTS9Ob1BhZGRpbmd9T/QF9ZTmNy3fgtZaAoBdNe2+6frvYLZiVsaat2PKq/52nAQyOzw6ipcz1SusaP884zCm4qIHwX48V2L0vOab2MvPonklyh3lbi3qT5V8h4wc2ro=",
 	"mode":"DEV",
 	"bravaPreviewUrl":"http://ecmuatds.olamnet.com:7080/OTCS/cs.exe?func=doc.ViewDoc&nodeId=",
 	"bravaPreviewUrlForOthers":"http://ecmuatds.olamnet.com:7080/OTCS/cs.exe/open/",

@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { CommonService } from '../../../shared/common.service';
+//import { JsonPipe } from '@angular/common';
+declare var $: any;
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -18,10 +20,10 @@ import { Router } from '@angular/router';
           <input
             id="email"
             name="email"
-            type="email"
+            type="text"
             autocomplete="email"
             required
-            email
+            text
             [(ngModel)]="email"
             #emailControl="ngModel"
             [class.invalid]="emailControl.invalid && emailControl.touched"
@@ -123,12 +125,25 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   email = '';
   password = '';
-
+  private readonly commonService = inject(CommonService);
   constructor(private readonly router: Router) {}
 
   submit(form: NgForm): void {
+    console.log(form);
+    let that = this;
     if (form.valid) {
-      void this.router.navigate(['/mfe1']);
+      $.cordys.authentication.sso.authenticate(this.email, this.password).done(function (
+        resp: any,
+      ) {
+        that.commonService
+          .ajax('GetAllTargets.Target', 'http://schemas.cordys.com/notification/workflow/1.0', {
+            TaskCountRequired: true,
+          })
+          .subscribe((r1: any) => {
+            console.log(r1);
+            void that.router.navigate(['/mfe1']);
+          });
+      });
     }
   }
 }
