@@ -1,0 +1,2222 @@
+{
+    "invoiceFieldConfig": {
+        "country": {
+
+            "header": {
+                "Pre_Approved":{
+                    "OA":{
+                        "doNotRender": true
+                    }
+					
+					
+                },"Enable_Posting":{
+                    "OA":{
+                        "doNotRender": true
+                    }
+					
+                },
+				"Manually_Posted":{
+                    "OA":{
+                        "doNotRender": true
+                  }
+					
+                },
+				"Validator_Remarks":{ 
+                         "OA":{
+                        "mandatory": true
+                    }
+               },
+			   "Payment_Method":{ 
+                         "OA":{
+                        "mandatory": true
+                    }
+               },
+                
+                "Advance_Details": {
+                    "all": {
+                        "disabled": true,
+                        "mandatory": false,
+                        "doNotRender": false
+                    }
+                },
+                "Advance_PO_Number": {
+                    "all": {
+                        "disabled": false
+                    }
+                },
+                "Advance_PO_Line_Number": {
+                    "all": {
+                        "disabled": false
+                    }
+                },
+                "Advance_Business_Area":{
+                    "all": {
+                        "disabled": false
+                    }
+                },
+                "Assignment": {},
+                "Baseline_Date": {
+                     "NG": {
+                        "mandatory": true
+                    },
+                    "GH": {
+                        "mandatory": true
+                    }
+                },
+                "Basic_Amount": {
+                },
+                "BGFI": {
+                  "GA":{
+
+                  },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Bill_To_GST": {
+                    "all": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                      "mandatory" : true
+                    }
+                },
+                "Bill_To_PAN": {
+                    "all": {
+                        "doNotRender": true
+                    },
+                     "IN" :{
+                      "doNotRender" : true
+                    }
+
+                },
+                "Billing_To": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					"NZ": {
+                        "doNotRender": true
+                    }
+                },
+                "BSC_Document": {
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Business_Area": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					"NZ": {
+                        "doNotRender": true
+                    },
+                    "all": {
+                      "disabled": true
+                    }
+
+                },
+                "Tax_Code": {
+                   "GA": {
+                    },
+                    "all": {
+                      "disabled": true,
+                       "doNotRender": true
+                    }
+
+                },
+                "CGST": {
+                    "IN": {
+
+                    },
+                    "all": {
+                     "doNotRender": true
+                    }
+
+                },
+				"TOTALAMT1": {
+                    "NG": {
+
+                    },
+                    "all": {
+                     "doNotRender": true
+                    }
+
+                },
+                "Classifications": {
+                    "all": {
+                        "mandatory": true
+                    }
+
+                },
+                "Company_Code": {
+                  "all": {
+                   "mandatory":true
+                  }
+                },
+                "Css_Tax_Amount": {
+                    "GA": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Currency": {
+                    "all": {
+                        "mandatory": true
+                    }
+
+                },
+                "D3_Certificate": {
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Department_Id": {
+                  "all": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                    }
+                },
+                "Difference_Amount": {},
+                "Discount_Percent": {
+                    "US": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Document_Header_Text": {},
+                "DocumentType": {
+                    "all": {
+                        "mandatory": true
+                    }
+                },
+                "D3_BSC_Document_Verify": {
+                    "CI": {
+                        "doNotRender": false
+                    },
+					"MZ": {
+                        "doNotRender": false
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": false
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Duplicate_Category": {
+                    "all": {
+                        "disabled": true
+                    }
+                },
+                "Duplicate_Work_Item_Id": {
+                    "all": {
+                        "disabled": true
+                    }
+                },
+                "Entity_ID": {
+                  "CI":{
+
+                  },
+				  "MZ":{
+
+                  },
+				  "CM":{
+
+                  },
+				  "TG":{
+
+                  },
+				  "BN":{
+
+                  },
+				  "MT":{
+
+                  },
+                  "OCP":{
+
+                  },
+                  "IN":{
+                    "doNotRender":true
+                  },
+                  "US":{},
+                  "AU":{ "doNotRender":true,
+                  "mandatory": false
+                  },
+				  "NZ":{ "doNotRender":true,
+                  "mandatory": false
+                  },
+                  "all": {
+                    "mandatory": true
+                  }
+                },
+                "ERP_Due_Date": {
+                    "all": {
+                         "disabled": true
+                    }
+                },
+                "Exchange_Rate": {
+                    "all": {
+                        "disabled": true,
+                        "mandatory": true
+                    },
+                    "NG": {
+                        "disabled": false
+                    },
+                     "IN": {
+                        "disabled": false
+                    }
+
+                },
+                "Freight_Amount":{
+                    "all": {
+                        "disabled": true
+                    }
+                },
+                "Function_Id":{
+                    "IN": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                 "IGST":{
+                    "IN": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Initiate_User": {
+                    "all": {
+                        "disabled": true
+                    }
+                },
+                "Initiator_Email_Id": {
+                    "all": {
+                        "disabled": true
+                    }
+                },
+                "Invoice_ABN": {
+                    "AU": {
+                    },
+					"NZ": {
+                    },
+                    "all": {
+
+                        "doNotRender": true
+                    }
+                },
+                "Invoice_Date": {
+                    "all": {
+                        "mandatory": true
+                    }
+                },
+                "Invoice_Number": {
+                    "all": {
+                        "mandatory": true
+                    }
+
+                },
+                "Invoice_Receipt_Date": {
+                    "all": {
+                        "disabled":true,
+                        "mandatory":false
+                    }
+                },
+                "Invoice_Type": {
+                    "all": {
+                        "mandatory": true
+                    }
+                },
+                "TVA_Applicable": {
+                    "GA": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Location": {
+
+                  "IN":{
+                     "doNotRender": true
+                  },
+                  "AU":{
+                       "doNotRender":true
+                  }, 
+				  "NZ":{
+                       "doNotRender":true
+                  }
+
+                },
+                "Material_Advance":{
+                  "all": {
+                     "doNotRender": true
+                  },
+                  "GA":{
+                  },
+                  "GH":{
+                  },
+                  "NG":{
+                  },
+                  "OCP":{
+                  },
+                  "US":{
+                  }
+                },
+                "UGB":{
+                  "all": {
+                     "doNotRender": true
+                  },
+                  "GA":{
+                  }
+                },
+                "NIF_Number": {
+                    "GA": {},
+                    "all": {
+                        "doNotRender": true
+                    }
+
+                },
+                "Invoice_Page_Number": {
+                    "GA": {},
+                    "all": {
+                        "doNotRender": true
+                    }
+
+                },
+                "Other_Amount": {
+                    "GA": {
+                        "doNotRender": true
+                    }
+
+                },
+                "Partner_Bank_Key":{
+                  "AU":{
+                    "disabled":true
+                  },
+				  "NZ":{
+                    "disabled":true
+                  },
+                  "US":{
+                    "disabled":true
+                  },
+                  "all":{
+                    "doNotRender":true,
+                    "disabled":true
+                  }
+                },
+                "Payment_Amount":{
+                  "all": {
+                    "doNotRender":true
+                  },
+                  "OCP": {
+
+                  }
+
+                },
+                "Payment_Block":{
+                  "AU":{
+                    "doNotRender": true
+                  },
+				   "NZ":{
+                    "doNotRender": true
+                  },
+                  "US" : {
+                  },
+                "all":{
+                   "doNotRender":true
+                }
+                },
+                "Payment_Currency":{
+
+                  "all":{
+                    "doNotRender":true
+                  },
+                  "OCP": {
+
+                  }
+                },
+                "Payment_Method":{
+                  "AU":{
+                    "doNotRender": true
+                  },
+				   "NZ":{
+                    "doNotRender": true
+                  },
+                "all":{
+                  }
+                },
+                "Payment_Verification_Certificate": {
+                    "GA": {
+                        "doNotRender": false
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Payment_Terms": {
+                    "all": {
+                        "mandatory": true
+                    }
+                },
+                "PO_Number": {},
+                "Port_Of_Destination": {
+                    "OCP": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Port_Of_Landing": {
+                    "OCP": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Posting_Date": {},
+                "Posting_Document_Number": {
+                  "all": {
+                    "disabled":true
+                  }
+                },
+                "Port_Of_Destination": {
+                  "all": {
+                    "doNotRender":true
+                  },
+                  "OCP": {
+                    "doNotRender":false
+                  }
+
+                },
+                "Port_Of_Landing": {
+                  "all": {
+                    "doNotRender":true
+                  },
+                  "OCP": {
+                    "doNotRender":false
+                  }
+
+                },
+                "Previous_Balance":{
+                  "IN":{
+                    "doNotRender": true
+                  },
+                  "all":{
+                    "disabled":true
+                  }
+                },
+                 "Product": {
+                    "IN": {
+                        "doNotRender": true
+                    },
+                    "GA":{
+
+                    }
+
+                },
+                  "Remit_To_Address":{
+                  "US":{},
+                  "all":{
+                    "doNotRender":true
+                  }
+                },
+                "Retention_Amount_Verification": {
+                    "GA": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+               "Retention_Money":{
+                   "GA": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+               },
+                "Reporting_Country": {
+                          "OCP":{
+
+                          },
+                          "all":{
+                            "disabled":true
+                          }
+                        },
+               "SGST":{
+                 "IN":{},
+                 "all":{
+                   "doNotRender" : true
+                   }
+               },
+
+                "Shipping_Address": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					"NZ": {
+                        "doNotRender": true
+                    }
+                },
+                "Summary_Sheet_Certificate": {
+                    "GA": {
+                        "doNotRender": false
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Tax_Amount": {},
+                "Tax_Collected_At_Source":{
+                  "IN":{},
+                  "all":{
+                    "doNotRender":true
+                  }
+                },
+                "Three_Quotations": {
+                    "CI": {
+                    },
+					"MZ": {
+                    },
+					"TG": {
+						"doNotRender": true
+                    },
+					"BN": {
+						"doNotRender": true
+                    },
+					"MT": {
+						"doNotRender": true
+                    },
+					"CM": {
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Total_Amount": {
+                    "all": {
+                        "mandatory": true
+                    },
+                    "GA": {
+                        "doNotRender" : true,
+                        "mandatory" : false
+                    },
+					"MZ": {
+                        "doNotRender" : true,
+                        "mandatory" : false
+                    },
+					"TG": {
+                        "doNotRender" : true,
+                        "mandatory" : false
+                    },
+					"BN": {
+                        "doNotRender" : true,
+                        "mandatory" : false
+                    },
+					"MT": {
+                        "doNotRender" : true,
+                        "mandatory" : false
+                    },
+					"CM": {
+                        "doNotRender" : true,
+                        "mandatory" : false
+                    },
+                    "CI": {
+                        "doNotRender" : true,
+                        "mandatory" : false
+                    }
+                },
+                "Total_HT":{
+                    "all": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                    },
+					"MZ":{
+
+                    },
+					"TG":{
+
+                    },
+					"BN":{
+
+                    },
+					"MT":{
+
+                    },
+					"CM":{
+
+                    },
+                    "CI":{
+
+                    }
+                },
+                "Total_TTC":{
+                   "all": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                        "mandatory" : true
+                    },
+					"MZ":{
+                        "mandatory" : true
+                    },
+					"CM":{
+                        "mandatory" : true
+                    },
+					"TG":{
+                        "mandatory" : true
+                    },
+					"BN":{
+                        "mandatory" : true
+                    },
+					"MT":{
+                        "mandatory" : true
+                    },
+                    "CI":{
+                        "mandatory" : true
+                    }
+                },
+                "Turn_Out_Ratio": {
+                    "all": {
+                        "doNotRender": true
+                    },
+                    "US": {
+                        "disabled":true
+                    }
+                },
+                "TVA": {
+                    "all": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                        "doNotRender": false
+                    },
+					"MZ": {
+                        "doNotRender": false
+                    },
+					"TG": {
+                        "doNotRender": false
+                    },
+					"BN": {
+                        "doNotRender": false
+                    },
+					"MT": {
+                        "doNotRender": false
+                    },
+					"CM": {
+                        "doNotRender": false
+                    },
+                    "CI": {
+                        "doNotRender": false
+                    }
+                },
+                "Unplanned_Delivery_Cost": {
+                  "IN":{
+                    "doNotRender":true
+                  }
+                },
+                "Vendor_ABN": {
+                    "all": {
+                        "doNotRender": true
+                    },
+                    "US": {
+                        "doNotRender": false
+                    },
+                    "AU": {
+                        "doNotRender": false
+                    },
+                    "NZ": {
+                        "doNotRender": false
+                    }
+                },
+                "Vendor_Code": {
+                  "all":{
+                    "mandatory": true
+                  }
+                },
+                "Vendor_GST": {
+                    "all": {
+                        "doNotRender": true
+                    },
+                    "IN":{
+                      "mandatory": false
+                    }
+                },
+                "Vendor_Line_Item": {},
+                "Vendor_Name": {
+                    "all": {
+                        "mandatory": true
+                    }
+                },
+                "Vendor_PAN": {
+                    "all": {
+                        "doNotRender": true
+                    },
+                    "IN":{
+                      "mandatory":true
+                    }
+                },
+                "Vendor_Recon_Account":{
+                  "all":{
+                    "doNotRender": true
+                  },
+                  "NG":{}
+                },
+                "Vendor_ToolTip": {
+                    "all": {
+                        "doNotRender": true
+                    },
+                    "AU": {
+                        "disabled":true
+                    }, 
+					"NZ": {
+                        "disabled":true
+                    },
+                    "US": {
+                        "disabled":true
+                    }
+
+                }
+            },
+            "details": {
+
+                "GRN_Number": {
+                    "IN": {
+                        "doNotRender": true
+                    }
+                },
+                "Business_Area": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					 "NZ": {
+                        "doNotRender": true
+                    }
+                },
+                "Discount": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					 "NZ": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    }
+                },
+                "Reference_1": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					"NZ": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    },
+                    "NG": {
+                        "doNotRender": true
+                    }
+                },
+                "Reference_2": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					"NZ": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    },
+                    "NG": {
+                        "doNotRender": true
+                    }
+                },
+                "Reference_3": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					 "NZ": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    },
+                    "NG": {
+                        "doNotRender": true
+                    }
+                },
+                "HSN_SAC": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					 "NZ": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    },
+                    "NG": {
+                        "doNotRender": true
+                    },
+                    "OCP": {
+                        "doNotRender": true
+                    },
+                    "US": {
+                        "doNotRender": true
+                    }
+                },
+                "Serial_No": {
+                },
+                "Invent_No": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					  "NZ": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "US": {
+                        "doNotRender": true
+                    }
+                },
+                "Tax_WBS": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					 "NZ": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    }
+                },
+                "Material_Group":{
+                    "IN": {
+                        "doNotRender": true
+                    }
+                },
+                "Transaction_Type": {
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    }
+                },
+                "Transaction_Type_Desc": {
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    }
+                },
+                "Tax_Jurisdiction_Code":{
+                    "US":{
+
+                    },
+                    "all": {
+                        "doNotRender": true
+                    }
+                },
+                "Posting_Key": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					 "NZ": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "US": {
+                        "doNotRender": true
+                    }
+                },
+                "Posting_Key_Desc": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					"NZ": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "US": {
+                        "doNotRender": true
+                    }
+                },
+                "WHT_Amount": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					 "NZ": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+                    "US": {
+                        "doNotRender": true
+                    }
+                },
+                "WHT_Tax_Code": {
+                    "AU": {
+                        "doNotRender": true
+                    },
+					"NZ": {
+                        "doNotRender": true
+                    },
+                    "GA": {
+                        "doNotRender": true
+                    },
+                    "IN": {
+                        "doNotRender": true
+                    },
+                    "CI": {
+                        "doNotRender": true
+                    },
+					"MZ": {
+                        "doNotRender": true
+                    },
+					"TG": {
+                        "doNotRender": true
+                    },
+					"BN": {
+                        "doNotRender": true
+                    },
+					"MT": {
+                        "doNotRender": true
+                    },
+					"CM": {
+                        "doNotRender": true
+                    },
+
+                    "US": {
+                        "doNotRender": true
+                    }
+                }
+
+            }
+
+        },
+        "data": {
+            "header": {
+              "Classifications":{
+                "PO":{
+                  "PO_Number":{
+                      "doNotRender": false
+                  },
+                  "Total_Credit":{
+                      "doNotRender": true
+                  },
+                  "Total_Debit":{
+                      "doNotRender": true
+                  },
+                   "IITotal":{
+                      "doNotRender": true
+                  },
+                   "DocumentType":{
+                      "disabled": false
+                  },
+                    "Advance_PO_Number": {
+                            "doNotRender": true
+                    },
+                    "Advance_PO_Line_Number": {
+                            "doNotRender": true
+                    },
+                    "Advance_Business_Area": {
+                            "doNotRender": true
+                    }
+                },
+                 "NPO":{
+                  "PO_Number":{
+                      "doNotRender": true
+                  },
+                  "Total_Credit":{
+                      "doNotRender": true
+                  },
+                  "Total_Debit":{
+                      "doNotRender": true
+                  },
+                   "IITotal":{
+                      "doNotRender": true
+                  },
+                    "Advance_PO_Number": {
+                            "doNotRender": true
+                    },
+                    "Advance_PO_Line_Number": {
+                            "doNotRender": true
+                    },
+                    "Advance_Business_Area": {
+                            "doNotRender": true
+                    }
+                },
+                 "II":{
+                  "PO_Number":{
+                      "doNotRender": true
+                  },
+                  "Basic_Amount":{
+                      "doNotRender": true
+                  },
+                  "Freight_Amount":{
+                      "doNotRender": true
+                  },
+                  "Tax_Amount":{
+                      "doNotRender": true
+                  },
+                    "Other_Amount":{
+                      "doNotRender": true
+                  },
+                    "Difference_Amount":{
+                      "doNotRender": true
+                  },
+                  "Total_Amount":{
+                      "doNotRender": true
+                  },
+                  "Unplanned_Delivery_Cost":{
+                      "doNotRender": true
+                  },
+                  "TVA":{
+                      "doNotRender": true
+                  },
+                  "Total_HT":{
+                      "doNotRender": true
+                  },
+                  "Total_TTC":{
+                      "doNotRender": true
+                  },
+                  "Previous_Balance":{
+                      "doNotRender": true
+                  },
+                  "Css_Tax_Amount": {
+                        "doNotRender": true
+                    },
+                    "Advance_PO_Number": {
+
+                    },
+                    "Advance_PO_Line_Number": {
+
+                    },
+                    "Advance_Business_Area": {
+
+                    }
+                },
+                 "VS":{
+                  "PO_Number":{
+                      "doNotRender": true
+                  },
+                  "Advance_Business_Area":{
+                      "doNotRender": true
+                  },
+                  "Total_Credit":{
+                      "doNotRender": true
+                  },
+                  "Total_Debit":{
+                      "doNotRender": true
+                  },
+                   "IITotal":{
+                      "doNotRender": true
+                  },
+                  "DocumentType":{
+                     "doNotRender": true
+                  },
+                  "Invoice_Type":{
+                     "doNotRender": true
+                  },
+                    "Advance_PO_Number": {
+                            "doNotRender": true
+                    },
+                    "Advance_PO_Line_Number": {
+                            "doNotRender": true
+                    },
+                    "Advance_Business_Area": {
+                            "doNotRender": true
+                    }
+                }
+              },
+                "Invoice_Type": {
+                    "GL & GL": {
+                        "Vendor_Code": {
+                            "doNotRender": true
+                        },
+                        "Vendor_Name": {
+                            "doNotRender": true
+                        },
+                        "Payment_Terms": {
+                            "doNotRender": true
+                        },
+                        "Basic_Amount": {
+                            "doNotRender": true
+                        },
+                        "Freight_Amount": {
+                            "doNotRender": true
+                        },
+                        "Tax_Amount": {
+                            "doNotRender": true
+                        },
+                        "Other_Amount": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {
+                            "doNotRender": true
+                        },
+                        "ERP_Due_Date": {
+                            "doNotRender": true
+                        },
+                        "Advance_PO_Number": {
+                             "doNotRender": true
+                        },
+                        "Advance_PO_Line_Number": {
+                             "doNotRender": true
+                        },
+                        "Advance_Business_Area": {
+                                "doNotRender": true
+                        },
+                        "IITotal":{
+                              "doNotRender": true
+                        },
+                        "Vendor_GST":{
+                           "doNotRender": true
+                        },
+                         "Bill_To_GST":{
+                           "doNotRender": true
+                        },
+                        "Vendor_PAN":{
+                           "doNotRender": true
+                        },
+                         "Bill_To_PAN":{
+                           "doNotRender": true
+                        }
+                    },
+                    "Vendor & GL": {
+                        "Vendor_Code": {
+                            "doNotRender": true
+                        },
+                        "Vendor_Name": {
+                            "doNotRender": true
+                        },
+                        "Payment_Terms": {
+                            "doNotRender": true
+                        },
+                        "Basic_Amount": {
+                            "doNotRender": true
+                        },
+                        "Freight_Amount": {
+                            "doNotRender": true
+                        },
+                        "Tax_Amount": {
+                            "doNotRender": true
+                        },
+                        "Other_Amount": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {
+                            "doNotRender": true
+                        },
+                        "ERP_Due_Date": {
+                            "doNotRender": true
+                        },
+                        "Advance_PO_Number": {
+                             "doNotRender": true
+                        },
+                        "Advance_PO_Line_Number": {
+                             "doNotRender": true
+                        },
+                        "Advance_Business_Area": {
+                                "doNotRender": true
+                        },"IITotal":{
+                              "doNotRender": true
+                        }
+                    },
+                    "Vendor & Vendor": {
+                        "Vendor_Code": {
+                            "doNotRender": true
+                        },
+                        "Vendor_Name": {
+                            "doNotRender": true
+                        },
+                        "Payment_Terms": {
+                            "doNotRender": true
+                        },
+                        "Basic_Amount": {
+                            "doNotRender": true
+                        },
+                        "Freight_Amount": {
+                            "doNotRender": true
+                        },
+                        "Tax_Amount": {
+                            "doNotRender": true
+                        },
+                        "Other_Amount": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {
+                            "doNotRender": true
+                        },
+                        "ERP_Due_Date": {
+                            "doNotRender": true
+                        },
+                        "Advance_PO_Number": {
+                             "doNotRender": true
+                        },
+                        "Advance_PO_Line_Number": {
+                             "doNotRender": true
+                        },
+                        "Advance_Business_Area": {
+                                "doNotRender": true
+                        },"IITotal":{
+                              "doNotRender": true
+                        },
+                        "Vendor_GST":{
+                           "doNotRender": true
+                        },
+                         "Bill_To_GST":{
+                           "doNotRender": true
+                        },
+                        "Vendor_PAN":{
+                           "doNotRender": true
+                        },
+                         "Bill_To_PAN":{
+                           "doNotRender": true
+                        }
+                    },
+                    "Asset Entries": {
+                        "Vendor_Code": {
+                            "doNotRender": true
+                        },
+                        "Vendor_Name": {
+                            "doNotRender": true
+                        },
+                        "Payment_Terms": {
+                            "doNotRender": true
+                        },
+                        "Basic_Amount": {
+                            "doNotRender": true
+                        },
+                        "Freight_Amount": {
+                            "doNotRender": true
+                        },
+                        "Tax_Amount": {
+                            "doNotRender": true
+                        },
+                        "Other_Amount": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {
+                            "doNotRender": true
+                        },
+                        "ERP_Due_Date": {
+                            "doNotRender": true
+                        },
+                        "Advance_PO_Number": {
+                             "doNotRender": true
+                        },
+                        "Advance_PO_Line_Number": {
+                             "doNotRender": true
+                        },
+                        "Advance_Business_Area": {
+                                "doNotRender": true
+                        },"IITotal":{
+                              "doNotRender": true
+                        }
+                    },
+                    "Advances": {
+                        "Vendor_Code": {
+
+                        },
+                        "Vendor_Name": {
+
+                        },
+                        "Payment_Terms": {
+                            "doNotRender": true
+                        },
+                        "Basic_Amount": {
+                            "doNotRender": true
+                        },
+                        "Freight_Amount": {
+                            "doNotRender": true
+                        },
+                        "Tax_Amount": {
+                            "doNotRender": true
+                        },
+                        "Other_Amount": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {
+                            "doNotRender": true
+                        },
+                        "ERP_Due_Date": {
+                            "doNotRender": true
+                        },
+                         "Total_Credit":{
+                             "doNotRender": true
+                        },
+                         "Total_Debit":{
+                              "doNotRender": true
+                         },
+                        "Advance_PO_Number": {
+
+                        },
+                        "Advance_PO_Line_Number": {
+
+                        },
+                        "Advance_Business_Area": {
+
+                        }
+
+                    },
+                    "H2H Advances": {
+                        "Vendor_Code": {
+
+                        },
+                        "Vendor_Name": {
+
+                        },
+                        "Payment_Terms": {
+                            "doNotRender": true
+                        },
+                        "Basic_Amount": {
+                            "doNotRender": true
+                        },
+                        "Freight_Amount": {
+                            "doNotRender": true
+                        },
+                        "Tax_Amount": {
+                            "doNotRender": true
+                        },
+                        "Other_Amount": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {
+                            "doNotRender": true
+                        },
+                        "ERP_Due_Date": {
+                            "doNotRender": true
+                        },
+                         "Total_Credit":{
+                             "doNotRender": true
+                        },
+                         "Total_Debit":{
+                              "doNotRender": true
+                         },
+                        "Advance_PO_Number": {
+
+                        },
+                        "Advance_PO_Line_Number": {
+
+                        },
+                        "Advance_Business_Area": {
+
+                        }
+
+                    }
+
+                },
+                "Company_Code":{
+                  "SG00" : {
+                      "Reporting_Country": {
+                            "mandatory": true,
+                            "doNotRender":false
+                        }
+                  }
+                }
+            },
+            "detail": {
+                "Invoice_Type": {
+                    "GL & GL": {
+                        "Status_Id": {},
+                        "Invoice_Line": {},
+                        "PO_Type": {
+                            "doNotRender": true
+                        },
+                        "PO_Number": {
+                            "doNotRender": true
+                        },
+                        "PO_Line": {
+                            "doNotRender": true
+                        },
+                        "GRN_Number": {
+                            "doNotRender": true
+                        },
+                        "Buyer": {
+                            "doNotRender": true
+                        },
+                        "PO_Creator": {
+                            "doNotRender": true
+                        },
+                        "Material": {
+                            "doNotRender": true
+                        },
+                        "Material_Description": {
+                            
+                        },
+                        "Order_Id": {},
+                        "Quantity": {
+                            "doNotRender": true
+                        },
+                        "Unit_Cost": {
+                            "doNotRender": true
+                        },
+                        "Gross_Value": {},
+                        "UOM": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {},
+                        "Tax_Code": {},
+                        "Tax_Amount": {},
+                        "CSS_TAX_PER_VALUE": {},
+                        "Doc_Currency": {
+                            "doNotRender": true
+                        },
+                        "Local_Currency": {
+                            "doNotRender": true
+                        },
+                        "Discount": {
+                            "doNotRender": true
+                        },
+                        "GL_Code": {},
+                        "GL_Code_Desc": {},
+                        "Cost_Center": {},
+                        "Profit_Center": {},
+                        "Reference_1": {},
+                        "Reference_2": {},
+                        "Reference_3": {},
+                        "Remarks": {},
+                        "HSN_SAC": {
+                            "doNotRender": true
+                        },
+                        "GL_Indicator": {},
+                        "Serial_No": {
+                            "doNotRender": true
+                        },
+                        "Invent_No": {
+                            "doNotRender": true
+                        },
+                        "Asset_No": {
+                            "doNotRender": true
+                        },
+                        "Material_Group": {
+                            "doNotRender": true
+                        },
+                        "TAX_OPTION": {
+                            "doNotRender": true
+                        },
+                        "Transaction_Type": {},
+                        "Transaction_Type_Desc": {},
+                        "Credit_Debit_Option_Id": {},
+                        "Tax_Base_Amt": {},
+                        "Tax_WBS": {
+                            "doNotRender": true
+                        },
+                        "Tax_Indicator": {
+                            "doNotRender": true
+                        },
+                        "Posting_Key": {},
+                        "Posting_Key_Desc": {},
+                        "Cost_Centre_Desc": {},
+                        "Value_Date": {
+                            "doNotRender": true
+                        },
+                        "Vendor_Code": {
+                            "doNotRender": true
+                        },
+                        "Vendor_Name": {
+                            "doNotRender": true
+                        },
+                        "Assignment": {
+                            "doNotRender": true
+                        }
+                    },
+                    "Vendor & GL": {
+                        "Status_Id": {},
+                        "Invoice_Line": {},
+                        "PO_Type": {
+                            "doNotRender": true
+                        },
+                        "PO_Number": {
+                            "doNotRender": true
+                        },
+                        "PO_Line": {
+                            "doNotRender": true
+                        },
+                        "GRN_Number": {
+                            "doNotRender": true
+                        },
+                        "Buyer": {
+                            "doNotRender": true
+                        },
+                        "PO_Creator": {
+                            "doNotRender": true
+                        },
+                        "Material": {
+                            "doNotRender": true
+                        },
+                        "Material_Description": {
+                            
+                        },
+                        "Order_Id": {},
+                        "Quantity": {
+                            "doNotRender": true
+                        },
+                        "Unit_Cost": {
+                            "doNotRender": true
+                        },
+                        "Gross_Value": {},
+                        
+                        "UOM": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {},
+                        "Tax_Code": {},
+                        "Tax_Amount": {},
+                         "CSS_TAX_PER_VALUE": {},
+                        "Doc_Currency": {
+                            "doNotRender": true
+                        },
+                        "Local_Currency": {
+                            "doNotRender": true
+                        },
+                        "Discount": {
+                            "doNotRender": true
+                        },
+                        "GL_Code": {},
+                        "GL_Code_Desc": {},
+                        "Cost_Center": {},
+                        "Profit_Center": {},
+                        "Reference_1": {},
+                        "Reference_2": {},
+                        "Reference_3": {},
+                        "Remarks": {},
+                        "HSN_SAC": {
+                            "doNotRender": true
+                        },
+                        "GL_Indicator": {},
+                        "Serial_No": {
+                            "doNotRender": true
+                        },
+                        "Invent_No": {
+                            "doNotRender": true
+                        },
+                        "Asset_No": {},
+                        "Material_Group": {
+                            "doNotRender": true
+                        },
+                        "TAX_OPTION": {
+                            "doNotRender": true
+                        },
+                        "Transaction_Type": {},
+                        "Transaction_Type_Desc": {},
+                        "Credit_Debit_Option_Id": {},
+                        "Tax_Base_Amt": {},
+                        "Tax_WBS": {
+                            "doNotRender": true
+                        },
+                        "Tax_Indicator": {
+
+                        },
+                        "Posting_Key": {},
+                        "Posting_Key_Desc": {},
+                        "Cost_Centre_Desc": {},
+                        "Value_Date": {},
+                        "Vendor_Code": {},
+                        "Vendor_Name": {},
+                        "Assignment": {
+                            "doNotRender": true
+                        }
+                    },
+                    "Vendor & Vendor": {
+                        "Status_Id": {},
+                        "Invoice_Line": {},
+                        "PO_Type": {
+                            "doNotRender": true
+                        },
+                        "PO_Number": {
+                            "doNotRender": true
+                        },
+                        "PO_Line": {
+                            "doNotRender": true
+                        },
+                        "GRN_Number": {
+                            "doNotRender": true
+                        },
+                        "Buyer": {
+                            "doNotRender": true
+                        },
+                        "PO_Creator": {
+                            "doNotRender": true
+                        },
+                        "Material": {
+                            "doNotRender": true
+                        },
+                        "Material_Description": {
+                            
+                        },
+                        "Order_Id": {
+                            "doNotRender": true
+                        },
+                        "Quantity": {
+                            "doNotRender": true
+                        },
+                        "Unit_Cost": {
+                            "doNotRender": true
+                        },
+                        "Gross_Value": {},
+                        "UOM": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {
+
+                        },
+                        "Tax_Code": {},
+                        "Tax_Amount": {},
+                        "CSS_TAX_PER_VALUE": {},
+                        "Doc_Currency": {
+                            "doNotRender": true
+                        },
+                        "Local_Currency": {
+                            "doNotRender": true
+                        },
+                        "Discount": {
+                            "doNotRender": true
+                        },
+                        "GL_Code": {
+                            "doNotRender": true
+                        },
+                        "GL_Code_Desc": {
+                            "doNotRender": true
+                        },
+                        "Cost_Center": {
+
+                        },
+                        "Profit_Center": {
+
+                        },
+                        "Reference_1": {},
+                        "Reference_2": {},
+                        "Reference_3": {},
+                        "Remarks": {},
+                        "HSN_SAC": {
+                            "doNotRender": true
+                        },
+                        "GL_Indicator": {},
+                        "Serial_No": {
+                            "doNotRender": true
+                        },
+                        "Invent_No": {
+                            "doNotRender": true
+                        },
+                        "Asset_No": {
+                            "doNotRender": true
+                        },
+                        "Material_Group": {
+                            "doNotRender": true
+                        },
+                        "TAX_OPTION": {
+                            "doNotRender": true
+                        },
+                        "Transaction_Type": {},
+                        "Transaction_Type_Desc": {},
+                        "Credit_Debit_Option_Id": {},
+                        "Tax_Base_Amt": {},
+                        "Tax_WBS": {
+                            "doNotRender": true
+                        },
+                        "Tax_Indicator": {
+
+                        },
+                        "Posting_Key": {},
+                        "Posting_Key_Desc": {},
+                        "Cost_Centre_Desc": {
+                            "doNotRender": true
+                        },
+                        "Value_Date": {
+                            "doNotRender": true
+                        },
+                        "Vendor_Code": {},
+                        "Vendor_Name": {},
+                        "Assignment": {
+                            "doNotRender": true
+                        }
+                    },
+                    "GL & GL": {
+                        "Status_Id": {},
+                        "Invoice_Line": {},
+                        "PO_Type": {
+                            "doNotRender": true
+                        },
+                        "PO_Number": {
+                            "doNotRender": true
+                        },
+                        "PO_Line": {
+                            "doNotRender": true
+                        },
+                        "GRN_Number": {
+                            "doNotRender": true
+                        },
+                        "Buyer": {
+                            "doNotRender": true
+                        },
+                        "PO_Creator": {
+                            "doNotRender": true
+                        },
+                        "Material": {
+                            "doNotRender": true
+                        },
+                        "Material_Description": {
+                            
+                        },
+                        "Order_Id": {},
+                        "Quantity": {
+                            "doNotRender": true
+                        },
+                        "Unit_Cost": {
+                            "doNotRender": true
+                        },
+                        "Gross_Value": {},
+                        "UOM": {
+                            "doNotRender": true
+                        },
+                        "Business_Area": {},
+                        "Tax_Code": {},
+                        "Tax_Amount": {},
+                        "CSS_TAX_PER_VALUE": {},
+                        "Doc_Currency": {
+                            "doNotRender": true
+                        },
+                        "Local_Currency": {
+                            "doNotRender": true
+                        },
+                        "Discount": {
+                            "doNotRender": true
+                        },
+                        "GL_Code": {},
+                        "GL_Code_Desc": {},
+                        "Cost_Center": {},
+                        "Profit_Center": {},
+                        "Reference_1": {
+                            "doNotRender": true
+                        },
+                        "Reference_2": {
+                            "doNotRender": true
+                        },
+                        "Reference_3": {
+                            "doNotRender": true
+                        },
+                        "Remarks": {
+
+                        },
+                        "HSN_SAC": {
+                            "doNotRender": true
+                        },
+                        "GL_Indicator": {
+                            "doNotRender": true
+                        },
+                        "Serial_No": {
+                            "doNotRender": true
+                        },
+                        "Invent_No": {
+                            "doNotRender": true
+                        },
+                        "Asset_No": {
+                            "doNotRender": true
+                        },
+                        "Material_Group": {
+                            "doNotRender": true
+                        },
+                        "TAX_OPTION": {
+                            "doNotRender": true
+                        },
+                        "Transaction_Type": {
+                            "doNotRender": true
+                        },
+                        "Transaction_Type_Desc": {
+                            "doNotRender": true
+                        },
+                        "Credit_Debit_Option_Id": {},
+                        "Tax_Base_Amt": {},
+                        "Tax_WBS": {
+                            "doNotRender": true
+                        },
+                        "Tax_Indicator": {
+                            "doNotRender": true
+                        },
+                        "Posting_Key": {
+                            "doNotRender": true
+                        },
+                        "Posting_Key_Desc": {
+                            "doNotRender": true
+                        },
+                        "Cost_Centre_Desc": {},
+                        "Value_Date": {
+                            "doNotRender": true
+                        },
+                        "Vendor_Code": {
+                            "doNotRender": true
+                        },
+                        "Vendor_Name": {
+                            "doNotRender": true
+                        },
+                        "Assignment": {}
+                    }
+                }
+            }
+        },
+		"queue_based":{
+            "header":{
+                "AU_Statements":{
+                    "Pre_Approved":{ 
+                         "doNotRender": true
+                    },
+                    "Enable_Posting":{ 
+                         "doNotRender": true
+                    },
+                    "Manually_Posted":{ 
+                         "doNotRender": true
+                    },
+                    "DOA_Required":{ 
+                         "doNotRender": true
+                    }
+                }
+
+            }
+        },
+        "po_pull":{
+                "GRN_Match_Logic":{
+                    "MZ" :{
+                        "CI11":"Invoice_Number,Cost_Centre_Desc"
+                    },
+                    "TG" :{
+                        "CI11":"Invoice_Number,Cost_Centre_Desc"
+                    },
+                    "BN" :{
+                        "CI11":"Invoice_Number,Cost_Centre_Desc"
+                    },
+                    "MT" :{
+                        "CI11":"Invoice_Number,Cost_Centre_Desc"
+                    },
+					"CM" :{
+                        "CI11":"Invoice_Number,Cost_Centre_Desc"
+                    },
+					"CI" :{
+                        "CI11":"Invoice_Number,Cost_Centre_Desc"
+                    }
+                    },
+                    "Material_Group":{
+                        "MZ":{
+                            "3_Quotation_Logic":"asset,spares,8002,7021"
+                        },
+                        "TG":{
+                            "3_Quotation_Logic":"asset,spares,8002,7021"
+                        },
+                        "BN":{
+                            "3_Quotation_Logic":"asset,spares,8002,7021"
+                        },
+                        "MT":{
+                            "3_Quotation_Logic":"asset,spares,8002,7021"
+                        },
+						"CM":{
+                            "3_Quotation_Logic":"asset,spares,8002,7021"
+                        },
+						"CI":{
+                            "3_Quotation_Logic":"asset,spares,8002,7021"
+                        }
+                    }
+                },
+        "GST_Config": {
+            "G1":{"CGST": {"KTOSL":"JOC","KSCHL":"JOCG"},
+                  "SGST": {"KTOSL":"JOS","KSCHL":"JOSG"}},
+            "G2":{"CGST": {"KTOSL":"JOC","KSCHL":"JOCG"},
+                  "SGST": {"KTOSL":"JOS","KSCHL":"JOSG"}},
+            "G3":{"CGST": {"KTOSL":"JOC","KSCHL":"JOCG"},
+                  "SGST": {"KTOSL":"JOS","KSCHL":"JOSG"}},
+            "G4":{"CGST": {"KTOSL":"JOC","KSCHL":"JOCG"},
+                  "SGST": {"KTOSL":"JOS","KSCHL":"JOSG"}},
+            "G5":{"CGST": {"KTOSL":"JOC","KSCHL":"JOCG"},
+                  "SGST": {"KTOSL":"JOS","KSCHL":"JOSG"}},
+            "G6":{"IGST": {"KTOSL":"JIM","KSCHL":"JIMD"}},
+            "G7":{"IGST": {"KTOSL":"JIM","KSCHL":"JIMD"}},
+            "G8":{"IGST": {"KTOSL":"JIM","KSCHL":"JIMD"}},
+            "G9":{"IGST": {"KTOSL":"JIM","KSCHL":"JIMD"}},
+            "GA":{"INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"}},
+            "GB":{"INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"}},
+            "GC":{"INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"}},
+            "GD":{"INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"}},
+            "GE":{"INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"}},
+            "GF":{"INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"},
+                  "RCM_IGST": {"KTOSL":"JRI","KSCHL":"JIIR"}},
+            "GG":{"INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"},
+                  "RCM_IGST": {"KTOSL":"JRI","KSCHL":"JIIR"}},
+            "GH":{"INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"},
+                  "RCM_IGST": {"KTOSL":"JRI","KSCHL":"JIIR"}},
+            "GI":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"},
+                  "INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"}},
+            "GJ":{"INT_GST": {"KTOSL":"JII","KSCHL":"JIIG"},
+                  "RCM_IGST": {"KTOSL":"JRI","KSCHL":"JIIR"}},
+            "GK":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"}},
+            "GL":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"}},
+            "GM":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"}},
+            "GN":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"}},
+            "GP":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"}},
+            "GQ":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"},
+                  "RCM_CGST": {"KTOSL":"JRC","KSCHL":"JICR"},
+                  "RCM_SGST": {"KTOSL":"JRS","KSCHL":"JISR"}},
+            "GR":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"},
+                  "RCM_CGST": {"KTOSL":"JRC","KSCHL":"JICR"},
+                  "RCM_SGST": {"KTOSL":"JRS","KSCHL":"JISR"}},
+            "GS":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"},
+                  "RCM_CGST": {"KTOSL":"JRC","KSCHL":"JICR"},
+                  "RCM_SGST": {"KTOSL":"JRS","KSCHL":"JISR"}},
+            "GT":{"CGST": {"KTOSL":"JIC","KSCHL":"JICG"},
+                  "SGST": {"KTOSL":"JIS","KSCHL":"JISG"},
+                  "RCM_CGST": {"KTOSL":"JRC","KSCHL":"JICR"},
+                  "RCM_SGST": {"KTOSL":"JRS","KSCHL":"JISR"}},
+            "GU":{"INT_GST_SD": {"KTOSL":"JOI","KSCHL":"JOIG"}},
+            "GV":{"INT_GST_SD": {"KTOSL":"JOI","KSCHL":"JOIG"}},
+            "GX":{"INT_GST_SD": {"KTOSL":"JOI","KSCHL":"JOIG"}},
+            "GW":{"INT_GST_SD": {"KTOSL":"JOI","KSCHL":"JOIG"}},
+            "GY":{"INT_GST_SD": {"KTOSL":"JOI","KSCHL":"JOIG"}}
+            }
+    },
+    "validateOnSave": false
+
+}

@@ -1,0 +1,12 @@
+
+{
+	"endPointURL":"/home/PTP/com.eibus.web.soap.Gateway.wcp",
+	"devEndPointURL":"/com.eibus.web.soap.Gateway.wcp?organization=o=PTP,cn=cordys,cn=uatInst,o=olamdomain.com&SAMLart=e0pBVkEtQUVTL0dDTS9Ob1BhZGRpbmd9GyDU0OZY0UKNWI8k/DJyXqTbFDhjOtGkz7UmkncyzlrtD60y3aNTTW0uKnIafcKtO/GG0KKXfRWvjlivmNA9XFl1I49EG8um7NE2bZl1Q3QyS9g=",
+	"mode":"DEV",
+	"bravaPreviewUrl":"http://ecmuatds.olamnet.com:7080/OTCS/cs.exe?func=doc.ViewDoc&nodeId=",
+	"bravaPreviewUrlForOthers":"http://ecmuatds.olamnet.com:7080/OTCS/cs.exe/open/",
+	"ct_cookie_name":"uatinst_ct",
+	"login_url":"/home/PTP/wcp/sso/com.eibus.sso.web.authentication.LogMeIn.wcp",
+	"download_url":"../home/PTP/",
+    "organization":"PTP,cn=cordys,cn=uatInst,o=olamdomain.com"
+}

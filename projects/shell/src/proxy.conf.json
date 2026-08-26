@@ -1,0 +1,26 @@
+{
+  "/com.eibus.web.soap.Gateway.wcp": {
+    "target": "http://localhost:3000/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": false
+  },
+  "/com.eibus.sso.web.authentication.PreLoginInfo.wcp": {
+    "target": "http://localhost:3000/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": false
+  },
+  "/cordys/": {
+    "target": "http://localhost:3000/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": false
+  },
+  "/upload-invoice": {
+    "target": "http://localhost:3000/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": false
+  }
+}

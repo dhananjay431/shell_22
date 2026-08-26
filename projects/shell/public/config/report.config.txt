@@ -1,0 +1,17 @@
+{
+    "Report": {
+        "mining_copilot_URL": "assets/iframe/mining/index.html"
+    },
+    "network": {
+        "monitoring_enabled": true,
+        "data_send_interval_minutes": 2,
+        "max_buffer_size": 50,
+        "upload_test_interval_minutes": 2,
+        "download_test_interval_minutes": 2,
+        "ip_detection_timeout_ms": 5000,
+        "test_file_sizes": {
+            "download_test_kb": 33,
+            "upload_test_mb": 1
+        }
+    }
+}

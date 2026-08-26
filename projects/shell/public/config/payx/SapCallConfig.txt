@@ -1,0 +1,4 @@
+{
+    "PersistServiceDetailsToDB" : "false",
+    "overrideLogs" : "false"
+}

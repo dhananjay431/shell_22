@@ -1,0 +1,280 @@
+{
+	"taxcode": {
+        "title" : "Tax Code Lookup",
+        "configId" : "GET_TAXCODE",
+        "configTotalId" : "GET_TAXCODE_TOTAL",
+        "displayedColumns" : ["TaxCode", "Description"],
+        "searchColumns" : ["TaxCode", "Description"]
+    },
+    "Tax_WBS": {
+        "title" : "WBS Lookup",
+        "configId" : "GET_COM_WBS_ELEMENT",
+        "configTotalId" : "GET_COM_WBS_ELEMENT_TOTAL",
+        "displayedColumns" : ["WBS_ELEMENT", "DESCRIPTION"],
+        "displayColumnDescs":[["WBS_ELEMENT","WBS Element"], ["DESCRIPTION","Description"]],
+        "searchColumns" : ["WBS_ELEMENT", "DESCRIPTION"]
+    },
+    "Cost_Center": {
+        "title" : "Cost Center",
+        "configId" : "GET_COSTCENTER",
+        "configTotalId" : "GET_COSTCENTER_TOTAL",
+        "displayedColumns" : ["CostCenter", "Description", "BusinessUnit", "ProfitCenter"],
+        "displayColumnDescs":[["CostCenter","Cost Center"], ["Description","Description"],  ["BusinessUnit","Business Unit"],  ["ProfitCenter","Profit Center"]],
+        "searchColumns" : ["CostCenter", "Description"]
+    },
+    "Business_Area": {
+        "title" : "Business Area",
+        "configId" : "GET_BUSINESSUNIT",
+        "configTotalId" : "GET_BUSINESSUNIT_TOTAL",
+        "displayedColumns" : ["BusinessUnit"],
+        "searchColumns" : ["BusinessUnit"]
+    },
+    "GL_Indicator":{
+        "title" : "GL Indicators",
+        "configId" : "GET_GL_INDICATOR",
+        "configTotalId" : "GET_GL_INDICATOR_TOTAL",
+        "displayedColumns" : ["Code", "Description"],
+        "searchColumns" : ["Code", "Description"]
+    },
+    "Profit_Center": {
+        "title" : "Profit Center",
+        "configId" : "GET_PROFITCENTER",
+        "configTotalId" : "GET_PROFITCENTER_TOTAL",
+        "displayedColumns" : ["ProfitCenter"],
+        "searchColumns" : ["ProfitCenter"]
+    },
+    "GL_Code":{
+        "title" : "GL Codes",
+        "configId" : "GET_GL_CODE",
+        "configTotalId" : "GET_GL_CODE_TOTAL",
+        "displayedColumns" : ["GlCode", "GLCodeDesc"],
+        "displayColumnDescs":[["GlCode","GL Code"], ["GLCodeDesc","GL Code Description"]],
+        "searchColumns" : ["GlCode", "GLCodeDesc"]
+    },
+    "Order_Id":{
+        "title" : "Internal Order#",
+        "configId" : "GET_INTERNAL_ORDER",
+        "configTotalId" : "GET_INTERNAL_ORDER_TOTAL",
+        "displayedColumns" : ["OrderNumber", "OrderType","BusinessArea","ProfitCenter"],
+        "displayedColumnsDescs" : [["OrderNumber","Order Number"], ["OrderType","Order Type"], ["BusinessArea","Business Unit"], ["ProfitCenter","Profit Center"]],
+        "searchColumns" : ["OrderNumber"]
+    },
+    "VENDOR_WHT":{
+        "title" : "Vendor With holding tax codes",
+        "configId" : "GET_VENDOR_WHT",
+        "configTotalId" : "GET_VENDOR_WHT_TOTAL",
+        "displayedColumns" : ["Indicator", "TaxCode","TaxKey","TaxRate", "Description"]
+    },
+    "Tax_Code": {
+        "title" : "Tax Code Lookup",
+        "configId" : "GET_TAXCODE",
+        "configTotalId" : "GET_TAXCODE_TOTAL",
+        "displayedColumns" : ["TaxCode", "Description","TaxPercentage"],
+        "displayColumnDescs":[["TaxCode","Tax Code"], ["Description","Description"],  ["TaxPercentage","Tax Percentage"]],
+        "searchColumns" : ["TaxCode", "Description"]
+    },
+    "Order_Details": {
+        "title" : "Internal Order Search",
+        "configId" : "GET_SG40_ORDERS",
+        "configTotalId" : "GET_SG40_ORDERS_TOTAL",
+        "displayedColumns" : ["ORDER_TYPE", "ORDER_NUMBER", "DESCRIPTION"],
+        "displayColumnDescs":[["ORDER_TYPE", "ORDER TYPE"],["ORDER_NUMBER","INTERNAL ORDER"], ["DESCRIPTION","DESCRIPTION"]],
+        "searchColumns" : ["ORDER_NUMBER", "DESCRIPTION"]
+    },
+    "Vendor_Details": {
+        "title" : "Vendor Search",
+        "configId" : "GET_COM_VENDOR_DETAILS",
+        "configTotalId" : "GET_COM_VENDOR_DETAILS_TOTAL",
+        "displayedColumns" : ["VENDOR_CODE", "VENDOR_NAME","VENDOR_PAN","PAY_TERM_DESC", "VENDOR_DISCOUNT","VENDOR_PAYMENT_DAYS","COMPANY_CODE" ,"GSTIN","TIN_NO","VENDOR_RECON_ACCOUNT","ADDRESS"],
+        "displayColumnDescs":[["VENDOR_CODE","VENDOR CODE"], ["VENDOR_NAME","VENDOR NAME"],  ["PAY_TERM_DESC","PAY TERM DESC"],["VENDOR_DISCOUNT","VENDOR DISCOUNT"],  ["VENDOR_PAYMENT_DAYS","VENDOR PAYMENT DAYS"],  ["COMPANY_CODE","COMPANY CODE"],  ["GSTIN","GSTIN"], ["TIN_NO","VENDOR ABN"],["VENDOR_RECON_ACCOUNT","VENDOR RECON ACCOUNT"],["ADDRESS","ADDRESS"]],
+        "searchColumns" : ["VENDOR_CODE", "VENDOR_NAME"]
+    },
+    "Vendor_VAT_Number_Details":{
+        "title" : "Vendor VAT No. Search",
+        "configId" : "GET_VENDOR_VAT",
+        "configTotalId" : "GET_VENDOR_VAT_TOTAL",
+        "displayedColumns" : ["VENDOR_CODE", "COUNTRY_CODE","VAT_REG_NO"],
+        "displayColumnDescs":[["VENDOR_CODE","VENDOR CODE"], ["COUNTRY_CODE","COUNTRY CODE"],  ["VAT_REG_NO","VAT REG NUMBER"]],
+        "searchColumns" : ["Vendor_Code", "Reporting_Country"]
+    },
+    "Transaction_Type": {
+        "title" : "Transaction Type",
+        "configId" : "GET_COM_TRANSACTION_TYPES",
+        "configTotalId" : "GET_COM_TRANSACTION_TYPES_TOTALS",
+        "displayedColumns" : ["transactionType", "transactionTypeDesc"],
+        "displayColumnDescs":[["transactionType","Transaction Type"], ["transactionTypeDesc","Description"]],
+        "searchColumns" : ["transactionType", "transactionTypeDesc"]
+    },
+    "Posting_Key": {
+        "title" : "Posting Key",
+        "configId" : "GET_COM_POSTING_KEY",
+        "configTotalId" : "GET_COM_POSTING_KEY_TOTAL",
+        "displayedColumns" : ["postingKey", "postingKeyDesc"],
+        "displayColumnDescs":[["postingKey","Posting Key"], ["postingKeyDesc","Description"]],
+        "searchColumns" : ["postingKey", "postingKeyDesc"]
+    },
+    "Invoice_Summary":{
+        "title" : "",
+        "configId" : "GET_INVOICE_SUMMARY",
+        "configTotalId" : "GET_INVOICE_SUMMARY_TOTAL",
+        "displayedColumns" : ["WORK_ITEM", "STATUS_NAME", "CURRENT_OWNER", "RUSH_INDICATOR", "SOURCE", "INITIATOR_EMAIL_ID", "INVOICE_NO", "INVOICE_DATE", "PO_NUMBER", "INVOICE_TYPE", "CLASSIFICATIONS", "DESCRIPTION","VENDOR_NAME","VENDOR_CODE", "DOCUMENT_NAME", "CURRENCY", "INVOICE_RECEIPT_DATE", "ERP_DUE_DATE","POSTING_DOC_NUMBER","POSTING_DATE","ERP_POSTED_BY","AP_PROCESSOR", "TOTAL_AMT","ERP_PAYMENT_NO","ERP_PAYMENT_DATE","ERP_PAYMENT_STATUS","REV_DOC_NUMBER","VENDOR_LINE_ITEM"],
+        "displayColumnDescs" : [["WORK_ITEM","WORK ITEM"],["STATUS_NAME","STATUS"],["CURRENT_OWNER","PENDING WITH"],["RUSH_INDICATOR","RUSH"],["SOURCE","MODE"],["INITIATOR_EMAIL_ID", "INITIATOR"],["INVOICE_NO","INVOICE"],["INVOICE_DATE","INVOICE DATE"],["PO_NUMBER","PO#"],["INVOICE_TYPE","TYPE"],["CLASSIFICATIONS","CLASSIFICATION"],["DESCRIPTION","ENTITY NAME"],["VENDOR_NAME","VENDOR NAME"],["VENDOR_CODE","VENDOR CODE"],["DOCUMENT_NAME","PDF"],["CURRENCY","CURRENCY"],["INVOICE_RECEIPT_DATE","RECEIVED DATE"],["ERP_DUE_DATE","ERP DUE DATE"],["POSTING_DOC_NUMBER","POSTING DOC NUM"],["POSTING_DATE","POSTING DATE"],["ERP_POSTED_BY","ERP PROCESSED BY"],["AP_PROCESSOR","PROCESSED BY"],["TOTAL_AMT","GROSS INV AMT"],["ERP_PAYMENT_NO","PAYMENT NO"],["ERP_PAYMENT_DATE","PAYMENT DATE"],["ERP_PAYMENT_STATUS","PAYMENT STATUS"],["REV_DOC_NUMBER","REVERSAL DOCUMENT NUMBER"],["VENDOR_LINE_ITEM","VENDOR LINE ITEM"]]
+    },
+    "Invoice_Summary_Without_Like":{
+        "title" : "",
+        "configId" : "GET_INVOICE_SUMMARY_WITHOUT_LIKE",
+        "configTotalId" : "GET_INVOICE_SUMMARY_TOTAL_WITHOUT_LIKE",
+        "displayedColumns" : ["WORK_ITEM", "STATUS_NAME", "SUB_STATUS_NAME", "CURRENT_OWNER", "RUSH_INDICATOR", "SOURCE", "INITIATOR_EMAIL_ID", "INVOICE_NO", "INVOICE_DATE", "PO_NUMBER", "INVOICE_TYPE", "CLASSIFICATIONS", "DESCRIPTION","VENDOR_NAME","VENDOR_CODE", "DOCUMENT_NAME", "CURRENCY", "INVOICE_RECEIPT_DATE", "ERP_DUE_DATE","POSTING_DOC_NUMBER","POSTING_DATE","ERP_POSTED_BY","AP_PROCESSOR", "TOTAL_AMT","ERP_PAYMENT_NO","ERP_PAYMENT_DATE","ERP_PAYMENT_STATUS","REV_DOC_NUMBER","VENDOR_LINE_ITEM"],
+        "displayColumnDescs" : [["WORK_ITEM","WORK ITEM"],["STATUS_NAME","STATUS"],["SUB_STATUS_NAME","SUB-STATUS"],["CURRENT_OWNER","PENDING WITH"],["RUSH_INDICATOR","RUSH"],["SOURCE","MODE"],["INITIATOR_EMAIL_ID", "INITIATOR"],["INVOICE_NO","INVOICE"],["INVOICE_DATE","INVOICE DATE"],["PO_NUMBER","PO#"],["INVOICE_TYPE","TYPE"],["CLASSIFICATIONS","CLASSIFICATION"],["DESCRIPTION","ENTITY NAME"],["VENDOR_NAME","VENDOR NAME"],["VENDOR_CODE","VENDOR CODE"],["DOCUMENT_NAME","PDF"],["CURRENCY","CURRENCY"],["INVOICE_RECEIPT_DATE","RECEIVED DATE"],["ERP_DUE_DATE","ERP DUE DATE"],["POSTING_DOC_NUMBER","POSTING DOC NUM"],["POSTING_DATE","POSTING DATE"],["ERP_POSTED_BY","ERP PROCESSED BY"],["AP_PROCESSOR","PROCESSED BY"],["TOTAL_AMT","GROSS INV AMT"],["ERP_PAYMENT_NO","PAYMENT NO"],["ERP_PAYMENT_DATE","PAYMENT DATE"],["ERP_PAYMENT_STATUS","PAYMENT STATUS"],["REV_DOC_NUMBER","REVERSAL DOCUMENT NUMBER"],["VENDOR_LINE_ITEM","VENDOR LINE ITEM"]]
+    },
+    "Invoice_Summary_PL_Without_Like":{
+        "title" : "",
+        "configId" : "GET_INVOICE_SUMMARY_WITHOUT_LIKE_PL",
+        "configTotalId" : "GET_INVOICE_SUMMARY_TOTAL_WITHOUT_LIKE_PL",
+        "displayedColumns" : ["WORK_ITEM", "STATUS_NAME", "SUB_STATUS_NAME", "CURRENT_OWNER", "RUSH_INDICATOR", "SOURCE", "INITIATOR_EMAIL_ID", "INVOICE_NO", "INVOICE_DATE", "PO_NUMBER", "INVOICE_TYPE", "CLASSIFICATIONS", "DESCRIPTION","VENDOR_NAME","VENDOR_CODE", "DOCUMENT_NAME", "CURRENCY", "INVOICE_RECEIPT_DATE", "ERP_DUE_DATE","POSTING_DOC_NUMBER","POSTING_DATE","ERP_POSTED_BY","AP_PROCESSOR", "TOTAL_AMT","ERP_PAYMENT_NO","ERP_PAYMENT_DATE","ERP_PAYMENT_STATUS","REV_DOC_NUMBER","VENDOR_LINE_ITEM"],
+        "displayColumnDescs" : [["WORK_ITEM","WORK ITEM"],["STATUS_NAME","STATUS"],["SUB_STATUS_NAME","SUB-STATUS"],["CURRENT_OWNER","PENDING WITH"],["RUSH_INDICATOR","RUSH"],["SOURCE","MODE"],["INITIATOR_EMAIL_ID", "INITIATOR"],["INVOICE_NO","INVOICE"],["INVOICE_DATE","INVOICE DATE"],["PO_NUMBER","PO#"],["INVOICE_TYPE","TYPE"],["CLASSIFICATIONS","CLASSIFICATION"],["DESCRIPTION","ENTITY NAME"],["VENDOR_NAME","VENDOR NAME"],["VENDOR_CODE","VENDOR CODE"],["DOCUMENT_NAME","PDF"],["CURRENCY","CURRENCY"],["INVOICE_RECEIPT_DATE","RECEIVED DATE"],["ERP_DUE_DATE","ERP DUE DATE"],["POSTING_DOC_NUMBER","POSTING DOC NUM"],["POSTING_DATE","POSTING DATE"],["ERP_POSTED_BY","ERP PROCESSED BY"],["AP_PROCESSOR","PROCESSED BY"],["TOTAL_AMT","GROSS INV AMT"],["ERP_PAYMENT_NO","PAYMENT NO"],["ERP_PAYMENT_DATE","PAYMENT DATE"],["ERP_PAYMENT_STATUS","PAYMENT STATUS"],["REV_DOC_NUMBER","REVERSAL DOCUMENT NUMBER"],["VENDOR_LINE_ITEM","VENDOR LINE ITEM"]]
+    },
+    "VENDOR_CODE_PL":{
+        "title" : "Vendor List",
+        "configId" : "GET_VENDOR_LIST_PL",
+        "configTotalId" : "GET_VENDOR_LIST_TOTAL_PL",
+        "displayedColumns" : ["VENDOR_CODE","VENDOR_NAME"],
+        "displayColumnDescs":[["VENDOR_CODE","VENDOR CODE"], ["VENDOR_NAME","VENDOR NAME"]],
+        "searchColumns" : ["VENDOR_CODE","VENDOR_NAME"]
+    },
+    "VENDOR_NAME_PL":{
+        "title" : "Vendor List",
+        "configId" : "GET_VENDOR_LIST_PL",
+        "configTotalId" : "GET_VENDOR_LIST_TOTAL_PL",
+        "displayedColumns" : ["VENDOR_CODE","VENDOR_NAME"],
+        "displayColumnDescs":[["VENDOR_CODE","VENDOR CODE"], ["VENDOR_NAME","VENDOR NAME"]],
+        "searchColumns" : ["VENDOR_CODE","VENDOR_NAME"]
+    },
+    "VENDOR_CODE":{
+        "title" : "Vendor List",
+        "configId" : "GET_VENDOR_LIST",
+        "configTotalId" : "GET_VENDOR_LIST_TOTAL",
+        "displayedColumns" : ["VENDOR_CODE","VENDOR_NAME"],
+        "displayColumnDescs":[["VENDOR_CODE","VENDOR CODE"], ["VENDOR_NAME","VENDOR NAME"]],
+        "searchColumns" : ["VENDOR_CODE","VENDOR_NAME"]
+    },
+    "VENDOR_NAME":{
+        "title" : "Vendor List",
+        "configId" : "GET_VENDOR_LIST",
+        "configTotalId" : "GET_VENDOR_LIST_TOTAL",
+        "displayedColumns" : ["VENDOR_CODE","VENDOR_NAME"],
+        "displayColumnDescs":[["VENDOR_CODE","VENDOR CODE"], ["VENDOR_NAME","VENDOR NAME"]],
+        "searchColumns" : ["VENDOR_CODE","VENDOR_NAME"]
+    },
+    "ENTITY_NAME":{
+        "title" : "Entity List",
+        "configId" : "GET_ENTITIES",
+        "configTotalId" : "GET_ENTITIES_TOTAL",
+        "displayedColumns" : ["COMPANY_CODE","NAME"],
+        "displayColumnDescs":[["COMPANY_CODE","COMPANY CODE"], ["NAME","ENTITY NAME"]],
+        "searchColumns" : ["COMPANY_CODE","NAME"]
+    },
+    "Vendor_Code": {
+        "title" : "Vendor Code",
+        "configId" : "GET_COM_VENDOR_DETAILS",
+        "configTotalId" : "GET_COM_VENDOR_DETAILS_TOTAL",
+        "displayedColumns" : ["VENDOR_CODE", "VENDOR_NAME"],
+        "displayColumnDescs":[["VENDOR_CODE","Vendor Code"], ["VENDOR_NAME","Name"]],
+        "searchColumns" : ["VENDOR_CODE", "VENDOR_NAME"]
+    },
+     "Tax_Jurisdiction_Code": {
+        "title" : "Tax Jurisdiction Code",
+        "configId" : "GET_COM_TAX_JURISDICTION_CODES",
+        "configTotalId" : "GET_COM_TAX_JURISDICTION_CODES_TOTAL",
+        "displayedColumns" : ["TAX_JURISDICTION_CODE","TAX_JURISDICTION_DESC"],
+        "displayColumnDescs":[["TAX_JURISDICTION_CODE","Tax Jurisdiction Code"],["TAX_JURISDICTION_DESC","Description"]],
+        "searchColumns" : ["TAX_JURISDICTION_CODE","TAX_JURISDICTION_DESC"]
+    },
+    "Payment_Block": {
+        "title" : "Payment Block Search",
+        "configId" : "GET_COM_PAYMENT_BLOCK",
+        "configTotalId" : "GET_COM_PAYMENT_BLOCK_TOTAL",
+        "displayedColumns" : ["PAYMENT_BLOCK_CODE","PAYMENT_BLOCK_DESC","COUNTRY_CODE"],
+        "displayColumnDescs":[["PAYMENT_BLOCK_CODE","PAYMENT BLOCK CODE"], ["PAYMENT_BLOCK_DESC","PAYMENT BLOCK DESCRIPTION"],  ["COUNTRY_CODE","COUNTRY CODE"]],
+        "searchColumns" : ["PAYMENT_BLOCK_CODE","PAYMENT_BLOCK_DESC"]
+    },
+    "Payment_Method": {
+        "title" : "Payment Method Search",
+        "configId" : "GET_COM_PAYMENT_METHOD",
+        "configTotalId" : "GET_COM_PAYMENT_METHOD_TOTAL",
+        "displayedColumns" : ["PAYMENT_METHOD_KEY","PAYMENT_METHOD_DESC","COMPANY_CODE"],
+        "displayColumnDescs":[["PAYMENT_METHOD_KEY","PAYMENT METHOD KEY"], ["PAYMENT_METHOD_DESC","PAYMENT METHOD DESCRIPTION"],  ["COMPANY_CODE","COMPANY CODE"]],
+        "searchColumns" : ["PAYMENT_METHOD_KEY","PAYMENT_METHOD_DESC"]
+    },
+    "BANK_CHARGES": {
+        "title" : "Bank Charges Search",
+        "configId" : "GET_BANK_CHARGES",
+        "configTotalId" : "GET_BANK_CHARGES",
+        "displayedColumns" : ["CONFIG_KEY"],
+        "displayColumnDescs":[["CONFIG_KEY","BANK CHARGES"]],
+        "searchColumns" : ["CONFIG_KEY"]
+    },
+    "PAYMENT_PURPOSE_CODE": {        
+        "title" : "Payment Purpose Code Search",
+        "configId" : "GET_PAYMENT_PURPOSE_CODE",
+        "configTotalId" : "GET_PAYMENT_PURPOSE_CODE_TOTAL",
+        "displayedColumns" : ["CODE_WORD","TEXT_FOR_INSTRUCTION","APPLICATION_AREA"], 
+        "displayColumnDescs":[["CODE_WORD","CODE WORD"],["TEXT_FOR_INSTRUCTION","TEXT FOR INSTRUCTION"],["APPLICATION_AREA","APPLICATION AREA"]],
+        "searchColumns" : ["CODE_WORD","TEXT_FOR_INSTRUCTION"]
+    },
+     "Posting_Currency": {
+        "title" : "Posting Currency",
+        "configId" : "GET_COM_CURRENCY",
+        "configTotalId" : "GET_COM_CURRENCY_TOTAL",
+        "displayedColumns" : ["CODE", "DESCRIPTION"],
+        "displayColumnDescs":[["CODE","CURRENCY CODE"], ["DESCRIPTION","DESCRIPTION"]],
+        "searchColumns" : ["CODE","DESCRIPTION"]
+    },
+     "Payment_Currency": {
+        "title" : "Payment Currency",
+        "configId" : "GET_COM_CURRENCY",
+        "configTotalId" : "GET_COM_CURRENCY_TOTAL",
+        "displayedColumns" : ["CODE", "DESCRIPTION"],
+        "displayColumnDescs":[["CODE","CURRENCY CODE"], ["DESCRIPTION","DESCRIPTION"]],
+        "searchColumns" : ["CODE","DESCRIPTION"]
+    },
+    "Partner_Bank_Key" : {
+       "title" : "Partner Bank Key",
+       "configId" : "GET_PARTNER_BANK_KEY",
+       "configTotalId" : "GET_PARTNER_BANK_KEY_TOTAL",
+        "displayedColumns" : ["BANK_NAME", "ACCOUNT_NO", "BANK_KEY", "PARTENER_BANK_TYPE"],
+        "displayColumnDescs":[["BANK_NAME","BANK NAME"], ["ACCOUNT_NO","ACCOUNT NUMBER"], ["BANK_KEY", "BANK KEY"], ["PARTENER_BANK_TYPE", "BANK TYPE"]]
+    },
+    "Audit_History" : {
+      "title" : "Audit History",
+       "configId" : "GET_AUDIT_HISTORY",
+       "configTotalId" : "GET_AUDIT_HISTORY_TOTAL",
+        "displayedColumns" : ["FIELD", "MESSAGE", "AUDIT_REASON", "CREATED_ON", "CREATED_BY"],
+        "displayColumnDescs":[["WORK_ITEM_NUMBER","WORK ITEM"], ["FIELD","FIELD"],["MESSAGE", "MESSAGE"], ["AUDIT_REASON", "AUDIT REASON"], ["CREATED_ON", "CREATED ON"], ["CREATED_BY", "CREATED BY"]],
+        "searchColumns" : ["FIELD"]
+    },
+    "MATERIAL_ADD_DESC" : {
+      "title" : "Material",
+       "configId" : "GET_COM_MATERIAL_DESC",
+        "configTotalId" : "GET_COM_MATERIAL_DESC_TOTALS",
+        "displayedColumns" : ["MATERIAL","MATERIAL_CODE"],
+        "displayColumnDescs":[["MATERIAL","MATERIAL"],["MATERIAL_CODE","MATERIAL CODE"]],
+        "searchColumns" : ["MATERIAL","MATERIAL_CODE", "COUNTRY"]
+    },
+    "GET_WHITELISTED_DUMP" : {
+      "title" : "Whitelisted Accounts",
+       "configId" : "GET_WHITELISTED_DUMP",
+        "configTotalId" : "GET_WHITELISTED_DUMP_TOTALS",
+        "displayedColumns" : ["ACCOUNT"],
+        "displayColumnDescs":[["ACCOUNT","ACCOUNT"]],
+        "searchColumns" : ["ACCOUNT",{"type":"dropdown" , "field":"DISTRIBUTION_EMAIL_ID"}]
+    },
+     "GET_BLACKLISTED_DUMP" : {
+      "title" : "Blacklisted Accounts",
+       "configId" : "GET_BLACKLISTED_DUMP",
+        "configTotalId" : "GET_BLACKLISTED_DUMP_TOTALS",
+        "displayedColumns" : ["ACCOUNT"],
+        "displayColumnDescs":[["ACCOUNT","ACCOUNT"]],
+        "searchColumns" : ["ACCOUNT"]
+    }
+}
