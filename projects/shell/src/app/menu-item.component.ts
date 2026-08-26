@@ -18,6 +18,7 @@ export interface MenuItem {
   selector: 'app-menu-item',
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
+
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (hasChildren()) {

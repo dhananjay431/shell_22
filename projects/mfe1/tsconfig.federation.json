@@ -1,5 +1,42 @@
 {
   "extends": "./tsconfig.app.json",
-  "files": ["src/app/app.ts"],
-  "include": ["src/**/*.d.ts"]
+  "files": [
+    "src/app/app.ts",
+    "src/app/dashboard/dashboard.component.ts",
+    "src/app/reports/reports.ts",
+    "src/app/settings/theme/theme.ts",
+    "src/app/extraction-check/extraction-check.ts",
+    "src/app/doc-extraction/doc-extraction.ts",
+    "src/app/poreports/poreports.ts",
+    "src/app/ai-doc-train/ai-doc-train.ts",
+    "src/app/dashboard/dashboard.ts",
+    "src/app/dashboard/overview/overview.ts",
+    "src/app/dashboard/transaction-details/transaction-details.ts",
+    "src/app/transaction-details/transaction-details.ts",
+    "src/app/invoice-creation/invoice-creation.ts",
+    "src/app/invoice-summary/invoice-summary.ts",
+    "src/app/invoice-summary/dashboard/dashboard.ts",
+    "src/app/invoice-summary/dashboard/overview/overview.ts",
+    "src/app/invoice-summary/dashboard/transaction-details/transaction-details.ts",
+    "src/app/pr-creation/pr-creation.ts",
+    "src/app/qc/qc.ts",
+    "src/app/pdf/pdf.ts",
+    "src/app/launchdocument/launchdocument.ts",
+    "src/app/task-management/task-management.ts",
+    "src/app/user-management/user-management.ts",
+    "src/app/doa-configuration/doa-configuration.ts",
+    "src/app/recurring-pay/recurring-pay.ts",
+    "src/app/aimodel/aimodel.ts",
+    "src/app/pr/pr.ts",
+    "src/app/po/po.ts",
+    "src/app/aigpt/aigpt.ts",
+    "src/app/vn-rules/vn-rules.ts",
+    "src/app/new-data-ext/new-data-ext.ts",
+    "src/app/dataextv3/dataextv3.ts",
+    "src/app/invoice-process/invoice-process.ts",
+    "src/app/generic-invoice/generic-invoice.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
 }
