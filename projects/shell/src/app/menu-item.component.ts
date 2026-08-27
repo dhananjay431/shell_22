@@ -69,6 +69,10 @@ export interface MenuItem {
     }
   `,
   styles: `
+    :host {
+      display: block;
+      width: 100%;
+    }
     .nav-link {
       display: flex;
       align-items: center;
@@ -90,9 +94,10 @@ export interface MenuItem {
       margin-left: auto;
     }
     .submenu {
-      margin-left: 1rem;
-      padding-left: 0.5rem;
-      border-left: 1px solid #dee2e6;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
     }
   `,
 })

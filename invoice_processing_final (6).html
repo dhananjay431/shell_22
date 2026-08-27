@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AP — Invoice Processing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root {
+  /* ── SprintAP Light Theme — White + Green ── */
+  --navy:#f4f7f5; --navy2:#ffffff; --navy3:#eef3f0; --navy4:#e3ebe6; --navy5:#d3ded8;
+  --accent:#16a34a; --accent2:#127a3a; --accent-glow:rgba(22,163,74,0.10);
+  --teal:#0d9488; --teal-dim:rgba(13,148,136,0.10);
+  --amber:#b45309; --amber-dim:rgba(180,83,9,0.10);
+  --red:#dc2626; --red-dim:rgba(220,38,38,0.08);
+  --purple:#7c3aed; --purple-dim:rgba(124,58,237,0.10);
+  --text1:#131b16; --text2:#5b6b61; --text3:#8a978e;
+  --border:rgba(15,30,20,0.08); --border2:rgba(15,30,20,0.14);
+  --success:#16a34a; --success-dim:rgba(22,163,74,0.10);
+  --warning-dim:rgba(180,83,9,0.10);
+  --danger-dim:rgba(220,38,38,0.08);
+  --radius:10px; --radius-sm:6px; --radius-lg:12px;
+  --sidebar-w:210px; --font:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:var(--font);background:var(--navy);color:var(--text1);font-size:13px;overflow:hidden;}
+.app{display:flex;height:100vh;background:var(--navy);}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:width .2s ease;}
+.sidebar.collapsed{width:56px;}
+.sidebar.collapsed .logo{padding:16px 0 13px;justify-content:center;}
+.sidebar.collapsed .logo-labels{display:none;}
+.sidebar.collapsed #sidebar-collapse-icon{margin-left:0;transform:rotate(180deg);}
+.sidebar.collapsed .nav-item{justify-content:center;padding:8px 0;}
+.sidebar.collapsed .nav-label,.sidebar.collapsed .nav-badge{display:none;}
+.sidebar.collapsed .nav-item.active::before{left:0;}
+.sidebar.collapsed .sidebar-hide{display:none;}
+.sidebar.collapsed .sidebar-footer{justify-content:center;padding:10px 0;}
+.sidebar.collapsed .ai-widget{padding:10px 0 !important;display:flex;justify-content:center;}
+.logo{display:flex;align-items:center;gap:10px;padding:16px 14px 13px;border-bottom:1px solid var(--border);}
+.logo-mark{width:32px;height:32px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;}
+.logo-text{font-size:13.5px;font-weight:600;}
+.logo-sub{font-size:10px;color:var(--text3);}
+.nav{padding:8px 6px;flex:1;overflow-y:auto;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:var(--radius-sm);cursor:pointer;color:var(--text2);font-size:12px;margin-bottom:1px;transition:all .15s;position:relative;}
+.nav-item:hover{background:var(--navy3);color:var(--text1);}
+.nav-item.active{background:var(--accent-glow);color:var(--accent);font-weight:500;}
+.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:16px;background:var(--accent);border-radius:0 3px 3px 0;}
+.nav-item i{font-size:15px;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:9.5px;border-radius:20px;padding:1px 6px;font-weight:600;}
+.sidebar-footer{padding:10px 12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;cursor:pointer;}
+.sidebar-footer:hover{background:rgba(15,30,20,.035);}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
+.topbar{height:48px;flex-shrink:0;background:var(--navy2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:0 18px;}
+.breadcrumb{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--text3);}
+.breadcrumb .sep{color:var(--text3);}
+.breadcrumb a{color:var(--text3);cursor:pointer;}
+.breadcrumb a:hover{color:var(--text1);}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:6px;}
+.icon-btn{width:30px;height:30px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:all .15s;position:relative;}
+.icon-btn:hover{background:var(--navy3);}
+.notif-badge{position:absolute;top:3px;right:3px;background:var(--red);color:#fff;font-size:8.5px;border-radius:20px;padding:0 3.5px;font-weight:700;min-width:13px;text-align:center;border:1.5px solid var(--navy2);}
+.content{flex:1;overflow-y:auto;padding:14px 18px 18px;}
+
+/* ── BUTTONS ── */
+.btn{padding:6px 13px;border-radius:var(--radius-sm);font-size:12px;cursor:pointer;border:1px solid var(--border2);background:var(--navy3);color:var(--text1);font-family:var(--font);transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn:hover{background:var(--navy4);}
+.btn-post{padding:6px 16px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;background:var(--accent);color:#fff;border:none;font-family:var(--font);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.btn-post:hover{background:var(--accent2);}
+
+/* ── STATUS PILL ── */
+.status-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;}
+.sp-success{background:var(--success-dim);color:var(--success);border:1px solid rgba(16,185,129,.2);}
+.sp-warning{background:var(--warning-dim);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
+.touchless-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:linear-gradient(135deg,var(--teal-dim),var(--accent-glow));border:1px solid rgba(13,148,136,.3);color:var(--teal);}
+
+/* ── PAGE TITLE ROW ── */
+.page-title-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.page-title{font-size:19px;font-weight:700;letter-spacing:-.3px;}
+.page-actions{margin-left:auto;display:flex;align-items:center;gap:6px;}
+.hold-btn{padding:6px 11px;border-radius:var(--radius-sm);font-size:12px;cursor:pointer;border:1px solid var(--border2);background:var(--navy3);color:var(--text1);font-family:var(--font);display:inline-flex;align-items:center;gap:5px;}
+
+/* ── META BAR ── */
+.meta-bar{background:var(--navy2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:11px 16px;display:flex;align-items:center;gap:0;margin-bottom:12px;}
+.meta-item{flex:1;padding:0 14px;border-right:1px solid var(--border);}
+.meta-item:first-child{padding-left:0;}
+.meta-item:last-child{border-right:none;flex:1.4;}
+.meta-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;}
+.meta-val{font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:5px;}
+.meta-val.big{font-size:15px;font-weight:700;}
+.meta-val.mono{font-family:var(--mono);font-size:12px;font-weight:600;}
+
+/* ── GRID ── */
+.main-grid{display:grid;grid-template-columns:1fr 380px;gap:12px;align-items:start;}
+
+/* ── CARD ── */
+.card{background:var(--navy2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);}
+.card-title{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px;}
+
+/* ── CANVAS AREA ── */
+.canvas-toolbar{display:flex;align-items:center;gap:6px;padding:7px 12px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.toolbar-sep{width:1px;height:16px;background:var(--border2);margin:0 3px;}
+.conf-legend{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.conf-legend-item{display:flex;align-items:center;gap:4px;font-size:10.5px;color:var(--text2);}
+.conf-dot{width:7px;height:7px;border-radius:50%;}
+.toggle-wrap{display:flex;align-items:center;gap:5px;font-size:11.5px;}
+.toggle{width:34px;height:18px;border-radius:20px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
+.toggle.on{background:var(--accent);}
+.toggle.off{background:var(--navy5);}
+.toggle .knob{width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;transition:all .2s;}
+.toggle.on .knob{right:2px;left:auto;}
+.toggle.off .knob{left:2px;right:auto;}
+
+/* ── WHITE INVOICE DOC ── */
+.canvas-wrap{background:#d9dde8;padding:12px;position:relative;}
+.inv-doc{background:#fff;border-radius:3px;box-shadow:0 2px 14px rgba(19,27,22,.10);padding:18px 20px;font-size:10px;color:#333;position:relative;overflow:visible;border:1px solid rgba(15,30,20,.06);}
+
+/* Agent-rule → canvas section linking: clicking an agent badge or a Validation Agent row
+   highlights the exact block on the invoice it validates */
+.canvas-section{border-radius:6px;transition:box-shadow .3s ease, background-color .3s ease;}
+.canvas-section.hl-active{
+  box-shadow:0 0 0 2px var(--hlc, var(--accent)), 0 0 0 6px var(--hlc-glow, rgba(22,163,74,.16)), 0 4px 14px var(--hlc-glow, rgba(22,163,74,.22));
+  background:var(--hlc-bg, rgba(22,163,74,.05));
+  animation:hl-pulse 1.1s ease-out 1;
+}
+@keyframes hl-pulse{0%{box-shadow:0 0 0 2px var(--hlc, var(--accent)), 0 0 0 2px var(--hlc-glow, rgba(22,163,74,.3));}100%{box-shadow:0 0 0 2px var(--hlc, var(--accent)), 0 0 0 6px var(--hlc-glow, rgba(22,163,74,.16)), 0 4px 14px var(--hlc-glow, rgba(22,163,74,.22));}}
+.hl-badge-source{cursor:pointer;}
+.hl-badge-source:hover{filter:brightness(1.04);transform:translateY(-1px);}
+.canvas-link-tag{display:inline-flex;align-items:center;gap:3px;font-size:8.5px;font-weight:600;color:var(--accent);cursor:pointer;margin-left:5px;text-decoration:underline;text-decoration-style:dotted;}
+.canvas-link-tag:hover{color:var(--accent2);}
+
+/* ── EDIT MODE (inline correction of extracted fields) ── */
+.inv-doc.edit-mode .editable-val{outline:1.5px dashed var(--accent);outline-offset:2px;background:rgba(22,163,74,.06);cursor:text;border-radius:3px;}
+.inv-doc.edit-mode .editable-val:focus{outline:1.5px solid var(--accent);background:rgba(22,163,74,.10);}
+.inv-doc.edit-mode .editable-block{outline:1.5px dashed var(--accent);outline-offset:2px;background:rgba(22,163,74,.05) !important;cursor:text;}
+.inv-doc.edit-mode .editable-block:focus{outline:1.5px solid var(--accent);background:rgba(22,163,74,.09) !important;}
+.inv-doc.edit-mode .fbox,.inv-doc.edit-mode .field-row,.inv-doc.edit-mode tr[onclick]{cursor:default;}
+.edit-mode-banner{display:none;align-items:center;gap:6px;background:var(--accent-glow);border:1px solid rgba(22,163,74,.3);color:var(--accent2);font-size:10.5px;font-weight:600;padding:6px 10px;border-radius:6px;margin-bottom:8px;}
+.inv-doc.edit-mode .edit-mode-banner{display:flex;}
+
+/* Numbered badges on white doc */
+.nb{position:absolute;width:16px;height:16px;border-radius:50%;font-size:8.5px;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff;z-index:10;flex-shrink:0;}
+.nb-blue{background:#4f6ef7;}
+.nb-green{background:#10b981;}
+.nb-amber{background:#f59e0b;}
+.nb-red{background:#ef4444;}
+
+/* Field highlight boxes on white doc */
+.fbox{border:1.5px solid;border-radius:2px;padding:1px 4px;cursor:pointer;transition:all .12s;}
+.fbox.high{border-color:rgba(16,185,129,.6);background:rgba(16,185,129,.1);}
+.fbox.high:hover{background:rgba(16,185,129,.18);}
+.fbox.med{border-color:rgba(245,158,11,.55);background:rgba(245,158,11,.08);}
+.fbox.med:hover{background:rgba(245,158,11,.16);}
+.fbox.low{border-color:rgba(239,68,68,.55);background:rgba(239,68,68,.08);}
+.conf-tag{font-size:8.5px;font-weight:700;margin-left:3px;}
+.ct-high{color:#10b981;}
+.ct-med{color:#f59e0b;}
+.ct-low{color:#ef4444;}
+
+/* Structured field rows inside doc */
+.field-row{display:flex;align-items:center;justify-content:space-between;border:1.5px solid;border-radius:3px;padding:4px 7px;margin-bottom:4px;cursor:pointer;font-size:9.5px;}
+.field-row.high{border-color:rgba(16,185,129,.55);background:rgba(16,185,129,.06);}
+.field-row.med{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.06);}
+.field-row label{color:#888;font-size:9px;}
+.field-row .fval{font-weight:600;color:#222;}
+
+/* Doc table */
+.dtable{width:100%;border-collapse:collapse;font-size:9.5px;}
+.dtable th{padding:4px 6px;text-align:left;font-weight:600;color:#666;background:#f5f5f5;border-bottom:1.5px solid #e0e0e0;font-size:9px;}
+.dtable th.r{text-align:right;}
+.dtable td{padding:4px 6px;border-bottom:1px solid #eee;color:#333;}
+.dtable td.r{text-align:right;}
+
+/* ── AGENT BADGES ON CANVAS ── */
+.agent-badge{position:absolute;background:var(--navy3);border-radius:8px;padding:7px 9px;box-shadow:0 4px 16px rgba(19,27,22,.16);min-width:148px;z-index:30;}
+.ab-accent{border:1px solid var(--accent);}
+.ab-teal{border:1px solid var(--teal);}
+.ab-purple{border:1px solid var(--purple);}
+.ab-amber{border:1px solid var(--amber);}
+.ab-head{display:flex;align-items:center;gap:5px;margin-bottom:3px;}
+.ab-av{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ab-name{font-size:9.5px;font-weight:600;}
+.ab-time{font-size:8.5px;color:var(--text3);margin-bottom:3px;}
+.ab-score-row{display:flex;justify-content:space-between;font-size:9px;}
+.ab-score-row span{color:var(--text3);}
+.ab-arrow{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;}
+.ab-arrow-down{border-top:5px solid;}
+
+/* ── FIELD POPUP (shown on click) ── */
+.field-popup{position:absolute;background:var(--navy2);border:1px solid var(--border2);border-radius:var(--radius-lg);box-shadow:0 10px 32px rgba(19,27,22,.18);width:300px;z-index:200;font-size:12px;}
+.popup-head{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:1px solid var(--border);}
+.popup-close{cursor:pointer;color:var(--text3);line-height:1;font-size:16px;}
+.popup-close:hover{color:var(--text1);}
+
+/* ── INVESTIGATION WORKSPACE ── */
+.ws-card{background:var(--navy2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-top:12px;}
+.ws-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+.ws-head:hover{background:rgba(15,30,20,.025);}
+
+/* Workspace body: tabs | scrollable content | exception panel — all same height */
+.ws-body{display:flex;min-height:240px;max-height:340px;}
+.ws-tabs-col{width:175px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;}
+.ws-content-col{flex:1;min-width:0;overflow:auto;padding:10px 12px;}
+.ws-right-col{width:230px;flex-shrink:0;border-left:1px solid var(--border);padding:12px;background:var(--navy3);overflow-y:auto;}
+
+/* Tab items */
+.ws-tab{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;cursor:pointer;font-size:11.5px;color:var(--text2);transition:all .15s;border-left:3px solid transparent;white-space:nowrap;}
+.ws-tab:hover{background:rgba(15,30,20,.035);color:var(--text1);}
+.ws-tab.active{color:var(--accent);background:var(--accent-glow);border-left-color:var(--accent);font-weight:500;}
+.ws-tab i{font-size:14px;flex-shrink:0;margin-top:1px;}
+.ws-tab-sub{font-size:10px;color:var(--text3);margin-top:1px;font-weight:400;}
+
+/* 3-way match table — compact, fits content column */
+.three-table{border-collapse:collapse;font-size:9.5px;width:100%;table-layout:auto;}
+.three-table th{
+  padding:4px 6px;
+  font-size:8.5px;
+  color:var(--text3);
+  font-weight:500;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+  text-align:right;
+}
+.three-table th:first-child,.three-table th:nth-child(2){text-align:left;}
+.three-table th.group-head{
+  text-align:center;
+  font-size:9px;
+  font-weight:600;
+  color:var(--text2);
+  padding:4px 6px;
+  border-bottom:1px solid var(--border);
+}
+.three-table td{
+  padding:5px 6px;
+  border-bottom:1px solid var(--border);
+  color:var(--text1);
+  vertical-align:middle;
+  text-align:right;
+  white-space:nowrap;
+}
+.three-table td:first-child{text-align:center;color:var(--text3);width:20px;}
+.three-table td:nth-child(2){text-align:left;font-weight:500;white-space:normal;min-width:90px;}
+.three-table tfoot td{font-weight:600;background:var(--navy3);color:var(--text1);}
+.three-table tfoot td:nth-child(2){text-align:left;}
+
+/* ── MULTI-PO GRID ── */
+.mpo-input-row{display:flex;gap:8px;align-items:flex-start;}
+.mpo-textarea{flex:1;min-height:44px;max-height:90px;resize:vertical;background:var(--navy3);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text1);font-family:var(--mono);font-size:11.5px;padding:8px 10px;line-height:1.5;}
+.mpo-textarea:focus{outline:none;border-color:var(--accent);}
+.mpo-textarea::placeholder{color:var(--text3);font-family:var(--font);}
+.mpo-hint{font-size:10px;color:var(--text3);margin-top:4px;}
+.mpo-table{min-width:1180px;}
+.mpo-table th{white-space:nowrap;}
+.mpo-table td{white-space:nowrap;}
+.mpo-in{width:58px;background:var(--navy3);border:1px solid var(--border2);border-radius:4px;color:var(--text1);font-family:var(--mono);font-size:10px;padding:3px 5px;text-align:right;}
+.mpo-in:focus{outline:none;border-color:var(--accent);}
+.mpo-sel{background:var(--navy3);border:1px solid var(--border2);border-radius:4px;color:var(--text1);font-family:var(--mono);font-size:10px;padding:3px 4px;}
+.mpo-sel:focus{outline:none;border-color:var(--accent);}
+.mpo-cond{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;background:var(--purple-dim);color:var(--purple);border:1px solid rgba(124,58,237,.3);}
+.mpo-meta{font-size:9px;color:var(--text2);font-family:var(--mono);}
+.mpo-po-tag{font-family:var(--mono);font-weight:600;color:var(--accent2);}
+.mpo-row-var td{background:rgba(180,83,9,.06);}
+.mpo-row-var .mpo-in.diff{border-color:rgba(180,83,9,.6);color:var(--amber);}
+.mpo-empty{font-size:11.5px;color:var(--text3);margin-top:14px;padding:20px;text-align:center;border:1px dashed var(--border2);border-radius:var(--radius-sm);}
+.mpo-summary{display:flex;gap:14px;margin-top:10px;font-size:10.5px;color:var(--text2);flex-wrap:wrap;}
+.mpo-summary b{color:var(--text1);}
+.matched-tag{color:var(--success);font-size:9px;font-weight:600;display:inline-flex;align-items:center;gap:2px;white-space:nowrap;}
+.variance-tag{color:var(--amber);font-size:9px;font-weight:600;display:inline-flex;align-items:center;gap:2px;white-space:nowrap;}
+.var-amount{color:var(--amber);font-weight:700;}
+.action-icon{color:var(--text3);cursor:pointer;font-size:13px;transition:color .15s;}
+.action-icon:hover{color:var(--text1);}
+.action-icon.warn{color:var(--amber);}
+
+/* Group header colour bands */
+.th-inv{background:rgba(51,102,204,.08);}
+.th-po{background:rgba(16,185,129,.07);}
+.th-gr{background:rgba(14,201,158,.07);}
+.td-inv{background:rgba(51,102,204,.04);}
+.td-po{background:rgba(16,185,129,.03);}
+.td-gr{background:rgba(14,201,158,.03);}
+
+/* Right exception panel */
+.exc-head{font-size:12.5px;font-weight:600;margin-bottom:6px;}
+.exc-amount{font-size:15px;font-weight:700;color:var(--red);}
+.exc-section{margin-bottom:9px;}
+.exc-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.exc-value{font-size:11.5px;color:var(--text2);line-height:1.5;}
+.exc-btn{display:block;width:100%;padding:7px;border-radius:var(--radius-sm);background:var(--accent);color:#fff;border:none;font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;text-align:center;margin-bottom:5px;transition:background .15s;}
+.exc-btn:hover{background:var(--accent2);}
+.exc-btn-sec{display:block;width:100%;padding:6px;border-radius:var(--radius-sm);background:transparent;color:var(--text1);border:1px solid var(--border2);font-family:var(--font);font-size:12px;cursor:pointer;text-align:center;transition:background .15s;}
+.exc-btn-sec:hover{background:var(--navy4);}
+
+/* ── AGENT CANVAS / FIELD EDIT TABS ── */
+.agent-tabs{display:flex;gap:4px;background:var(--navy3);padding:3px;border-radius:9px;margin-bottom:10px;}
+.agent-tab-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:7px 6px;border-radius:7px;font-size:11.5px;font-weight:600;color:var(--text2);cursor:pointer;border:none;background:transparent;font-family:var(--font);transition:all .15s;position:relative;}
+.agent-tab-btn:hover{color:var(--text1);}
+.agent-tab-btn.active{background:var(--navy2);color:var(--accent);box-shadow:0 1px 5px rgba(19,27,22,.10);}
+.tab-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:1px 5.5px;border-radius:10px;min-width:14px;line-height:1.5;}
+
+/* ── FIELD EDIT (quick header-field correction table) ── */
+.fe-alert{display:flex;align-items:flex-start;gap:6px;background:var(--warning-dim);border-bottom:1px solid var(--border);padding:8px 12px;font-size:10.5px;color:var(--text2);line-height:1.5;}
+.fe-table{width:100%;border-collapse:collapse;}
+.fe-table th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);padding:7px 12px;border-bottom:1px solid var(--border);font-weight:600;}
+.fe-table th.fe-editable-head{background:var(--success-dim);color:var(--accent2);}
+.fe-table td{padding:6px 12px;font-size:11px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text2);}
+.fe-table td.fe-link{cursor:pointer;color:var(--text1);font-weight:500;border-left:2px solid transparent;transition:all .15s;}
+.fe-table td.fe-link:hover{color:var(--accent);background:var(--accent-glow);border-left-color:var(--accent);}
+.fe-input{width:100%;background:var(--navy3);border:1px solid var(--border2);border-radius:5px;color:var(--text1);font-family:var(--font);font-size:11px;padding:4px 6px;}
+.fe-input:focus{outline:none;border-color:var(--accent);background:#fff;}
+.fe-lookup{position:relative;display:flex;gap:4px;}
+.fe-lookup .fe-input{flex:1;}
+.fe-lookup-btn{background:var(--accent);border:1px solid var(--accent);color:#fff;border-radius:5px;padding:0 8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fe-lookup-btn:hover{background:var(--accent2);}
+.fe-vendor-dropdown{display:none;position:absolute;top:calc(100% + 3px);left:0;right:0;background:#fff;border:1px solid var(--border2);border-radius:7px;box-shadow:0 8px 22px rgba(19,27,22,.14);z-index:40;overflow:hidden;}
+.fe-vendor-opt{display:flex;justify-content:space-between;align-items:center;padding:7px 9px;font-size:10.5px;cursor:pointer;border-bottom:1px solid var(--border);color:var(--text1);}
+.fe-vendor-opt:last-child{border-bottom:none;}
+.fe-vendor-opt:hover{background:var(--accent-glow);color:var(--accent2);}
+.fe-vendor-code{font-family:var(--mono);font-size:9.5px;color:var(--text3);}
+
+/* ── RIGHT PANEL ── */
+.agent-counts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px 12px;}
+.count-box{text-align:center;border-radius:var(--radius-sm);padding:9px 4px;}
+.count-num{font-size:21px;font-weight:700;line-height:1;}
+.count-lbl{font-size:9.5px;color:var(--text3);margin-top:2px;line-height:1.3;}
+.touchless-box{margin:0 12px 10px;background:var(--teal-dim);border:1px solid rgba(14,201,158,.25);border-radius:var(--radius-sm);padding:9px 12px;display:flex;align-items:center;justify-content:space-between;}
+.va-list{}
+.va-row{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-top:1px solid var(--border);cursor:pointer;transition:background .12s;}
+.va-row:hover{background:rgba(15,30,20,.03);}
+.va-row.exp-open{background:var(--navy3);}
+.va-left{display:flex;align-items:center;gap:8px;}
+.va-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.va-name{font-size:11.5px;font-weight:500;}
+.va-desc{font-size:9.5px;color:var(--text3);margin-top:1px;}
+.va-right{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.score-pill{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;}
+.sp-pass{background:var(--success-dim);color:var(--success);}
+.sp-warn{background:var(--warning-dim);color:var(--amber);}
+.sp-fail{background:var(--danger-dim);color:var(--red);}
+.va-score{font-size:11px;font-weight:700;min-width:28px;text-align:right;}
+.score-pass{color:var(--success);}
+.score-warn{color:var(--amber);}
+.va-expand{border-top:1px solid var(--border);background:var(--navy3);padding:10px 12px 12px 46px;font-size:11px;}
+
+/* Beneficiary expand detail */
+.bm-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.bm-row{display:flex;flex-direction:column;gap:1px;padding:5px 0;border-bottom:1px solid var(--border);}
+.bm-label{font-size:9.5px;color:var(--text3);}
+.bm-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);}
+.bm-pair:last-child{border-bottom:none;}
+.bm-val{font-size:10.5px;color:var(--text1);}
+.bm-match{font-size:10.5px;color:var(--text1);display:flex;align-items:center;gap:4px;}
+
+/* ── AI Copilot ── */
+.ai-widget{position:fixed;left:calc(var(--sidebar-w) + 10px);bottom:70px;z-index:50;}
+.ai-chat-bubble{background:var(--navy2);border:1px solid var(--border2);border-radius:10px 10px 10px 2px;padding:9px 11px;font-size:11px;color:var(--text2);max-width:155px;line-height:1.5;margin-bottom:7px;box-shadow:0 4px 14px rgba(19,27,22,.10);}
+.ai-bottom-row{display:flex;align-items:center;gap:8px;}
+.ai-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--teal));display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px rgba(22,163,74,.18);}
+.ai-meta{font-size:10px;color:var(--text3);margin-bottom:3px;}
+.ai-meta .dot{width:5px;height:5px;border-radius:50%;background:var(--teal);display:inline-block;margin-right:3px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.ask-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:var(--accent-glow);border:1px solid rgba(22,163,74,.3);color:var(--accent);font-size:10.5px;cursor:pointer;font-family:var(--font);}
+.ask-btn:hover{background:var(--accent);color:#fff;}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;}
+.toast{background:var(--navy2);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 14px;display:flex;align-items:center;gap:9px;font-size:12px;box-shadow:0 8px 26px rgba(19,27,22,.16);transform:translateX(120%);transition:transform .28s;margin-top:6px;max-width:320px;}
+.toast.show{transform:translateX(0);}
+.toast i{font-size:16px;flex-shrink:0;}
+.toast.t-success i{color:var(--success);}
+.toast.t-warning i{color:var(--amber);}
+.toast.t-info i{color:var(--accent);}
+</style>
+</head>
+<body>
+
+<div class="toast-wrap"><div class="toast" id="toast"><i class="ti ti-circle-check"></i><span id="toast-msg"></span></div></div>
+
+<div class="app">
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="logo">
+    <div class="logo-mark">A</div>
+    <div class="logo-labels"><div class="logo-text">Agentic</div><div class="logo-sub">Intelligent AP</div></div>
+    <i class="ti ti-layout-sidebar-left-collapse" id="sidebar-collapse-icon" style="margin-left:auto;color:var(--text3);cursor:pointer;font-size:16px;flex-shrink:0;display:inline-block;min-width:16px;min-height:16px;line-height:16px;" onclick="toggleSidebar()" title="Collapse menu"></i>
+  </div>
+  <nav class="nav">
+    <div class="nav-item" onclick="t('Dashboard','info')" title="Dashboard"><i class="ti ti-layout-dashboard"></i><span class="nav-label">Dashboard</span></div>
+    <div class="nav-item active" title="Invoice Processing"><i class="ti ti-file-invoice"></i><span class="nav-label">Invoice Processing</span></div>
+    <div class="nav-item" onclick="t('Invoices','info')" title="Invoices"><i class="ti ti-receipt"></i><span class="nav-label">Invoices</span></div>
+    <div class="nav-item" onclick="t('Approvals','info')" title="Approvals"><i class="ti ti-checks"></i><span class="nav-label">Approvals</span> <span class="nav-badge">12</span></div>
+    <div class="nav-item" onclick="t('Vendors','info')" title="Vendors"><i class="ti ti-building"></i><span class="nav-label">Vendors</span></div>
+    <div class="nav-item" onclick="t('Contracts','info')" title="Contracts"><i class="ti ti-file-text"></i><span class="nav-label">Contracts</span></div>
+    <div class="nav-item" onclick="t('PO Management','info')" title="PO Management"><i class="ti ti-package"></i><span class="nav-label">PO Management</span></div>
+    <div class="nav-item" onclick="t('Reports','info')" title="Reports"><i class="ti ti-chart-bar"></i><span class="nav-label">Reports</span></div>
+    <div class="nav-item" onclick="t('Analytics','info')" title="Analytics"><i class="ti ti-chart-pie"></i><span class="nav-label">Analytics</span></div>
+    <div class="nav-item" onclick="t('Settings','info')" title="Settings"><i class="ti ti-settings"></i><span class="nav-label">Settings</span></div>
+  </nav>
+  <!-- AI Copilot pinned in sidebar bottom area -->
+  <div class="ai-widget sidebar-hide" style="position:relative;left:0;bottom:0;padding:10px 12px;border-top:1px solid var(--border);">
+    <div class="ai-chat-bubble" style="max-width:100%;margin-bottom:6px;">I'm analyzing this invoice.<br>All validations are handled by agents.<br>You can ask me anything.</div>
+    <div class="ai-bottom-row">
+      <div class="ai-av"><i class="ti ti-robot" style="color:#fff;font-size:17px"></i></div>
+      <div>
+        <div class="ai-meta"><span class="dot"></span>AI Copilot</div>
+        <div class="ask-btn" onclick="t('AI: 95% confidence. 14 agents passed, 1 warning on price tolerance (Laundry ₹20). Safe to post.','info')"><i class="ti ti-message-circle" style="font-size:11px"></i>Ask a question</div>
+      </div>
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div style="width:30px;height:30px;border-radius:50%;background:#0d9488;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">PS</div>
+    <div class="sidebar-hide"><div style="font-size:12px;font-weight:500">Priya Sharma</div><div style="font-size:10px;color:var(--text3)">Finance Team</div></div>
+    <i class="ti ti-chevron-down sidebar-hide" style="color:var(--text3);margin-left:auto;font-size:13px"></i>
+  </div>
+</aside>
+
+<!-- ══════════ MAIN ══════════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="breadcrumb">
+      <a onclick="t('Invoice Processing list','info')">Invoice Processing</a>
+      <span class="sep">/</span>
+      <a onclick="t('SAP MIRO/FB-60','info')">SAP - MIRO</a>
+      <span class="sep">/</span>
+      <span style="color:var(--text1)">FB-60</span>
+    </div>
+    <div class="topbar-right">
+      <div class="icon-btn" onclick="t('3 new notifications','info')">
+        <i class="ti ti-bell" style="font-size:17px"></i>
+        <div class="notif-badge">3</div>
+      </div>
+      <div class="icon-btn" style="width:30px;height:30px;border-radius:50%;background:#0d9488;color:#fff;font-size:10.5px;font-weight:700;cursor:pointer">PS</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- Page Title + Actions -->
+    <div class="page-title-row">
+      <div class="page-title">Invoice INV-2024-000567</div>
+      <span class="status-pill sp-success"><i class="ti ti-circle-check" style="font-size:11px"></i>AI Processing Complete</span>
+      <div class="page-actions">
+        <button class="btn" onclick="t('Invoice sent back to vendor','warning')">Send Back</button>
+        <button class="btn" onclick="t('Information request sent to vendor','info')">Request Info</button>
+        <div class="hold-btn" onclick="t('Invoice placed on hold','warning')"><i class="ti ti-pause" style="font-size:13px"></i>Hold<i class="ti ti-chevron-down" style="font-size:10px;opacity:.6"></i></div>
+        <button class="btn-post" onclick="t('Invoice posted to SAP MIRO successfully!','t-success')"><i class="ti ti-check" style="font-size:13px"></i>Post Invoice<i class="ti ti-chevron-down" style="font-size:10px;opacity:.7"></i></button>
+      </div>
+    </div>
+
+    <!-- META BAR -->
+    <div class="meta-bar">
+      <div class="meta-item">
+        <div class="meta-label">Vendor</div>
+        <div class="meta-val"><i class="ti ti-building" style="font-size:13px;color:var(--accent)"></i><strong>Taj MG Road Bangalore</strong></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Invoice Date</div>
+        <div class="meta-val big">14 May 2024</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Invoice Amount</div>
+        <div class="meta-val big">₹18,742.60 <span style="font-size:10px;color:var(--text3);font-weight:400">INR</span></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">PO Reference</div>
+        <div class="meta-val mono">4500001234</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Company Code</div>
+        <div class="meta-val" style="font-size:11.5px">1000 - ABC Pvt. Ltd.</div>
+      </div>
+      <!-- Overall Confidence ring -->
+      <div class="meta-item" style="border-right:none;padding-right:0;display:flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 58 58" width="52" height="52" style="flex-shrink:0">
+          <circle cx="29" cy="29" r="23" fill="none" stroke="rgba(15,30,20,.08)" stroke-width="6"/>
+          <circle cx="29" cy="29" r="23" fill="none" stroke="var(--teal)" stroke-width="6"
+            stroke-dasharray="144.5" stroke-dashoffset="7.2" stroke-linecap="round" transform="rotate(-90 29 29)"/>
+          <text x="29" y="33" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text1)" font-family="DM Sans">95%</text>
+        </svg>
+        <div>
+          <div style="font-size:12px;font-weight:600;margin-bottom:3px">Overall Confidence</div>
+          <div style="font-size:10.5px;color:var(--success);display:flex;align-items:center;gap:3px"><i class="ti ti-circle-check" style="font-size:11px"></i>All validations passed</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:1px">Invoice ready for posting</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN 2-COL GRID -->
+    <div class="main-grid">
+
+            <!-- ══ LEFT: IMAGE CANVAS ══ -->
+      <div>
+        <!-- Invoice Canvas Card -->
+        <div class="card">
+          <div class="card-head" style="cursor:pointer;user-select:none" onclick="toggleSection('canvas-body','canvas-chev','block')">
+            <div class="card-title">
+              <i class="ti ti-layout-kanban" style="color:var(--accent)"></i>
+              Invoice Canvas
+              <span style="font-size:10.5px;color:var(--text3);font-weight:400">(AI Extracted &amp; Validated)</span>
+            </div>
+            <i class="ti ti-chevron-up" id="canvas-chev" style="color:var(--accent);font-size:15px"></i>
+          </div>
+          <div id="canvas-body">
+          <!-- Toolbar -->
+          <div class="canvas-toolbar" onclick="event.stopPropagation()">
+            <button class="btn" style="padding:3px 8px;font-size:11px" onclick="t('Zoom out','info')"><i class="ti ti-minus"></i></button>
+            <span style="font-size:11.5px;color:var(--text2);min-width:34px;text-align:center">100%</span>
+            <button class="btn" style="padding:3px 8px;font-size:11px" onclick="t('Zoom in','info')"><i class="ti ti-plus"></i></button>
+            <button class="btn" style="padding:3px 8px;font-size:11px" onclick="t('Downloaded','info')"><i class="ti ti-download"></i></button>
+            <div class="toolbar-sep"></div>
+            <div class="toggle-wrap">
+              <div class="toggle on" id="lbl-toggle" onclick="toggleLabels()"><div class="knob"></div></div>
+              <span style="font-size:11.5px;color:var(--text1)">Show Labels</span>
+            </div>
+            <div class="toolbar-sep"></div>
+            <div class="toggle-wrap">
+              <div class="toggle off" id="edit-toggle" onclick="toggleEditMode()"><div class="knob"></div></div>
+              <span style="font-size:11.5px;color:var(--text1)"><i class="ti ti-edit" style="font-size:12px;margin-right:2px"></i>Edit Fields</span>
+            </div>
+            <button class="btn" id="save-edits-btn" style="display:none;padding:3px 9px;font-size:11px;background:var(--accent);color:#fff;border-color:var(--accent)" onclick="t('Edited values saved to extraction record','t-success')"><i class="ti ti-device-floppy" style="font-size:12px"></i> Save Edits</button>
+            <div class="toolbar-sep"></div>
+            <div class="conf-legend">
+              <div class="conf-legend-item"><i class="ti ti-circle-check" style="color:var(--success);font-size:12px"></i>High (≥95%)</div>
+              <div class="conf-legend-item" style="color:var(--amber)"><i class="ti ti-minus-circle" style="font-size:12px"></i>Medium (80-94%)</div>
+              <div class="conf-legend-item" style="color:var(--red)"><i class="ti ti-circle-x" style="font-size:12px"></i>Low (&lt;80%)</div>
+            </div>
+          </div>
+
+          <!-- ──────── WHITE INVOICE DOCUMENT ──────── -->
+          <div class="canvas-wrap">
+            <div class="inv-doc" id="inv-doc">
+
+              <!-- ═ AGENT BADGES (left side, overlapping) ═ -->
+              <div id="all-badges">
+                <!-- Badge 1: Extraction Agent -->
+                <div class="agent-badge ab-accent hl-badge-source" style="left:-10px;top:10px;" id="badge1" onclick="highlightCanvasSection('canvas-header-fields','#16a34a','rgba(22,163,74,.16)','rgba(22,163,74,.05)','the Extraction Agent')" title="Click to highlight the fields this agent extracted">
+                  <div class="ab-head">
+                    <div class="ab-av" style="background:var(--accent-glow);border:1px solid var(--accent)"><i class="ti ti-robot" style="color:var(--accent);font-size:10px"></i></div>
+                    <div class="ab-name" style="color:var(--accent)">Extraction Agent</div>
+                  </div>
+                  <div class="ab-time">Completed 14 May 2024, 09:12 AM</div>
+                  <div class="ab-score-row"><span>Confidence:</span><strong style="color:var(--teal)">97%</strong></div>
+                  <div style="margin-top:4px;border-top:4px solid transparent;border-bottom:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top-color:var(--navy2);width:0;height:0;margin-left:10px"></div>
+                </div>
+
+                <!-- Badge 6: Beneficiary Match -->
+                <div class="agent-badge ab-teal hl-badge-source" style="left:-10px;top:175px;" id="badge6" onclick="highlightCanvasSection('canvas-vendor-block','#0d9488','rgba(13,148,136,.16)','rgba(13,148,136,.05)','the Beneficiary Match Agent')" title="Click to highlight the beneficiary/vendor details this agent matched">
+                  <div class="ab-head">
+                    <div class="ab-av" style="background:var(--teal-dim);border:1px solid var(--teal)"><i class="ti ti-shield-check" style="color:var(--teal);font-size:10px"></i></div>
+                    <div class="ab-name" style="color:var(--teal)">Beneficiary Match</div>
+                  </div>
+                  <div class="ab-time">Completed 14 May 2024, 09:14 AM</div>
+                  <div class="ab-score-row"><span>Score:</span><strong style="color:var(--teal)">97%</strong></div>
+                  <div style="margin-top:4px;border-top:4px solid transparent;border-bottom:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top-color:var(--navy2);width:0;height:0;margin-left:10px"></div>
+                </div>
+
+                <!-- Badge 8: Line Item Extraction -->
+                <div class="agent-badge ab-purple hl-badge-source" style="left:-10px;top:355px;" id="badge8" onclick="highlightCanvasSection('canvas-lineitems-block','#7c3aed','rgba(124,58,237,.16)','rgba(124,58,237,.05)','the Line Item Extraction Agent')" title="Click to highlight the line items table this agent extracted">
+                  <div class="ab-head">
+                    <div class="ab-av" style="background:var(--purple-dim);border:1px solid var(--purple)"><i class="ti ti-list" style="color:var(--purple);font-size:10px"></i></div>
+                    <div class="ab-name" style="color:var(--purple)">Line Item Extraction</div>
+                  </div>
+                  <div class="ab-time">Completed 14 May 2024, 09:13 AM</div>
+                  <div class="ab-score-row"><span>Score:</span><strong style="color:var(--teal)">96%</strong></div>
+                  <div style="margin-top:4px;border-top:4px solid transparent;border-bottom:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top-color:var(--navy2);width:0;height:0;margin-left:10px"></div>
+                </div>
+
+                <!-- Badge 9: Signature Verification -->
+                <div class="agent-badge ab-amber hl-badge-source" style="left:-10px;top:520px;" id="badge9" onclick="highlightCanvasSection('canvas-signature-block','#b45309','rgba(180,83,9,.16)','rgba(180,83,9,.05)','the Signature Verification Agent')" title="Click to highlight the signature block this agent verified">
+                  <div class="ab-head">
+                    <div class="ab-av" style="background:var(--amber-dim);border:1px solid var(--amber)"><i class="ti ti-writing" style="color:var(--amber);font-size:10px"></i></div>
+                    <div class="ab-name" style="color:var(--amber)">Signature Verification</div>
+                  </div>
+                  <div class="ab-time">Completed 14 May 2024, 09:15 AM</div>
+                  <div class="ab-score-row"><span>Score:</span><strong style="color:var(--amber)">70%</strong></div>
+                  <div style="margin-top:4px;border-top:4px solid transparent;border-bottom:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top-color:var(--navy2);width:0;height:0;margin-left:10px"></div>
+                </div>
+              </div>
+
+              <!-- ═ DOCUMENT CONTENT (offset right to leave space for badges) ═ -->
+              <div style="margin-left:155px;position:relative;">
+
+                <div class="edit-mode-banner"><i class="ti ti-edit" style="font-size:13px"></i> Edit mode is on — click directly into any dashed field below to correct the AI-extracted value.</div>
+
+                <!-- Header: Logo + INVOICE title -->
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;padding-bottom:10px;border-bottom:1.5px solid #e5e5e5;">
+                  <div>
+                    <div style="font-size:22px;font-weight:900;color:#1a1a1a;letter-spacing:-1px;line-height:1">TAJ</div>
+                    <div style="font-size:9px;font-weight:700;color:#888;letter-spacing:.15em;line-height:1.4">MG ROAD</div>
+                    <div style="font-size:8.5px;font-weight:700;color:#aaa;letter-spacing:.12em">BANGALORE</div>
+                  </div>
+                  <div style="font-size:16px;font-weight:800;color:#111;letter-spacing:.03em">INVOICE</div>
+                </div>
+
+                <!-- Vendor address (field 1) and invoice fields (2-5) side by side -->
+                <div style="display:grid;grid-template-columns:150px 1fr;gap:10px;margin-bottom:10px;">
+
+                  <!-- Field 1: Vendor Block -->
+                  <div style="position:relative;" id="canvas-vendor-block" class="canvas-section">
+                    <div class="nb nb-blue" style="top:-7px;left:-7px;">1</div>
+                    <div class="fbox high editable-block" contenteditable="false" style="display:block;padding:7px 8px;font-size:9px;color:#555;line-height:1.75;cursor:pointer" onclick="showPopup('Vendor Address','Taj MG Road Bangalore','97','high')">
+                      <div style="font-weight:700;color:#222;font-size:10px;">Taj MG Road Bangalore</div>
+                      7, MG Road, Bangalore - 560001<br>
+                      Karnataka, India<br>
+                      Phone: +91 80 6660 1234<br>
+                      Email: mgsreservations@tajhotels.com<br>
+                      GSTIN: <span style="font-weight:600;color:#222">29AAACB1234C1Z2</span>
+                      <span class="conf-tag ct-high">97%</span>
+                    </div>
+                  </div>
+
+                  <!-- Fields 2-5 stacked right -->
+                  <div style="display:flex;flex-direction:column;gap:5px;" id="canvas-header-fields" class="canvas-section">
+                    <!-- Field 2 -->
+                    <div style="position:relative;">
+                      <div class="nb nb-blue" style="top:-6px;left:-7px;">2</div>
+                      <div class="field-row high" onclick="showPopup('Invoice No.','INV-2024-000567','99','high')">
+                        <label>Invoice No.</label>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                          <span class="fval editable-val" contenteditable="false" style="font-family:var(--mono);font-size:9px">INV-2024-000567</span>
+                          <span class="conf-tag ct-high">99%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Field 3 -->
+                    <div style="position:relative;">
+                      <div class="nb nb-blue" style="top:-6px;left:-7px;">3</div>
+                      <div class="field-row high" onclick="showPopup('Invoice Date','14 May 2024','99','high')" id="inv-date-field" style="border-color:rgba(16,185,129,.6);">
+                        <label>Invoice Date</label>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                          <span class="fval editable-val" contenteditable="false">14 May 2024</span>
+                          <span class="conf-tag ct-high">99%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Field 4: Due Date (medium) -->
+                    <div style="position:relative;">
+                      <div class="nb nb-amber" style="top:-6px;left:-7px;">4</div>
+                      <div class="field-row med" onclick="showPopup('Due Date','28 May 2024','86','med')">
+                        <label>Due Date</label>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                          <span class="fval editable-val" contenteditable="false">28 May 2024</span>
+                          <span class="conf-tag ct-med">86%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Field 5: Place of Supply -->
+                    <div style="position:relative;">
+                      <div class="nb nb-blue" style="top:-6px;left:-7px;">5</div>
+                      <div class="field-row high" onclick="showPopup('Place of Supply','Karnataka (29)','95','high')">
+                        <label>Place of Supply</label>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                          <span class="fval editable-val" contenteditable="false">Karnataka (29)</span>
+                          <span class="conf-tag ct-high">95%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bill To (6) and Amount Summary (7) -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+                  <!-- Field 6: Bill To -->
+                  <div style="position:relative;" id="canvas-billto-block" class="canvas-section">
+                    <div class="nb nb-blue" style="top:-7px;left:-7px;">6</div>
+                    <div class="fbox high editable-block" contenteditable="false" style="display:block;padding:7px 8px;font-size:9px;color:#555;line-height:1.7;cursor:pointer" onclick="showPopup('Bill To','ABC Pvt. Ltd.','96','high')">
+                      <div style="font-size:8.5px;color:#bbb;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">Bill To:</div>
+                      <div style="font-weight:700;color:#222;font-size:10px">ABC Pvt. Ltd.</div>
+                      123 Business Park<br>
+                      Marathahalli Outer Ring Road<br>
+                      Bangalore - 560037, Karnataka<br>
+                      GSTIN: 29AAACB1234C12K
+                      <span class="conf-tag ct-high" style="margin-left:3px">96%</span>
+                    </div>
+                  </div>
+                  <!-- Field 7: Amounts grid -->
+                  <div style="position:relative;" id="canvas-amount-summary-block" class="canvas-section">
+                    <div class="nb nb-blue" style="top:-7px;left:-7px;">7</div>
+                    <div class="fbox high" style="display:block;padding:0;cursor:default;">
+                      <table style="width:100%;border-collapse:collapse;font-size:9.5px;">
+                        <tbody>
+                          <tr style="border-bottom:1px solid #eee;cursor:pointer" onclick="showPopup('Total Amount','₹18,742.60','98','high')">
+                            <td style="padding:4px 7px;color:#888;">Total Amount</td>
+                            <td style="padding:4px 7px;font-weight:600;color:#222;text-align:right" class="editable-val" contenteditable="false">₹18,742.60</td>
+                            <td style="padding:4px 7px;text-align:right"><span class="conf-tag ct-high">98%</span></td>
+                          </tr>
+                          <tr style="border-bottom:1px solid #eee;cursor:pointer" onclick="showPopup('Tax Amount','₹2,160.00','96','high')">
+                            <td style="padding:4px 7px;color:#888;">Tax Amount</td>
+                            <td style="padding:4px 7px;font-weight:500;color:#555;text-align:right" class="editable-val" contenteditable="false">₹2,160.00</td>
+                            <td style="padding:4px 7px;text-align:right"><span class="conf-tag ct-high">96%</span></td>
+                          </tr>
+                          <tr style="border-bottom:1px solid #eee;cursor:pointer" onclick="showPopup('Net Amount','₹18,742.60','98','high')">
+                            <td style="padding:4px 7px;color:#888;">Net Amount</td>
+                            <td style="padding:4px 7px;font-weight:500;color:#555;text-align:right" class="editable-val" contenteditable="false">₹18,742.60</td>
+                            <td style="padding:4px 7px;text-align:right"><span class="conf-tag ct-high">98%</span></td>
+                          </tr>
+                          <tr onclick="showPopup('Currency','INR','100','high')" style="cursor:pointer">
+                            <td style="padding:4px 7px;color:#888;">Currency</td>
+                            <td style="padding:4px 7px;font-weight:600;color:#222;text-align:right" class="editable-val" contenteditable="false">INR</td>
+                            <td style="padding:4px 7px;text-align:right"><span class="conf-tag ct-high">100%</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Line Items Table (field 8) -->
+                <div style="position:relative;margin-bottom:10px;" id="canvas-lineitems-block" class="canvas-section">
+                  <div class="nb nb-blue" style="top:-7px;left:-7px;">8</div>
+                  <table class="dtable">
+                    <thead>
+                      <tr>
+                        <th>#</th><th>Description</th><th>HSN/SAC</th><th>Qty</th>
+                        <th class="r">Rate (₹)</th><th class="r">Amount (₹)</th><th class="r">Conf.</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr onclick="showPopup('Row 1 – Room Tariff','6,500.00','98','high')" style="cursor:pointer">
+                        <td class="dim">1</td><td class="editable-val" contenteditable="false">Room Tariff</td><td class="dim">996311</td><td class="editable-val" contenteditable="false">1</td>
+                        <td class="r editable-val" contenteditable="false">6,500.00</td>
+                        <td class="r"><span class="fbox high editable-val" contenteditable="false" style="font-size:9px">6,500.00</span></td>
+                        <td class="r"><span style="color:var(--success);font-weight:700;font-size:9px">98%</span></td>
+                      </tr>
+                      <tr onclick="showPopup('Row 2 – Food & Beverages','2,450.00','98','high')" style="cursor:pointer">
+                        <td class="dim">2</td><td class="editable-val" contenteditable="false">Food &amp; Beverages</td><td class="dim">996331</td><td class="editable-val" contenteditable="false">1</td>
+                        <td class="r editable-val" contenteditable="false">2,450.00</td>
+                        <td class="r"><span class="fbox high editable-val" contenteditable="false" style="font-size:9px">2,450.00</span></td>
+                        <td class="r"><span style="color:var(--success);font-weight:700;font-size:9px">98%</span></td>
+                      </tr>
+                      <tr onclick="showPopup('Row 3 – Laundry','320.00','96','high')" style="cursor:pointer">
+                        <td class="dim">3</td><td class="editable-val" contenteditable="false">Laundry</td><td class="dim">995399</td><td class="editable-val" contenteditable="false">1</td>
+                        <td class="r editable-val" contenteditable="false">320.00</td>
+                        <td class="r"><span class="fbox high editable-val" contenteditable="false" style="font-size:9px">320.00</span></td>
+                        <td class="r"><span style="color:var(--success);font-weight:700;font-size:9px">96%</span></td>
+                      </tr>
+                      <tr onclick="showPopup('Row 4 – Local Transport','742.60','96','high')" style="cursor:pointer">
+                        <td class="dim">4</td><td class="editable-val" contenteditable="false">Local Transport</td><td class="dim">996411</td><td class="editable-val" contenteditable="false">1</td>
+                        <td class="r editable-val" contenteditable="false">742.60</td>
+                        <td class="r"><span class="fbox high editable-val" contenteditable="false" style="font-size:9px">742.60</span></td>
+                        <td class="r"><span style="color:var(--success);font-weight:700;font-size:9px">96%</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Signature (9) + Totals (10) -->
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+                  <!-- Field 9: Signature -->
+                  <div style="position:relative;flex:1;" id="canvas-signature-block" class="canvas-section">
+                    <div class="nb nb-red" style="top:-7px;left:-7px;">9</div>
+                    <div class="fbox low editable-block" contenteditable="false" style="display:block;padding:8px 10px;cursor:pointer" onclick="showPopup('Authorized Signatory','For Taj MG Road Bangalore','70','low')">
+                      <div style="font-family:serif;font-style:italic;font-size:14px;color:#444;margin-bottom:2px">For Taj MG Road Bangalore</div>
+                      <div style="font-size:8.5px;color:#aaa;">Authorized Signatory</div>
+                      <span class="conf-tag ct-low" style="font-size:9px">70%</span>
+                    </div>
+                  </div>
+
+                  <!-- Field 10: Totals -->
+                  <div style="position:relative;min-width:200px;" id="canvas-tax-block" class="canvas-section">
+                    <div class="nb nb-blue" style="top:-7px;left:-7px;">10</div>
+                    <div style="font-size:9.5px;">
+                      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #eee;color:#666"><span>Sub Total</span><span style="font-weight:500;color:#333" class="editable-val" contenteditable="false">₹16,582.60</span></div>
+                      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #eee;color:#0d9488"><span>CGST (9%)</span><span class="editable-val" contenteditable="false">₹901.13</span></div>
+                      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #eee;color:#0d9488"><span>SGST (9%)</span><span class="editable-val" contenteditable="false">₹901.13</span></div>
+                      <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #eee;color:#666"><span>IGST (18%)</span><span class="editable-val" contenteditable="false">-</span></div>
+                      <div style="display:flex;justify-content:space-between;padding:4px 0;font-weight:700;color:#111;font-size:10.5px;border-top:1.5px solid #ccc;margin-top:2px">
+                        <span>Total Amount</span>
+                        <span>₹18,742.60 <span style="color:var(--success);font-size:8.5px">98%</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tip -->
+                <div style="margin-top:10px;padding-top:8px;border-top:1px solid #eee;font-size:8.5px;color:#aaa;display:flex;align-items:center;gap:4px;">
+                  <i class="ti ti-bulb" style="color:var(--amber);font-size:11px"></i>
+                  Tip: Click on any highlighted field to view / edit extracted value or see comparison
+                </div>
+
+                <!-- ═ FIELD DETAIL POPUP (appears on click) ═ -->
+                <div class="field-popup" id="field-popup" style="display:none;top:50px;right:-10px;">
+                  <div class="popup-head">
+                    <div style="font-size:12px;font-weight:600" id="pp-title">Invoice Date</div>
+                    <div style="display:flex;align-items:center;gap:7px;">
+                      <span id="pp-conf-pill" class="score-pill sp-pass" style="font-size:10.5px">99%</span>
+                      <div class="popup-close" onclick="closePopup()"><i class="ti ti-x"></i></div>
+                    </div>
+                  </div>
+                  <div style="padding:12px 13px;">
+                    <div style="font-size:9.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Extracted Value</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                      <div style="font-size:17px;font-weight:700;" id="pp-value">14 May 2024</div>
+                      <i class="ti ti-calendar" style="color:var(--text3);font-size:17px"></i>
+                    </div>
+                    <div style="font-size:9.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Confidence</div>
+                    <div style="display:flex;align-items:center;gap:5px;margin-bottom:10px;">
+                      <i class="ti ti-circle-check" id="pp-conf-icon" style="color:var(--success);font-size:13px"></i>
+                      <span id="pp-conf-text" style="font-size:12px;font-weight:600;color:var(--success)">99% (High)</span>
+                    </div>
+                    <div style="font-size:9.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Validated By</div>
+                    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+                      <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--success)"><i class="ti ti-circle-check" style="font-size:12px"></i>Extraction Agent</div>
+                      <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--success)"><i class="ti ti-circle-check" style="font-size:12px"></i>PO Match Agent</div>
+                    </div>
+                    <div style="font-size:9.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Source in Invoice</div>
+                    <div style="background:#f0fff8;border:2px dashed rgba(16,185,129,.5);border-radius:5px;padding:8px;margin-bottom:8px;">
+                      <span id="pp-src" style="border:2px solid var(--success);border-radius:2px;padding:2px 5px;background:rgba(16,185,129,.08);font-size:10.5px;font-weight:600;color:#222;">14 May 2024</span>
+                    </div>
+                    <div style="font-size:9.5px;color:var(--text3);margin-bottom:10px">Last Updated by AI &nbsp; 14 May 2024, 09:15 AM</div>
+                    <div style="display:flex;gap:6px;">
+                      <button class="btn" style="flex:1;justify-content:center;font-size:11.5px" onclick="closePopup()">Cancel</button>
+                      <button class="btn" style="flex:1;justify-content:center;font-size:11.5px;background:var(--accent);color:#fff;border-color:var(--accent)" onclick="closePopup();t('Field value confirmed','t-success')">Confirm Value</button>
+                    </div>
+                  </div>
+                </div>
+
+              </div><!-- /margin-left offset -->
+            </div><!-- /inv-doc -->
+          </div><!-- /canvas-wrap -->
+          </div><!-- /canvas-body -->
+        </div><!-- /canvas card -->
+
+      </div><!-- /LEFT col (Image Canvas) -->
+
+      <!-- ══ RIGHT: AGENT CANVAS ══ -->
+      <div>
+
+        <!-- Agent Canvas / Field Edit tab switcher -->
+        <div class="agent-tabs">
+          <button type="button" class="agent-tab-btn active" id="agent-tab-btn-canvas" onclick="switchAgentTab(this,'agent-canvas-tab')">
+            <i class="ti ti-cpu" style="font-size:13px"></i> Agent Canvas
+          </button>
+          <button type="button" class="agent-tab-btn" id="agent-tab-btn-edit" onclick="switchAgentTab(this,'field-edit-tab')">
+            <i class="ti ti-forms" style="font-size:13px"></i> Field Edit <span class="tab-badge" id="field-edit-badge">2</span>
+          </button>
+        </div>
+
+        <div id="agent-canvas-tab">
+
+        <!-- Agent counts + Touchless -->
+        <div class="card" style="margin-bottom:10px">
+          <div class="card-head" style="cursor:pointer;user-select:none" onclick="toggleSection('counts-body','counts-chev','block')">
+            <div class="card-title"><i class="ti ti-gauge" style="color:var(--accent)"></i>AI Validation Summary</div>
+            <i class="ti ti-chevron-up" id="counts-chev" style="color:var(--accent);font-size:15px"></i>
+          </div>
+          <div id="counts-body">
+          <div class="agent-counts">
+            <div class="count-box" style="background:var(--success-dim);border:1px solid rgba(22,163,74,.2)">
+              <div class="count-num" style="color:var(--success)">14</div>
+              <div class="count-lbl">Passed<br>Agents</div>
+            </div>
+            <div class="count-box" style="background:var(--warning-dim);border:1px solid rgba(180,83,9,.2)">
+              <div class="count-num" style="color:var(--amber)">1</div>
+              <div class="count-lbl">Warning<br>Agent</div>
+            </div>
+            <div class="count-box" style="background:var(--danger-dim);border:1px solid rgba(220,38,38,.15)">
+              <div class="count-num" style="color:var(--red)">0</div>
+              <div class="count-lbl">Failed<br>Agents</div>
+            </div>
+          </div>
+          <div class="touchless-box">
+            <div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--teal)"><i class="ti ti-bolt"></i>Touchless Eligible</div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">Auto-post eligible</div>
+            </div>
+            <svg viewBox="0 0 58 58" width="48" height="48">
+              <circle cx="29" cy="29" r="23" fill="none" stroke="rgba(13,148,136,.15)" stroke-width="6"/>
+              <circle cx="29" cy="29" r="23" fill="none" stroke="var(--teal)" stroke-width="6"
+                stroke-dasharray="144.5" stroke-dashoffset="7.2" stroke-linecap="round" transform="rotate(-90 29 29)"/>
+              <text x="29" y="33" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text1)" font-family="DM Sans">95%</text>
+            </svg>
+          </div>
+          </div><!-- /counts-body -->
+        </div>
+
+        <!-- Validation Agents -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title"><i class="ti ti-cpu" style="color:var(--accent)"></i>Validation Agents</div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:11.5px;color:var(--accent);cursor:pointer" onclick="t('Showing all 15 validation agents','t-info')">View All</span>
+              <i class="ti ti-chevron-up" id="va-chev" style="color:var(--accent);font-size:15px;cursor:pointer" onclick="toggleSection('va-body','va-chev','block')"></i>
+            </div>
+          </div>
+          <div class="va-list" id="va-body">
+
+            <!-- 1: Duplicate -->
+            <div class="va-row" onclick="vaClick('va1','canvas-header-fields','#16a34a','rgba(22,163,74,.16)','rgba(22,163,74,.05)','the Duplicate Validation Agent')">
+              <div class="va-left">
+                <div class="va-icon" style="background:var(--success-dim)"><i class="ti ti-copy" style="color:var(--success);font-size:13px"></i></div>
+                <div><div class="va-name">Duplicate Validation Agent</div><div class="va-desc">Checks for duplicate invoices in the system</div></div>
+              </div>
+              <div class="va-right">
+                <span class="score-pill sp-pass">Passed</span>
+                <span class="va-score score-pass">97%</span>
+                <i class="ti ti-chevron-down" style="color:var(--text3);font-size:12px" id="ic-va1"></i>
+              </div>
+            </div>
+            <div id="va1" class="va-expand" style="display:none">No duplicate found in last 180 days. Hash comparison negative for invoice number, amount, vendor and date combinations.</div>
+
+            <!-- 2: PO Belongs -->
+            <div class="va-row" onclick="vaClick('va2','canvas-vendor-block','#16a34a','rgba(22,163,74,.16)','rgba(22,163,74,.05)','the PO Belongs to Vendor Agent')">
+              <div class="va-left">
+                <div class="va-icon" style="background:var(--accent-glow)"><i class="ti ti-file-check" style="color:var(--accent);font-size:13px"></i></div>
+                <div><div class="va-name">PO Belongs to Vendor</div><div class="va-desc">Verifies PO is raised for the same vendor</div></div>
+              </div>
+              <div class="va-right">
+                <span class="score-pill sp-pass">Passed</span>
+                <span class="va-score score-pass">98%</span>
+                <i class="ti ti-chevron-down" style="color:var(--text3);font-size:12px" id="ic-va2"></i>
+              </div>
+            </div>
+            <div id="va2" class="va-expand" style="display:none">PO 4500001234 is registered to Taj MG Road Bangalore. GSTIN 29AAACB1234C1Z2 cross-verified.</div>
+
+            <!-- 3: GST & PAN -->
+            <div class="va-row" onclick="vaClick('va3','canvas-vendor-block','#0d9488','rgba(13,148,136,.16)','rgba(13,148,136,.05)','the Vendor GST & PAN Validation Agent')">
+              <div class="va-left">
+                <div class="va-icon" style="background:var(--teal-dim)"><i class="ti ti-id-badge" style="color:var(--teal);font-size:13px"></i></div>
+                <div><div class="va-name">Vendor GST &amp; PAN Validation Agent</div><div class="va-desc">Validates GSTIN and PAN with government system</div></div>
+              </div>
+              <div class="va-right">
+                <span class="score-pill sp-pass">Passed</span>
+                <span class="va-score score-pass">96%</span>
+                <i class="ti ti-chevron-down" style="color:var(--text3);font-size:12px" id="ic-va3"></i>
+              </div>
+            </div>
+            <div id="va3" class="va-expand" style="display:none">GSTIN 29AAACB1234C1Z2 verified as active on GSTN portal. PAN: AABCT3518Q confirmed.</div>
+
+            <!-- 3b: Bill To / Buyer Match -->
+            <div class="va-row" onclick="vaClick('va3b','canvas-billto-block','#3366cc','rgba(51,102,204,.16)','rgba(51,102,204,.05)','the Bill To / Buyer Match Agent')">
+              <div class="va-left">
+                <div class="va-icon" style="background:rgba(51,102,204,.10)"><i class="ti ti-address-book" style="color:#3366cc;font-size:13px"></i></div>
+                <div><div class="va-name">Bill To / Buyer Match Agent</div><div class="va-desc">Matches billing address &amp; company code with master data</div></div>
+              </div>
+              <div class="va-right">
+                <span class="score-pill sp-pass">Passed</span>
+                <span class="va-score score-pass">95%</span>
+                <i class="ti ti-chevron-down" style="color:var(--text3);font-size:12px" id="ic-va3b"></i>
+              </div>
+            </div>
+            <div id="va3b" class="va-expand" style="display:none">Bill-to "ABC Pvt. Ltd." GSTIN 29AAACB1234C12K matches Company Code 1000 master record. Billing address verified against ERP customer master.</div>
+
+            <!-- 4: Beneficiary Match — EXPANDED by default -->
+            <div class="va-row exp-open" id="bma-row" onclick="vaClick('va4','canvas-vendor-block','#7c3aed','rgba(124,58,237,.16)','rgba(124,58,237,.05)','the Beneficiary Match Agent')">
+              <div class="va-left">
+                <div class="va-icon" style="background:var(--purple-dim)"><i class="ti ti-user-check" style="color:var(--purple);font-size:13px"></i></div>
+                <div><div class="va-name">Beneficiary Match Agent</div><div class="va-desc">Matches vendor &amp; bank details with master data</div></div>
+              </div>
+              <div class="va-right">
+                <span class="score-pill sp-pass">Passed</span>
+                <span class="va-score score-pass">97%</span>
+                <i class="ti ti-chevron-up" style="color:var(--accent);font-size:12px" id="ic-va4"></i>
+              </div>
+            </div>
+            <!-- Expanded: Beneficiary detail table -->
+            <div id="va4" class="va-expand" style="display:block;padding:10px 12px 12px 12px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;font-size:10.5px;margin-bottom:4px">
+                <div style="font-size:9.5px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.04em">Extracted from Invoice</div>
+                <div style="font-size:9.5px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.04em">Master Data (ERP)</div>
+              </div>
+              <div style="font-size:10.5px">
+                <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:4px 6px;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+                  <span style="color:var(--text3);font-size:9.5px">Vendor Name</span>
+                  <span style="color:var(--text1)">Taj MG Road Bangalore</span>
+                  <span style="color:var(--text1);display:flex;align-items:center;gap:3px">Taj MG Road Bangalore<i class="ti ti-circle-check" style="color:var(--success);font-size:11px"></i></span>
+                </div>
+                <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:4px 6px;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+                  <span style="color:var(--text3);font-size:9.5px">GSTIN</span>
+                  <span style="color:var(--text1);font-family:var(--mono);font-size:9.5px">29AAACB1234C12L</span>
+                  <span style="color:var(--text1);font-family:var(--mono);font-size:9.5px;display:flex;align-items:center;gap:3px">29AAACB1234C12L<i class="ti ti-circle-check" style="color:var(--success);font-size:11px"></i></span>
+                </div>
+                <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:4px 6px;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+                  <span style="color:var(--text3);font-size:9.5px">Bank Name</span>
+                  <span style="color:var(--text1)">HDFC Bank</span>
+                  <span style="color:var(--text1);display:flex;align-items:center;gap:3px">HDFC Bank<i class="ti ti-circle-check" style="color:var(--success);font-size:11px"></i></span>
+                </div>
+                <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:4px 6px;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+                  <span style="color:var(--text3);font-size:9.5px">A/C No.</span>
+                  <span style="color:var(--text1);font-family:var(--mono);font-size:9.5px">5010 1234 5678 90</span>
+                  <span style="color:var(--text1);font-family:var(--mono);font-size:9.5px;display:flex;align-items:center;gap:3px">5010 1234 5678 90<i class="ti ti-circle-check" style="color:var(--success);font-size:11px"></i></span>
+                </div>
+                <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:4px 6px;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+                  <span style="color:var(--text3);font-size:9.5px">IFSC</span>
+                  <span style="color:var(--text1);font-family:var(--mono);font-size:9.5px">HDFC0001234</span>
+                  <span style="color:var(--text1);font-family:var(--mono);font-size:9.5px;display:flex;align-items:center;gap:3px">HDFC0001234<i class="ti ti-circle-check" style="color:var(--success);font-size:11px"></i></span>
+                </div>
+              </div>
+              <div style="margin-top:8px;padding:6px 9px;background:var(--success-dim);border-radius:var(--radius-sm);display:flex;align-items:center;gap:5px;font-size:11px;color:var(--success)">
+                <i class="ti ti-circle-check" style="font-size:13px"></i>
+                Match Result: <strong>Exact Match</strong>
+              </div>
+            </div>
+
+            <!-- 5: 2/3-Way Match -->
+            <div class="va-row" onclick="vaClick('va5','canvas-lineitems-block','#b45309','rgba(180,83,9,.16)','rgba(180,83,9,.05)','the 2-Way / 3-Way Match Agent')">
+              <div class="va-left">
+                <div class="va-icon" style="background:var(--warning-dim)"><i class="ti ti-arrows-exchange" style="color:var(--amber);font-size:13px"></i></div>
+                <div><div class="va-name">2-Way / 3-Way Match Agent</div><div class="va-desc">Compares PO, GR and Invoice</div></div>
+              </div>
+              <div class="va-right">
+                <span class="score-pill sp-warn">Warning</span>
+                <span class="va-score score-warn">82%</span>
+                <i class="ti ti-chevron-down" style="color:var(--text3);font-size:12px" id="ic-va5"></i>
+              </div>
+            </div>
+            <div id="va5" class="va-expand" style="display:none">3 of 4 items matched exactly. Laundry rate ₹320 vs PO ₹300 — variance ₹20 (6.67%) exceeds 2% tolerance.</div>
+
+            <!-- 6: Tax & GST -->
+            <div class="va-row" onclick="vaClick('va6','canvas-tax-block','#0d9488','rgba(13,148,136,.16)','rgba(13,148,136,.05)','the Tax & GST Validation Agent')">
+              <div class="va-left">
+                <div class="va-icon" style="background:var(--teal-dim)"><i class="ti ti-calculator" style="color:var(--teal);font-size:13px"></i></div>
+                <div><div class="va-name">Tax &amp; GST Validation Agent</div><div class="va-desc">Validates tax calculations and codes</div></div>
+              </div>
+              <div class="va-right">
+                <span class="score-pill sp-pass">Passed</span>
+                <span class="va-score score-pass">96%</span>
+                <i class="ti ti-chevron-down" style="color:var(--text3);font-size:12px" id="ic-va6"></i>
+              </div>
+            </div>
+            <div id="va6" class="va-expand" style="display:none">CGST 9% + SGST 9% = 18% correctly applied. Total tax ₹2,160.00 verified. All HSN codes valid.</div>
+
+            <!-- 7: Price Tolerance -->
+            <div class="va-row" onclick="vaClick('va7','canvas-lineitems-block','#b45309','rgba(180,83,9,.16)','rgba(180,83,9,.05)','the Price Tolerance Check Agent')">
+              <div class="va-left">
+                <div class="va-icon" style="background:var(--warning-dim)"><i class="ti ti-ruler" style="color:var(--amber);font-size:13px"></i></div>
+                <div><div class="va-name">Price Tolerance Check Agent</div><div class="va-desc">Checks price variance within tolerance limit</div></div>
+              </div>
+              <div class="va-right">
+                <span class="score-pill sp-warn">Warning</span>
+                <span class="va-score score-warn">82%</span>
+                <i class="ti ti-chevron-down" style="color:var(--text3);font-size:12px" id="ic-va7"></i>
+              </div>
+            </div>
+            <div id="va7" class="va-expand" style="display:none">Laundry: Invoice ₹320 vs PO ₹300. Variance ₹20 exceeds ₹10 tolerance (2%). Suggested action: Route to Procurement Manager.</div>
+
+          </div>
+        </div>
+
+        </div><!-- /agent-canvas-tab -->
+
+        <!-- ══ FIELD EDIT TAB — fast header-field data entry when multiple fields fail validation ══ -->
+        <div id="field-edit-tab" style="display:none">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title"><i class="ti ti-forms" style="color:var(--accent)"></i>Header Field Quick Edit</div>
+            </div>
+            <div class="fe-alert">
+              <i class="ti ti-alert-triangle" style="color:var(--amber);font-size:13px"></i>
+              <span><strong>2 header fields</strong> need review (Due Date — 86%, Signature — 70%). Correct any field below without opening each popup individually.</span>
+            </div>
+            <table class="fe-table">
+              <thead>
+                <tr><th>Field</th><th class="fe-editable-head">Value</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td onclick="t('Classification is a system field — not printed on the invoice image','t-info')">Classification</td>
+                  <td>
+                    <select class="fe-input" id="fe-classification">
+                      <option value="PO" selected>PO</option>
+                      <option value="Non-PO">Non-PO</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td onclick="t('Type is a system field — not printed on the invoice image','t-info')">Type</td>
+                  <td>
+                    <select class="fe-input" id="fe-type">
+                      <option value="Invoice" selected>Invoice</option>
+                      <option value="Credit Note">Credit Note</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fe-link" onclick="highlightCanvasSection('canvas-header-fields','#16a34a','rgba(22,163,74,.16)','rgba(22,163,74,.05)','the Extraction Agent')">Invoice No.</td>
+                  <td><input class="fe-input" id="fe-invno" type="text" value="INV-2024-000567" onchange="syncFieldEdit('fe-invno')"></td>
+                </tr>
+                <tr>
+                  <td class="fe-link" onclick="highlightCanvasSection('canvas-amount-summary-block','#16a34a','rgba(22,163,74,.16)','rgba(22,163,74,.05)','the Extraction Agent')">Invoice Amt</td>
+                  <td><input class="fe-input" id="fe-amt" type="number" step="0.01" value="18742.60" onchange="syncFieldEdit('fe-amt')"></td>
+                </tr>
+                <tr>
+                  <td class="fe-link" style="border-color:rgba(180,83,9,.5)" onclick="highlightCanvasSection('canvas-header-fields','#b45309','rgba(180,83,9,.16)','rgba(180,83,9,.05)','the Extraction Agent — 86% confidence')">Invoice Date <i class="ti ti-alert-triangle" style="color:var(--amber);font-size:10px"></i></td>
+                  <td><input class="fe-input" id="fe-date" type="date" value="2024-05-14" onchange="syncFieldEdit('fe-date')"></td>
+                </tr>
+                <tr>
+                  <td class="fe-link" onclick="highlightCanvasSection('canvas-amount-summary-block','#16a34a','rgba(22,163,74,.16)','rgba(22,163,74,.05)','the Extraction Agent')">Currency</td>
+                  <td>
+                    <select class="fe-input" id="fe-currency">
+                      <option value="INR" selected>INR</option>
+                      <option value="USD">USD</option>
+                      <option value="EUR">EUR</option>
+                      <option value="GBP">GBP</option>
+                      <option value="AED">AED</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fe-link" onclick="highlightCanvasSection('canvas-vendor-block','#0d9488','rgba(13,148,136,.16)','rgba(13,148,136,.05)','the Beneficiary Match Agent')">Vendor Name / Code</td>
+                  <td>
+                    <div class="fe-lookup">
+                      <input class="fe-input" id="fe-vendor" type="text" value="Taj MG Road Bangalore" placeholder="Search vendor…" onfocus="vendorLookupToggle(true)">
+                      <button type="button" class="fe-lookup-btn" onclick="vendorLookupToggle()" title="Lookup vendor"><i class="ti ti-search"></i></button>
+                      <div id="fe-vendor-dropdown" class="fe-vendor-dropdown">
+                        <div class="fe-vendor-opt" onclick="vendorLookupSelect('Taj MG Road Bangalore','V-100234')"><span>Taj MG Road Bangalore</span><span class="fe-vendor-code">V-100234</span></div>
+                        <div class="fe-vendor-opt" onclick="vendorLookupSelect('Taj West End Bangalore','V-100567')"><span>Taj West End Bangalore</span><span class="fe-vendor-code">V-100567</span></div>
+                        <div class="fe-vendor-opt" onclick="vendorLookupSelect('Taj Coromandel Chennai','V-100812')"><span>Taj Coromandel Chennai</span><span class="fe-vendor-code">V-100812</span></div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td onclick="t('Exchange Rate is applied at posting — 1.0000 for INR base currency','t-info')">Exchange Rate</td>
+                  <td><input class="fe-input" id="fe-exrate" type="number" step="0.0001" value="1.0000"></td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="display:flex;gap:8px;padding:10px 12px;">
+              <button class="btn" style="flex:1;justify-content:center;font-size:11.5px" onclick="t('Fields reset to last extracted values','info')"><i class="ti ti-rotate" style="font-size:12px"></i> Reset</button>
+              <button class="btn" style="flex:1;justify-content:center;font-size:11.5px;background:var(--accent);color:#fff;border-color:var(--accent)" onclick="t('Header fields updated and synced to invoice canvas','t-success')"><i class="ti ti-device-floppy" style="font-size:12px"></i> Apply Changes</button>
+            </div>
+          </div>
+        </div><!-- /field-edit-tab -->
+
+      </div><!-- /RIGHT col -->
+    </div><!-- /main-grid (Image Canvas + Agent Canvas row) -->
+
+    <!-- ══ INVESTIGATION WORKSPACE (full width, below both canvases) ══ -->
+    <div class="ws-card">
+      <div class="ws-head" onclick="toggleWS()">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <i class="ti ti-search" style="color:var(--accent);font-size:15px"></i>
+              <span style="font-size:13px;font-weight:600">Investigation Workspace</span>
+              <span style="font-size:11.5px;color:var(--text3);font-weight:400">3-Way Match Details (PO + GR + Invoice)</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;">
+              <span id="ws-label" style="font-size:11.5px;color:var(--accent)">Collapse Workspace</span>
+              <i class="ti ti-chevron-up" id="ws-chev" style="color:var(--accent);font-size:15px"></i>
+            </div>
+          </div>
+
+          <div class="ws-body" id="ws-body">
+            <!-- Left: Tab list -->
+            <div class="ws-tabs-col">
+              <div class="ws-tab active" onclick="setTab(this,'tc-match')">
+                <i class="ti ti-table"></i>
+                <div><div>Line Items (4)</div><div class="ws-tab-sub">3-Way Match</div></div>
+              </div>
+              <div class="ws-tab" onclick="setTab(this,'tc-multipo')">
+                <i class="ti ti-stack-2"></i>
+                <div><div>Multi-PO Grid</div><div class="ws-tab-sub">Bulk GR/IR Match</div></div>
+              </div>
+              <div class="ws-tab" onclick="setTab(this,'tc-audit')">
+                <i class="ti ti-clock-history"></i>
+                <div><div>Audit Trail</div><div class="ws-tab-sub">15 Events</div></div>
+              </div>
+              <div class="ws-tab" onclick="setTab(this,'tc-reason')">
+                <i class="ti ti-brain"></i>
+                <div><div>Agent Reasoning</div><div class="ws-tab-sub">Why it was validated</div></div>
+              </div>
+              <div class="ws-tab" onclick="setTab(this,'tc-attach')">
+                <i class="ti ti-paperclip"></i>
+                <div><div>Attachments (3)</div><div class="ws-tab-sub">View all files</div></div>
+              </div>
+            </div>
+
+            <!-- Center: Tab content -->
+            <div class="ws-content-col">
+
+              <!-- TAB: 3-Way Match -->
+              <div id="tc-match">
+                <table class="three-table">
+                  <thead>
+                    <tr>
+                      <th rowspan="2" style="text-align:center;width:22px">#</th>
+                      <th rowspan="2" style="text-align:left">Description</th>
+                      <th colspan="3" class="group-head th-inv">Invoice (This Document)</th>
+                      <th colspan="3" class="group-head th-po">PO 4500001234</th>
+                      <th colspan="3" class="group-head th-gr">GR 5500007890</th>
+                      <th rowspan="2" style="text-align:right">Variance (₹)</th>
+                      <th rowspan="2" style="text-align:left;padding-left:8px">Match Status</th>
+                      <th rowspan="2" style="text-align:center">Action</th>
+                    </tr>
+                    <tr>
+                      <th class="td-inv">Qty</th><th class="td-inv">Rate (₹)</th><th class="td-inv">Amt (₹)</th>
+                      <th class="td-po">Qty</th><th class="td-po">Rate (₹)</th><th class="td-po">Amt (₹)</th>
+                      <th class="td-gr">Qty</th><th class="td-gr">Rate (₹)</th><th class="td-gr">Amt (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td><td>Room Tariff</td>
+                      <td class="td-inv">1</td><td class="td-inv">6,500.00</td><td class="td-inv">6,500.00</td>
+                      <td class="td-po">1</td><td class="td-po">6,500.00</td><td class="td-po">6,500.00</td>
+                      <td class="td-gr">1</td><td class="td-gr">6,500.00</td><td class="td-gr">6,500.00</td>
+                      <td>0.00</td>
+                      <td style="text-align:left;padding-left:8px"><span class="matched-tag"><i class="ti ti-circle-check" style="font-size:10px"></i>Matched</span></td>
+                      <td style="text-align:center"><i class="ti ti-info-circle action-icon" onclick="t('Room Tariff: Exact 3-way match PO / GR / Invoice','t-success')"></i></td>
+                    </tr>
+                    <tr>
+                      <td>2</td><td>Food &amp; Beverages</td>
+                      <td class="td-inv">1</td><td class="td-inv">2,450.00</td><td class="td-inv">2,450.00</td>
+                      <td class="td-po">1</td><td class="td-po">2,450.00</td><td class="td-po">2,450.00</td>
+                      <td class="td-gr">1</td><td class="td-gr">2,450.00</td><td class="td-gr">2,450.00</td>
+                      <td>0.00</td>
+                      <td style="text-align:left;padding-left:8px"><span class="matched-tag"><i class="ti ti-circle-check" style="font-size:10px"></i>Matched</span></td>
+                      <td style="text-align:center"><i class="ti ti-info-circle action-icon" onclick="t('Food & Beverages: Exact 3-way match','t-success')"></i></td>
+                    </tr>
+                    <tr>
+                      <td>3</td><td>Laundry</td>
+                      <td class="td-inv">1</td><td class="td-inv">320.00</td><td class="td-inv">320.00</td>
+                      <td class="td-po">1</td><td class="td-po var-amount">300.00</td><td class="td-po">300.00</td>
+                      <td class="td-gr">1</td><td class="td-gr var-amount">300.00</td><td class="td-gr">300.00</td>
+                      <td class="var-amount">20.00</td>
+                      <td style="text-align:left;padding-left:8px"><span class="variance-tag"><i class="ti ti-alert-triangle" style="font-size:10px"></i>Price Variance</span></td>
+                      <td style="text-align:center"><i class="ti ti-message-circle action-icon warn" onclick="t('Laundry: ₹20 variance — routed to exception panel','t-warning')"></i></td>
+                    </tr>
+                    <tr>
+                      <td>4</td><td>Local Transport</td>
+                      <td class="td-inv">1</td><td class="td-inv">742.60</td><td class="td-inv">742.60</td>
+                      <td class="td-po">1</td><td class="td-po">742.60</td><td class="td-po">742.60</td>
+                      <td class="td-gr">1</td><td class="td-gr">742.60</td><td class="td-gr">742.60</td>
+                      <td>0.00</td>
+                      <td style="text-align:left;padding-left:8px"><span class="matched-tag"><i class="ti ti-circle-check" style="font-size:10px"></i>Matched</span></td>
+                      <td style="text-align:center"><i class="ti ti-info-circle action-icon" onclick="t('Local Transport: Exact 3-way match','t-success')"></i></td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="2" style="text-align:left;font-weight:600">Total</td>
+                      <td colspan="3" class="td-inv" style="font-weight:600">₹10,012.60</td>
+                      <td colspan="3" class="td-po" style="font-weight:600">₹9,992.60</td>
+                      <td colspan="3" class="td-gr" style="font-weight:600">₹9,992.60</td>
+                      <td class="var-amount" style="font-weight:700">₹20.00</td>
+                      <td colspan="2" style="text-align:left;padding-left:8px;color:var(--amber);font-size:9.5px;font-weight:600">Total Variance</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <!-- TAB: Multi-PO Grid (bulk GR/IR line item match) -->
+              <div id="tc-multipo" style="display:none">
+                <div class="mpo-input-row">
+                  <textarea id="mpo-po-input" class="mpo-textarea" placeholder="Enter multiple PO numbers, comma separated — e.g. 4500001234, 4500001235, 4500001236" onkeydown="if(event.key==='Enter'){event.preventDefault();fetchMultiPO();}">4500001234, 4500001235, 4500001236</textarea>
+                  <button class="btn-post" onclick="fetchMultiPO()"><i class="ti ti-refresh" style="font-size:13px"></i> Fetch</button>
+                </div>
+                <div class="mpo-hint">Press <b>Enter</b> in the box to fetch. GR line items load for all POs into one grid — use <b>Tab</b>/<b>Enter</b> to move through IR Qty &amp; IR Price for fast keying.</div>
+
+                <div id="mpo-empty" class="mpo-empty">
+                  <i class="ti ti-list-numbers" style="font-size:20px;color:var(--text3)"></i>
+                  <div style="margin-top:6px">Paste PO numbers above and click <b style="color:var(--text2)">Fetch</b> to pull GR/line-item detail across multiple purchase orders.</div>
+                </div>
+
+                <div id="mpo-grid-wrap" style="overflow-x:auto;margin-top:10px;display:none">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+                    <button class="btn" style="padding:4px 10px;font-size:11px" onclick="mpoFillAll()"><i class="ti ti-copy" style="font-size:12px"></i> Match All IR = PO Price</button>
+                    <button class="btn" style="padding:4px 10px;font-size:11px" onclick="mpoFilterVariance()" id="mpo-filter-btn"><i class="ti ti-filter" style="font-size:12px"></i> Show Variances Only</button>
+                    <span style="font-size:10px;color:var(--text3)">Tip: click a cell then hit <b style="color:var(--text2)">Enter</b> to jump to the same field on the next line.</span>
+                  </div>
+                  <table class="three-table mpo-table" id="mpo-table">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left">PO</th>
+                        <th style="text-align:left">GRN Number</th>
+                        <th>GR Line Item</th>
+                        <th>GR Qty</th>
+                        <th>IR Qty</th>
+                        <th>PO Price (₹)</th>
+                        <th>IR Price (₹)</th>
+                        <th>Tax Code</th>
+                        <th>Tax Amount (₹)</th>
+                        <th style="text-align:left">Line Item Description</th>
+                        <th>Condition</th>
+                        <th style="text-align:left">Material + GL + BA + Plant</th>
+                      </tr>
+                    </thead>
+                    <tbody id="mpo-tbody"></tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="8" style="text-align:right;font-weight:600">Grand Total (IR Value + Tax)</td>
+                        <td colspan="4" id="mpo-total" style="font-weight:700"></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+
+                <div id="mpo-summary" class="mpo-summary" style="display:none"></div>
+              </div>
+
+              <!-- TAB: Audit Trail -->
+              <div id="tc-audit" style="display:none">
+                <div style="font-size:11.5px;color:var(--text2);margin-bottom:10px">15 system events recorded for this invoice</div>
+                <div style="display:flex;flex-direction:column;gap:0;">
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><div style="width:7px;height:7px;border-radius:50%;background:var(--success);flex-shrink:0;margin-top:4px"></div><div><div style="font-size:11.5px;font-weight:500">Invoice received via email portal</div><div style="font-size:10px;color:var(--text3)">14 May 2024, 09:10 AM · System</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><div style="width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px"></div><div><div style="font-size:11.5px;font-weight:500">AI Extraction Agent completed — 97% confidence</div><div style="font-size:10px;color:var(--text3)">14 May 2024, 09:12 AM · Extraction Agent</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><div style="width:7px;height:7px;border-radius:50%;background:var(--purple);flex-shrink:0;margin-top:4px"></div><div><div style="font-size:11.5px;font-weight:500">Line Item Extraction completed — 96% confidence</div><div style="font-size:10px;color:var(--text3)">14 May 2024, 09:13 AM · Line Item Agent</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><div style="width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:4px"></div><div><div style="font-size:11.5px;font-weight:500">Beneficiary Match completed — 97%</div><div style="font-size:10px;color:var(--text3)">14 May 2024, 09:14 AM · Beneficiary Agent</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><div style="width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:4px"></div><div><div style="font-size:11.5px;font-weight:500">Signature Verification flagged — 70% (low confidence)</div><div style="font-size:10px;color:var(--text3)">14 May 2024, 09:15 AM · Signature Agent</div></div></div>
+                  <div style="display:flex;gap:8px;padding:7px 0;"><div style="width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:4px"></div><div><div style="font-size:11.5px;font-weight:500">Price variance ₹20 on Laundry — routed to exception</div><div style="font-size:10px;color:var(--text3)">14 May 2024, 09:16 AM · Match Agent</div></div></div>
+                </div>
+              </div>
+
+              <!-- TAB: Agent Reasoning -->
+              <div id="tc-reason" style="display:none">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="background:var(--navy3);border-radius:var(--radius-sm);padding:9px 11px">
+                    <div style="font-size:11.5px;font-weight:600;color:var(--success);margin-bottom:3px"><i class="ti ti-circle-check"></i> Duplicate Agent — 97%</div>
+                    <div style="font-size:11px;color:var(--text2)">No matching invoice found in last 180 days. Hash comparison negative across all key fields.</div>
+                  </div>
+                  <div style="background:var(--navy3);border-radius:var(--radius-sm);padding:9px 11px">
+                    <div style="font-size:11.5px;font-weight:600;color:var(--success);margin-bottom:3px"><i class="ti ti-circle-check"></i> PO Belongs to Vendor — 98%</div>
+                    <div style="font-size:11px;color:var(--text2)">PO 4500001234 is registered to Taj MG Road Bangalore. GSTIN cross-verified.</div>
+                  </div>
+                  <div style="background:var(--navy3);border-radius:var(--radius-sm);padding:9px 11px">
+                    <div style="font-size:11.5px;font-weight:600;color:var(--amber);margin-bottom:3px"><i class="ti ti-alert-triangle"></i> Price Tolerance Agent — 82% (Warning)</div>
+                    <div style="font-size:11px;color:var(--text2)">Laundry: Invoice ₹320 vs PO ₹300. Variance ₹20 (6.67%) exceeds 2% tolerance limit of ₹10. Flagged for procurement review.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAB: Attachments -->
+              <div id="tc-attach" style="display:none">
+                <div style="display:flex;flex-direction:column;gap:7px">
+                  <div style="display:flex;align-items:center;gap:9px;padding:8px;background:var(--navy3);border-radius:var(--radius-sm);border:1px solid var(--border)">
+                    <i class="ti ti-file-type-pdf" style="color:var(--red);font-size:20px"></i>
+                    <div style="flex:1"><div style="font-size:11.5px;font-weight:500">INV-2024-000567.pdf</div><div style="font-size:10px;color:var(--text3)">Original Invoice · 342 KB</div></div>
+                    <button class="btn" style="font-size:10.5px;padding:3px 9px" onclick="t('Downloading…','t-info')">Download</button>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:9px;padding:8px;background:var(--navy3);border-radius:var(--radius-sm);border:1px solid var(--border)">
+                    <i class="ti ti-file-type-pdf" style="color:var(--red);font-size:20px"></i>
+                    <div style="flex:1"><div style="font-size:11.5px;font-weight:500">PO-4500001234.pdf</div><div style="font-size:10px;color:var(--text3)">Purchase Order · 128 KB</div></div>
+                    <button class="btn" style="font-size:10.5px;padding:3px 9px" onclick="t('Downloading…','t-info')">Download</button>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:9px;padding:8px;background:var(--navy3);border-radius:var(--radius-sm);border:1px solid var(--border)">
+                    <i class="ti ti-file-spreadsheet" style="color:var(--success);font-size:20px"></i>
+                    <div style="flex:1"><div style="font-size:11.5px;font-weight:500">GR-5500007890.xlsx</div><div style="font-size:10px;color:var(--text3)">Goods Receipt · 56 KB</div></div>
+                    <button class="btn" style="font-size:10.5px;padding:3px 9px" onclick="t('Downloading…','t-info')">Download</button>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /ws-content-col -->
+
+            <!-- Right: Exception Panel -->
+            <div class="ws-right-col">
+              <div class="exc-head">Laundry - Price Variance</div>
+              <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px">
+                <div class="exc-amount">₹20.00</div>
+                <div style="font-size:11px;color:var(--text3)">(6.67%)</div>
+              </div>
+              <div class="exc-section">
+                <div class="exc-label">Reason</div>
+                <div class="exc-value">Price variance exceeds tolerance limit of ₹10.00 (2.00%)</div>
+              </div>
+              <div class="exc-section">
+                <div class="exc-label">Suggested Action</div>
+                <div class="exc-value">Route to Procurement Manager</div>
+              </div>
+              <button class="exc-btn" onclick="t('Exception routed to Procurement Manager','t-success')">Route Exception</button>
+              <button class="exc-btn-sec" onclick="t('Comment box opened','t-info')">Add Comment</button>
+            </div>
+
+          </div><!-- /ws-body -->
+    </div><!-- /ws-card -->
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ── Toast
+let _tt;
+function t(msg, type='t-info') {
+  const el = document.getElementById('toast');
+  const icons = {'t-success':'ti-circle-check','t-warning':'ti-alert-triangle','t-info':'ti-info-circle'};
+  el.className = 'toast show ' + type;
+  el.querySelector('i').className = 'ti ' + (icons[type]||'ti-info-circle');
+  document.getElementById('toast-msg').textContent = msg;
+  clearTimeout(_tt);
+  _tt = setTimeout(()=>el.classList.remove('show'), 3200);
+}
+
+// ── Toggle Show Labels
+function toggleLabels() {
+  const tog = document.getElementById('lbl-toggle');
+  const badges = document.getElementById('all-badges');
+  const isOn = tog.classList.contains('on');
+  tog.classList.toggle('on', !isOn);
+  tog.classList.toggle('off', isOn);
+  badges.style.display = isOn ? 'none' : 'block';
+}
+
+// ── Edit Fields mode: turns extracted invoice fields into directly-editable text
+// so a data-entry user can correct AI extraction without leaving the canvas.
+let editMode = false;
+function toggleEditMode() {
+  editMode = !editMode;
+  const doc = document.getElementById('inv-doc');
+  const tog = document.getElementById('edit-toggle');
+  const saveBtn = document.getElementById('save-edits-btn');
+  doc.classList.toggle('edit-mode', editMode);
+  tog.classList.toggle('on', editMode);
+  tog.classList.toggle('off', !editMode);
+  saveBtn.style.display = editMode ? 'inline-flex' : 'none';
+
+  document.querySelectorAll('.editable-val, .editable-block').forEach(el => {
+    el.contentEditable = editMode ? 'true' : 'false';
+  });
+
+  if (editMode) {
+    clearCanvasHighlight();
+    t('Edit mode on — click directly into any dashed field to correct it', 't-info');
+  } else {
+    t('Edit mode off — field popups are back on click', 't-success');
+  }
+}
+
+// ── Sidebar collapse (icon-rail mode)
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const collapsed = sb.classList.toggle('collapsed');
+  const icon = document.getElementById('sidebar-collapse-icon');
+  icon.title = collapsed ? 'Expand menu' : 'Collapse menu';
+}
+
+// ── Generic collapsible section toggle (Invoice Canvas, AI Validation Summary, Validation Agents)
+function toggleSection(bodyId, chevId, openDisplay) {
+  const body = document.getElementById(bodyId);
+  const chev = document.getElementById(chevId);
+  const opening = body.style.display === 'none';
+  body.style.display = opening ? openDisplay : 'none';
+  if (chev) {
+    chev.className = opening ? 'ti ti-chevron-up' : 'ti ti-chevron-down';
+    chev.style.color = opening ? 'var(--accent)' : 'var(--text3)';
+  }
+}
+
+// ── Agent Canvas / Field Edit tab switcher
+function switchAgentTab(btn, tabId) {
+  document.querySelectorAll('.agent-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('agent-canvas-tab').style.display = tabId === 'agent-canvas-tab' ? '' : 'none';
+  document.getElementById('field-edit-tab').style.display = tabId === 'field-edit-tab' ? '' : 'none';
+  if (tabId === 'field-edit-tab') {
+    document.getElementById('fe-vendor-dropdown').style.display = 'none';
+  }
+}
+
+// ── Field Edit ↔ Invoice Canvas two-way sync: typing in the quick-edit table updates the
+// corresponding value shown on the invoice canvas so both views stay consistent
+function syncFieldEdit(inputId) {
+  const val = document.getElementById(inputId).value;
+  if (inputId === 'fe-invno') {
+    const el = document.querySelector('#canvas-header-fields .field-row .fval');
+    if (el) el.textContent = val;
+  } else if (inputId === 'fe-date') {
+    const d = new Date(val);
+    const formatted = isNaN(d) ? val : d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    const el = document.getElementById('inv-date-field');
+    if (el) { const fv = el.querySelector('.fval'); if (fv) fv.textContent = formatted; }
+  } else if (inputId === 'fe-amt') {
+    const formatted = '₹' + parseFloat(val || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.querySelectorAll('#canvas-amount-summary-block td.editable-val').forEach((td, i) => { if (i === 0) td.textContent = formatted; });
+  }
+  t('Updated on invoice canvas', 't-success');
+}
+
+// ── Vendor lookup (mock ERP vendor master search)
+function vendorLookupToggle(fromFocus) {
+  const dd = document.getElementById('fe-vendor-dropdown');
+  if (fromFocus) { dd.style.display = 'block'; return; }
+  dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+}
+function vendorLookupSelect(name, code) {
+  document.getElementById('fe-vendor').value = name + '  (' + code + ')';
+  document.getElementById('fe-vendor-dropdown').style.display = 'none';
+  t('Vendor selected: ' + name + ' — ' + code, 't-success');
+}
+document.addEventListener('click', function(e) {
+  const lookup = document.getElementById('fe-vendor-dropdown');
+  if (lookup && lookup.style.display === 'block' && !e.target.closest('.fe-lookup')) {
+    lookup.style.display = 'none';
+  }
+});
+
+// ── Agent Rule → Invoice Canvas section highlighting
+// Maps an agent (badge on canvas OR row in the right-hand Validation Agents list) to the
+// exact block of the invoice it validates, and highlights + scrolls to that block.
+function highlightCanvasSection(id, hlc, hlcGlow, hlcBg, agentLabel) {
+  document.querySelectorAll('.canvas-section.hl-active').forEach(el => {
+    el.classList.remove('hl-active');
+    el.style.removeProperty('--hlc'); el.style.removeProperty('--hlc-glow'); el.style.removeProperty('--hlc-bg');
+  });
+  const el = document.getElementById(id);
+  if (!el) return;
+  // Auto-expand the Invoice Canvas card if it's collapsed
+  const canvasBody = document.getElementById('canvas-body');
+  if (canvasBody && canvasBody.style.display === 'none') {
+    toggleSection('canvas-body', 'canvas-chev', 'block');
+  }
+  el.style.setProperty('--hlc', hlc || 'var(--accent)');
+  el.style.setProperty('--hlc-glow', hlcGlow || 'rgba(22,163,74,.16)');
+  el.style.setProperty('--hlc-bg', hlcBg || 'rgba(22,163,74,.05)');
+  el.classList.add('hl-active');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+  if (agentLabel) t('Highlighted on invoice: field(s) checked by ' + agentLabel, 't-info');
+}
+function clearCanvasHighlight() {
+  document.querySelectorAll('.canvas-section.hl-active').forEach(el => el.classList.remove('hl-active'));
+}
+
+// ── Workspace collapse
+let wsOpen = true;
+function toggleWS() {
+  wsOpen = !wsOpen;
+  document.getElementById('ws-body').style.display = wsOpen ? 'grid' : 'none';
+  document.getElementById('ws-label').textContent = wsOpen ? 'Collapse Workspace' : 'Expand Workspace';
+  const c = document.getElementById('ws-chev');
+  c.className = wsOpen ? 'ti ti-chevron-up' : 'ti ti-chevron-down';
+  c.style.color = wsOpen ? 'var(--accent)' : 'var(--text3)';
+  document.getElementById('ws-label').style.color = wsOpen ? 'var(--accent)' : 'var(--text3)';
+}
+
+// ── Workspace tabs
+const TC = ['tc-match','tc-multipo','tc-audit','tc-reason','tc-attach'];
+function setTab(el, id) {
+  document.querySelectorAll('.ws-tab').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  TC.forEach(c => document.getElementById(c).style.display = c===id ? 'block' : 'none');
+}
+
+// ── Validation agent expand
+// Validation Agent row click: expand its detail AND highlight the exact invoice section it checks
+function vaClick(vaId, sectionId, hlc, hlcGlow, hlcBg, label) {
+  toggleVA(vaId);
+  highlightCanvasSection(sectionId, hlc, hlcGlow, hlcBg, label);
+}
+function toggleVA(id) {
+  const el = document.getElementById(id);
+  const ic = document.getElementById('ic-'+id);
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  if (ic) {
+    ic.className = open ? 'ti ti-chevron-down' : 'ti ti-chevron-up';
+    ic.style.color = open ? 'var(--text3)' : 'var(--accent)';
+  }
+  const row = el.previousElementSibling;
+  if (row) row.classList.toggle('exp-open', !open);
+}
+
+// ── Multi-PO Grid (bulk GR/IR line item fetch)
+const MPO_MATERIALS = [
+  {desc:'Steel Rod 12mm x 6m', mat:'MAT-100234', gl:'GL-400100', plant:'1000'},
+  {desc:'Cement Bag 50kg OPC43', mat:'MAT-100587', gl:'GL-400100', plant:'1000'},
+  {desc:'Housekeeping Consumables', mat:'MAT-200112', gl:'GL-520300', plant:'1100'},
+  {desc:'Room Tariff — Deluxe', mat:'MAT-300045', gl:'GL-610200', plant:'1200'},
+  {desc:'Food & Beverages — Banquet', mat:'MAT-300099', gl:'GL-610250', plant:'1200'},
+  {desc:'Laundry Services', mat:'MAT-300071', gl:'GL-610280', plant:'1200'},
+  {desc:'Local Transport / Cab', mat:'MAT-300112', gl:'GL-610310', plant:'1200'},
+  {desc:'Office Stationery Kit', mat:'MAT-400021', gl:'GL-520100', plant:'1000'},
+  {desc:'IT Hardware — Monitor 24"', mat:'MAT-500332', gl:'GL-450100', plant:'1300'},
+  {desc:'Freight & Forwarding', mat:'MAT-600045', gl:'GL-560200', plant:'1000'}
+];
+const MPO_TAX_CODES = ['V0','V1','JIN1','JIN2','I0'];
+const MPO_CONDITIONS = ['PB00','FRA1','SKTO','ZPR0','MWST'];
+const MPO_BA = ['CHN01','BLR02','MUM03','DEL04','HYD05'];
+
+// Simple deterministic pseudo-random generator seeded per PO so re-fetching the same PO list is stable
+function mpoSeededRand(seed) {
+  let x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+function fetchMultiPO() {
+  const raw = document.getElementById('mpo-po-input').value.trim();
+  if (!raw) { t('Enter at least one PO number to fetch', 't-warning'); return; }
+  const poList = raw.split(',').map(p => p.trim()).filter(Boolean);
+  if (!poList.length) { t('Enter at least one PO number to fetch', 't-warning'); return; }
+
+  const tbody = document.getElementById('mpo-tbody');
+  tbody.innerHTML = '';
+  let rowCount = 0, varCount = 0, grandTotal = 0;
+
+  poList.forEach((po, poIdx) => {
+    const poSeed = po.split('').reduce((a,c)=>a+c.charCodeAt(0), 0) + poIdx * 97;
+    const lineCount = 2 + Math.floor(mpoSeededRand(poSeed) * 3); // 2–4 lines per PO
+    const grn = '55000' + String(7890 + poIdx * 3).padStart(4,'0');
+
+    for (let i = 0; i < lineCount; i++) {
+      const lineItem = (i + 1) * 10;
+      const matSeed = poSeed + i * 13;
+      const mat = MPO_MATERIALS[Math.floor(mpoSeededRand(matSeed) * MPO_MATERIALS.length)];
+      const grQty = 1 + Math.floor(mpoSeededRand(matSeed + 1) * 20);
+      const poPrice = Math.round((100 + mpoSeededRand(matSeed + 2) * 900) * 100) / 100;
+      // ~30% of lines get a small IR price variance for AI validation demo
+      const hasVariance = mpoSeededRand(matSeed + 3) < 0.3;
+      const irPrice = hasVariance ? Math.round((poPrice + (poPrice * 0.04)) * 100) / 100 : poPrice;
+      const irQty = grQty;
+      const taxCode = MPO_TAX_CODES[Math.floor(mpoSeededRand(matSeed + 4) * MPO_TAX_CODES.length)];
+      const cond = MPO_CONDITIONS[Math.floor(mpoSeededRand(matSeed + 5) * MPO_CONDITIONS.length)];
+      const ba = MPO_BA[Math.floor(mpoSeededRand(matSeed + 6) * MPO_BA.length)];
+      const taxRate = taxCode === 'V0' || taxCode === 'I0' ? 0 : (taxCode.startsWith('J') ? 0.18 : 0.12);
+      const taxAmt = Math.round(irQty * irPrice * taxRate * 100) / 100;
+      const rowId = 'mpo-r' + rowCount;
+
+      const tr = document.createElement('tr');
+      tr.dataset.variance = hasVariance ? '1' : '0';
+      tr.dataset.poPrice = poPrice.toFixed(2);
+      if (hasVariance) { tr.className = 'mpo-row-var'; varCount++; }
+      tr.innerHTML = `
+        <td style="text-align:left"><span class="mpo-po-tag">${po}</span></td>
+        <td style="text-align:left" class="mpo-meta">${grn}</td>
+        <td>${lineItem}</td>
+        <td>${grQty}</td>
+        <td><input class="mpo-in" id="${rowId}-irqty" type="number" value="${irQty}" min="0" step="1" onfocus="this.select()" onchange="mpoRecalcRow('${rowId}', ${taxRate})" onkeydown="mpoHandleEnter(event,'${rowId}','irqty')"></td>
+        <td>${poPrice.toFixed(2)}</td>
+        <td><input class="mpo-in ${hasVariance?'diff':''}" id="${rowId}-irprice" type="number" value="${irPrice.toFixed(2)}" min="0" step="0.01" onfocus="this.select()" onchange="mpoRecalcRow('${rowId}', ${taxRate})" onkeydown="mpoHandleEnter(event,'${rowId}','irprice')"></td>
+        <td><select class="mpo-sel" id="${rowId}-taxcode" onchange="mpoTaxCodeChanged('${rowId}')">
+          ${MPO_TAX_CODES.map(c => `<option value="${c}" ${c===taxCode?'selected':''}>${c}</option>`).join('')}
+        </select></td>
+        <td id="${rowId}-taxamt" data-rate="${taxRate}">${taxAmt.toFixed(2)}</td>
+        <td style="text-align:left">${mat.desc}</td>
+        <td><span class="mpo-cond">${cond}</span></td>
+        <td style="text-align:left" class="mpo-meta">${mat.mat} / ${mat.gl} / BA-${ba} / PL-${mat.plant}</td>
+      `;
+      tbody.appendChild(tr);
+      grandTotal += (irQty * irPrice) + taxAmt;
+      rowCount++;
+    }
+  });
+
+  document.getElementById('mpo-empty').style.display = 'none';
+  document.getElementById('mpo-grid-wrap').style.display = 'block';
+  const summary = document.getElementById('mpo-summary');
+  summary.style.display = 'flex';
+  summary.innerHTML = `
+    <div><b>${poList.length}</b> PO${poList.length>1?'s':''} fetched</div>
+    <div><b>${rowCount}</b> line items</div>
+    <div style="color:${varCount?'var(--amber)':'var(--text2)'}"><b>${varCount}</b> price variance${varCount!==1?'s':''} flagged</div>
+  `;
+  mpoUpdateTotal();
+  t(`Fetched ${rowCount} GR line items across ${poList.length} PO${poList.length>1?'s':''}`, 't-success');
+  // Focus first editable cell for immediate keying
+  const firstInput = tbody.querySelector('input.mpo-in');
+  if (firstInput) firstInput.focus();
+}
+
+function mpoTaxRateFromCode(code) {
+  return code === 'V0' || code === 'I0' ? 0 : (code.startsWith('J') ? 0.18 : 0.12);
+}
+
+function mpoTaxCodeChanged(rowId) {
+  const code = document.getElementById(rowId+'-taxcode').value;
+  const rate = mpoTaxRateFromCode(code);
+  document.getElementById(rowId+'-taxamt').dataset.rate = rate;
+  mpoRecalcRow(rowId, rate);
+}
+
+function mpoRecalcRow(rowId, rate) {
+  const qty = parseFloat(document.getElementById(rowId+'-irqty').value) || 0;
+  const price = parseFloat(document.getElementById(rowId+'-irprice').value) || 0;
+  const taxAmtEl = document.getElementById(rowId+'-taxamt');
+  const r = rate !== undefined ? rate : parseFloat(taxAmtEl.dataset.rate || 0);
+  const taxAmt = Math.round(qty * price * r * 100) / 100;
+  taxAmtEl.textContent = taxAmt.toFixed(2);
+  taxAmtEl.dataset.rate = r;
+  // Update variance highlight live if IR price is edited away from / back to PO price
+  const priceInput = document.getElementById(rowId+'-irprice');
+  const tr = priceInput.closest('tr');
+  const poPrice = parseFloat(tr.dataset.poPrice) || 0;
+  const isVar = Math.abs(price - poPrice) > 0.004;
+  tr.classList.toggle('mpo-row-var', isVar);
+  priceInput.classList.toggle('diff', isVar);
+  tr.dataset.variance = isVar ? '1' : '0';
+  mpoUpdateTotal();
+}
+
+// Enter key moves focus to the same field on the next row — fast top-to-bottom keying like a spreadsheet
+function mpoHandleEnter(e, rowId, field) {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  const idx = parseInt(rowId.replace('mpo-r',''), 10);
+  const next = document.getElementById('mpo-r' + (idx + 1) + '-' + field);
+  if (next) { next.focus(); next.select(); }
+  else { document.getElementById(rowId + '-' + field).blur(); }
+}
+
+// Quick-fill: set IR Qty = GR Qty and IR Price = PO Price on every row (then only the AI-flagged
+// variance rows need a manual look) — the single fastest path through a clean, no-exception batch
+function mpoFillAll() {
+  const rows = document.querySelectorAll('#mpo-tbody tr');
+  rows.forEach(tr => {
+    const rowId = tr.querySelector('input[id$="-irprice"]').id.replace('-irprice','');
+    const poPrice = tr.dataset.poPrice;
+    document.getElementById(rowId+'-irprice').value = poPrice;
+    const taxSelect = document.getElementById(rowId+'-taxcode');
+    const rate = mpoTaxRateFromCode(taxSelect.value);
+    mpoRecalcRow(rowId, rate);
+  });
+  t('IR Price matched to PO Price on all lines — review any still flagged', 't-success');
+}
+
+// Filter toggle: show only rows the AI has flagged with a price variance
+let mpoFilterOn = false;
+function mpoFilterVariance() {
+  mpoFilterOn = !mpoFilterOn;
+  const rows = document.querySelectorAll('#mpo-tbody tr');
+  rows.forEach(tr => {
+    tr.style.display = (mpoFilterOn && tr.dataset.variance !== '1') ? 'none' : '';
+  });
+  const btn = document.getElementById('mpo-filter-btn');
+  btn.innerHTML = mpoFilterOn
+    ? '<i class="ti ti-filter-x" style="font-size:12px"></i> Show All Lines'
+    : '<i class="ti ti-filter" style="font-size:12px"></i> Show Variances Only';
+}
+
+function mpoUpdateTotal() {
+  const tbody = document.getElementById('mpo-tbody');
+  let total = 0;
+  tbody.querySelectorAll('tr').forEach(tr => {
+    const qtyInput = tr.querySelector('input[id$="-irqty"]');
+    const priceInput = tr.querySelector('input[id$="-irprice"]');
+    const taxCell = tr.querySelector('td[id$="-taxamt"]');
+    if (qtyInput && priceInput && taxCell) {
+      const qty = parseFloat(qtyInput.value) || 0;
+      const price = parseFloat(priceInput.value) || 0;
+      const taxAmt = parseFloat(taxCell.textContent) || 0;
+      total += (qty * price) + taxAmt;
+    }
+  });
+  document.getElementById('mpo-total').textContent = '₹' + total.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+// ── Field popup
+function showPopup(title, val, conf, level) {
+  if (editMode) return; // in edit mode, clicks place a text cursor instead of opening the popup
+  document.getElementById('pp-title').textContent = title;
+  document.getElementById('pp-value').textContent = val;
+  document.getElementById('pp-src').textContent = val;
+  const n = parseInt(conf);
+  const lbl = n>=95?'High':n>=80?'Medium':'Low';
+  const col = n>=95?'var(--success)':n>=80?'var(--amber)':'var(--red)';
+  const pc = n>=95?'sp-pass':n>=80?'sp-warn':'sp-fail';
+  const icon = n>=95?'ti-circle-check':n>=80?'ti-minus-circle':'ti-circle-x';
+  const pillEl = document.getElementById('pp-conf-pill');
+  pillEl.textContent = conf+'% ('+lbl+')';
+  pillEl.className = 'score-pill '+pc;
+  const ct = document.getElementById('pp-conf-text');
+  ct.textContent = conf+'% ('+lbl+')';
+  ct.style.color = col;
+  const ci = document.getElementById('pp-conf-icon');
+  ci.className = 'ti '+icon;
+  ci.style.color = col;
+  document.getElementById('field-popup').style.display = 'block';
+}
+function closePopup() {
+  document.getElementById('field-popup').style.display = 'none';
+}
+</script>
+</body>
+</html>

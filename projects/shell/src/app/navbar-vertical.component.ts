@@ -37,15 +37,19 @@ type TargetItem = {
     }
 
     <aside
-      class="sidebar border-end bg-light"
+      class="sidebar"
       [class.collapsed]="isCollapsed()"
       [class.mobile-open]="isMobileOpen()"
       aria-label="Sidebar navigation"
     >
-      <div class="sidebar-header">
-        <span class="sidebar-title">Navigation</span>
+      <div class="logo">
+        <div class="logo-mark">A</div>
+        <div class="logo-labels">
+          <div class="logo-text">Agentic</div>
+          <div class="logo-sub">Intelligent AP</div>
+        </div>
         <button
-          class="sidebar-toggle desktop-toggle"
+          class="sidebar-collapse desktop-toggle"
           type="button"
           [attr.aria-label]="isCollapsed() ? 'Expand navigation menu' : 'Collapse navigation menu'"
           [attr.aria-expanded]="!isCollapsed()"
@@ -55,15 +59,37 @@ type TargetItem = {
         </button>
       </div>
 
-      <nav class="nav nav-pills flex-column gap-1 p-2">
+      <nav class="nav">
         @if (menuItems$ | async; as menuItems) {
-          @for (item of menuItems; track item.ID) {
+          @for (item of templateMenuItems(menuItems); track item.ID) {
             <app-menu-item [item]="item" [collapsed]="isCollapsed()" (navigate)="closeMobile()" />
           }
         } @else {
           <p class="menu-status">Loading menu…</p>
         }
       </nav>
+
+      <div class="ai-widget sidebar-hide" aria-label="AI Copilot">
+        <div class="ai-chat-bubble">
+          I'm analyzing this invoice.<br />All validations are handled by agents.
+        </div>
+        <div class="ai-bottom-row">
+          <div class="ai-avatar" aria-hidden="true">✦</div>
+          <div>
+            <div class="ai-meta"><span class="status-dot"></span>AI Copilot</div>
+            <span class="ask-button">Ask a question</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-avatar" aria-hidden="true">PS</div>
+        <div class="sidebar-hide user-details">
+          <div>Priya Sharma</div>
+          <small>Finance Team</small>
+        </div>
+        <span class="sidebar-hide footer-chevron" aria-hidden="true">⌄</span>
+      </div>
     </aside>
   `,
   styles: `
@@ -73,40 +99,163 @@ type TargetItem = {
     .sidebar {
       position: relative;
       z-index: 1031;
-      width: 240px;
+      width: 210px;
+      flex: 0 0 210px;
+      flex-shrink: 0;
       min-height: calc(100vh - 56px);
+      background: #fff;
+      border-right: 1px solid rgb(15 30 20 / 8%);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       transition:
         width 0.2s ease,
         transform 0.2s ease;
     }
     .sidebar.collapsed {
-      width: 68px;
+      width: 56px;
+      flex-basis: 56px;
     }
-    .sidebar-header {
+    .logo {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1rem 0.75rem 0.5rem;
+      gap: 10px;
+      padding: 16px 14px 13px;
+      border-bottom: 1px solid rgb(15 30 20 / 8%);
     }
-    .sidebar-title {
-      overflow: hidden;
-      white-space: nowrap;
-      color: #64748b;
-      font-size: 0.75rem;
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #16a34a;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
       font-weight: 700;
-      text-transform: uppercase;
+      flex-shrink: 0;
     }
-    .collapsed .sidebar-title,
-    .collapsed .menu-label,
-    .collapsed .submenu-icon {
-      display: none;
+    .logo-text {
+      font-size: 13.5px;
+      font-weight: 600;
     }
-    .collapsed .nav-link {
+    .logo-sub,
+    .ai-meta,
+    .user-details small {
+      color: #8a978e;
+      font-size: 10px;
+    }
+    .sidebar-collapse {
+      margin-left: auto;
+      border: 0;
+      background: transparent;
+      color: #8a978e;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .nav {
+      padding: 8px 6px;
+      flex: 1;
+      overflow-y: auto;
+      display: block !important;
+    }
+    ::ng-deep .nav-link {
+      color: #5b6b61;
+      font-size: 12px;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 5px 0;
+      transition: all 0.15s;
+    }
+    ::ng-deep .nav-link:hover {
+      background: #eef3f0;
+      color: #131b16;
+    }
+    ::ng-deep .nav-link.active {
+      background: transparent;
+      color: #5b6b61;
+      font-weight: 400;
+    }
+    ::ng-deep .menu-button {
+      background: transparent;
+    }
+    ::ng-deep .menu-icon {
+      color: #718078;
+      font-size: 14px;
+    }
+    ::ng-deep .submenu-icon {
+      color: #718078;
+      font-size: 11px;
+    }
+    .collapsed .logo {
+      padding: 16px 0 13px;
       justify-content: center;
     }
-    .menu-status {
-      padding: 0.75rem;
-      color: #64748b;
+    .collapsed .logo-labels,
+    .collapsed .sidebar-hide,
+    .collapsed ::ng-deep .menu-label,
+    .collapsed ::ng-deep .submenu-icon {
+      display: none;
+    }
+    .collapsed .sidebar-collapse {
+      margin-left: 0;
+    }
+    .collapsed ::ng-deep .nav-link {
+      justify-content: center;
+      padding: 8px 0;
+    }
+    .ai-widget,
+    .sidebar-footer {
+      border-top: 1px solid rgb(15 30 20 / 8%);
+      padding: 10px 12px;
+    }
+    .ai-chat-bubble {
+      background: #eef3f0;
+      border-radius: 8px 8px 8px 2px;
+      padding: 8px 9px;
+      color: #5b6b61;
+      font-size: 10px;
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+    .ai-bottom-row,
+    .sidebar-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ai-avatar,
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      background: #0d9488;
+    }
+    .ai-meta {
+      margin-bottom: 3px;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #0d9488;
+      margin-right: 3px;
+    }
+    .ask-button {
+      color: #16a34a;
+      font-size: 10.5px;
+    }
+    .footer-chevron {
+      margin-left: auto;
+      color: #8a978e;
     }
     .sidebar-toggle {
       border: 1px solid #cbd5e1;
@@ -142,6 +291,7 @@ type TargetItem = {
         bottom: 0;
         left: 0;
         width: 240px;
+        flex-basis: 240px;
         min-height: 100vh;
         transform: translateX(-100%);
         box-shadow: 0 0 1rem rgb(15 23 42 / 15%);
@@ -151,14 +301,17 @@ type TargetItem = {
       }
       .sidebar.collapsed {
         width: 240px;
+        flex-basis: 240px;
       }
-      .sidebar.collapsed .sidebar-title,
-      .sidebar.collapsed .menu-label,
-      .sidebar.collapsed .submenu-icon {
-        display: inline;
+      .sidebar.collapsed .logo-labels,
+      .sidebar.collapsed .sidebar-hide,
+      .sidebar.collapsed ::ng-deep .menu-label,
+      .sidebar.collapsed ::ng-deep .submenu-icon {
+        display: block;
       }
-      .sidebar.collapsed .nav-link {
+      .sidebar.collapsed ::ng-deep .nav-link {
         justify-content: flex-start;
+        padding: 6px 10px;
       }
       .desktop-toggle {
         display: none;
@@ -177,6 +330,24 @@ type TargetItem = {
 export class NavbarVerticalComponent {
   readonly isCollapsed = signal(false);
   readonly isMobileOpen = signal(false);
+
+  templateMenuItems(items: MenuItem[]): MenuItem[] {
+    const labels = [
+      'Home',
+      'Payables',
+      'Admin',
+      'Analytics',
+      'Process Intelligence',
+      'AI IDP',
+      'AP Help Desk',
+      'Settings',
+    ];
+
+    return items.slice(0, labels.length).map((item, index) => ({
+      ...item,
+      MENU_LABEL: labels[index],
+    }));
+  }
   /*  
 <SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/">
     <SOAP:Body>

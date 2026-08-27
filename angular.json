@@ -124,7 +124,7 @@
           "defaultConfiguration": "development",
           "options": {
             "port": 4200,
-            "proxyConfig": "projects/shell/src/proxy.conf.json"
+            "proxyConfig": "proxy.conf.json"
           }
         }
       }
@@ -173,7 +173,7 @@
               "target": "mfe1:esbuild:production"
             },
             "development": {
-              "target": "mfe1:esbuild:development",
+              "target": "mfe1:esbuild:development",1
               "dev": true
             }
           },

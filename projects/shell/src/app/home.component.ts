@@ -8,17 +8,24 @@ import { NavbarVerticalComponent } from './navbar-vertical.component';
   standalone: true,
   imports: [RouterOutlet, NavbarTopComponent, NavbarVerticalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <app-navbar-top />
 
-    <div class="shell-layout">
+  template: `
+    <div class="shell-layout w-100">
       <app-navbar-vertical />
 
-      <main class="shell-content">
-        <router-outlet />
-      </main>
+      <div class="shell-main">
+        <app-navbar-top />
+
+        <main class="shell-content">
+          <router-outlet />
+        </main>
+      </div>
     </div>
   `,
-  styles: ``,
+  styles: `
+    .shell-main {
+      width: 100%;
+    }
+  `,
 })
 export class HomeComponent {}

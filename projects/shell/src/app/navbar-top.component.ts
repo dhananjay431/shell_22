@@ -6,61 +6,156 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
+    <header class="topbar">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#">Invoice Processing</a>
+        <span class="separator" aria-hidden="true">/</span>
+        <a href="#">SAP - MIRO</a>
+        <span class="separator" aria-hidden="true">/</span>
+        <span class="current" aria-current="page">FB-60</span>
+      </nav>
+
+      <div class="topbar-right">
+        <button class="icon-button" type="button" aria-label="3 new notifications">
+          <span class="bell-icon" aria-hidden="true">♢</span>
+          <span class="notification-badge" aria-hidden="true">3</span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Dropdown
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
-          </ul>
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
+        <button class="user-avatar" type="button" aria-label="Open Priya Sharma profile">PS</button>
       </div>
-    </nav>
+    </header>
+  `,
+  styles: `
+    :host {
+      display: block;
+    }
+
+    .topbar {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0 1.25rem;
+      background: #fff;
+      border-bottom: 1px solid rgb(15 30 20 / 8%);
+      color: #5b6b61;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+    }
+
+    .breadcrumb,
+    .topbar-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .breadcrumb {
+      min-width: 0;
+      gap: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .breadcrumb a {
+      overflow: hidden;
+      color: #5b6b61;
+      text-overflow: ellipsis;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      color: #16a34a;
+    }
+
+    .separator {
+      color: #8a978e;
+    }
+
+    .current {
+      overflow: hidden;
+      color: #131b16;
+      text-overflow: ellipsis;
+    }
+
+    .topbar-right {
+      flex-shrink: 0;
+      gap: 10px;
+    }
+
+    .icon-button,
+    .user-avatar {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .icon-button {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      background: transparent;
+      color: #5b6b61;
+    }
+
+    .icon-button:hover {
+      background: #eef3f0;
+      color: #131b16;
+    }
+
+    .bell-icon {
+      font-size: 20px;
+      line-height: 1;
+      transform: rotate(45deg);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 1px;
+      right: 0;
+      min-width: 15px;
+      height: 15px;
+      padding: 0 4px;
+      border-radius: 20px;
+      background: #dc2626;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 15px;
+      text-align: center;
+    }
+
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #0d9488;
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
+    .user-avatar:hover {
+      box-shadow: 0 0 0 3px rgb(13 148 136 / 14%);
+    }
+
+    @media (max-width: 480px) {
+      .topbar {
+        padding: 0 0.75rem;
+      }
+
+      .breadcrumb {
+        gap: 5px;
+      }
+
+      .breadcrumb a:first-child,
+      .breadcrumb .separator:first-of-type {
+        display: none;
+      }
+    }
   `,
 })
 export class NavbarTopComponent {}

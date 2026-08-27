@@ -1,25 +1,35 @@
 .shell-layout {
   display: flex;
-  min-height: calc(100vh - 56px);
+  width: 100%;
+  min-height: 100vh;
 }
 
 .sidebar {
-  flex: 0 0 240px;
+  flex: 0 0 210px;
+}
+
+.shell-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
 }
 
 .shell-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 1 1 auto;
   min-width: 0;
-  flex: 1;
-  min-height: calc(100vh - 56px);
+  min-height: 0;
   padding: 2rem;
 }
 
 @media (max-width: 767.98px) {
   .shell-layout {
     display: block;
+  }
+
+  .shell-main {
+    min-height: auto;
   }
 
   .shell-content {
