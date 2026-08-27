@@ -83,10 +83,12 @@ type TargetItem = {
       </div>
 
       <div class="sidebar-footer">
-        <div class="user-avatar" aria-hidden="true">PS</div>
+        <div class="user-avatar" aria-hidden="true">
+          {{ getuserdetailsdt[0].UserName.charAt(0).toUpperCase() }}
+        </div>
         <div class="sidebar-hide user-details">
-          <div>Priya Sharma</div>
-          <small>Finance Team</small>
+          <div>{{ getuserdetailsdt[0].UserName }}</div>
+          <small>{{ getuserdetailsdt[0].ContactInformation.email }}</small>
         </div>
         <span class="sidebar-hide footer-chevron" aria-hidden="true">⌄</span>
       </div>
@@ -102,6 +104,7 @@ type TargetItem = {
       width: 210px;
       flex: 0 0 210px;
       flex-shrink: 0;
+      height: 100vh;
       min-height: calc(100vh - 56px);
       background: #fff;
       border-right: 1px solid rgb(15 30 20 / 8%);
@@ -330,7 +333,7 @@ type TargetItem = {
 export class NavbarVerticalComponent {
   readonly isCollapsed = signal(false);
   readonly isMobileOpen = signal(false);
-
+  getuserdetailsdt: any;
   templateMenuItems(items: MenuItem[]): MenuItem[] {
     const labels = [
       'Home',
@@ -365,25 +368,21 @@ export class NavbarVerticalComponent {
   */
 
   cs = inject(CommonService);
-  getalltargets = this.cs.ajax(
-    'GetAllTargets.Target',
-    'http://schemas.cordys.com/notification/workflow/1.0',
-    {},
+  getalltargets = this.cs.getalltargets;
+  getsprintapmenuforuser = this.cs.getuserdetails.pipe(
+    mergeMap((r1: any) => {
+      this.getuserdetailsdt = r1;
+      console.log('getuserdetailsdt', this.getuserdetailsdt);
+      return this.cs.ajax(
+        'GetSprintAPMenuForUser.tuple',
+        'http://schemas.cordys.com/purchaseorderdatabasemetadata',
+        {
+          userName: r1[0].UserName,
+          accessBy: 'role',
+        },
+      );
+    }),
   );
-  getsprintapmenuforuser = this.cs
-    .ajax('GetUserDetails.User', 'http://schemas.cordys.com/UserManagement/1.0/User', {})
-    .pipe(
-      mergeMap((r1: any) =>
-        this.cs.ajax(
-          'GetSprintAPMenuForUser.tuple',
-          'http://schemas.cordys.com/purchaseorderdatabasemetadata',
-          {
-            userName: r1[0].UserName,
-            accessBy: 'role',
-          },
-        ),
-      ),
-    );
   readonly menuItems$ = forkJoin({
     menu: this.getsprintapmenuforuser,
     targets: this.getalltargets,
