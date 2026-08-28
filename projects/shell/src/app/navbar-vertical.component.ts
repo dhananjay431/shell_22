@@ -89,7 +89,7 @@ type TargetItem = {
 
       <div class="sidebar-footer">
         <div class="user-avatar" aria-hidden="true">
-          {{ getuserdetailsdt[0].UserName.charAt(0).toUpperCase() }}
+          {{ getuserdetailsdt[0].UserName.slice(0, 2).toUpperCase() }}
         </div>
         <div class="sidebar-hide user-details">
           <div>{{ getuserdetailsdt[0].UserName }}</div>

@@ -29,7 +29,7 @@ export interface MenuItem {
         (click)="toggle()"
       >
         <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
-        <span class="menu-label">32 {{ item().MENU_LABEL }}</span>
+        <span class="menu-label"> {{ item().MENU_LABEL }}</span>
         <span class="submenu-icon" aria-hidden="true">{{ isOpen() ? '⌃' : '⌄' }}</span>
       </button>
 
@@ -57,12 +57,12 @@ export interface MenuItem {
         (click)="navigate.emit(item())"
       >
         <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
-        <span class="menu-label">60 {{ item().MENU_LABEL }}</span>
+        <span class="menu-label"> {{ item().MENU_LABEL }}</span>
       </a>
     } @else {
       <a class="nav-link" (click)="navigate.emit(item())">
         <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
-        <span class="menu-label">65 {{ item().MENU_LABEL }}</span>
+        <span class="menu-label"> {{ item().MENU_LABEL }}</span>
       </a>
     }
   `,

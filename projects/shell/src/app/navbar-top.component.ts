@@ -1,13 +1,18 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-
+import { CommonService } from '../../../shared/common.service';
+import { of } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+// {{i.UserName.slice(0,2).toUpperCase()}}
 @Component({
   selector: 'app-navbar-top',
   standalone: true,
-  imports: [],
+  imports: [AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="topbar">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
+    @if(dt | async; as _dt){
+    
+    <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="#">Invoice Processing</a>
         <span class="separator" aria-hidden="true">/</span>
         <a href="#">SAP - MIRO</a>
@@ -20,8 +25,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           <span class="bell-icon" aria-hidden="true">♢</span>
           <span class="notification-badge" aria-hidden="true">3</span>
         </button>
-        <button class="user-avatar" type="button" aria-label="Open Priya Sharma profile">PS</button>
+        <button class="user-avatar" type="button" aria-label="Open Priya Sharma profile">{{
+        ob(_dt)[0].UserName.slice(0,2).toUpperCase()
+        }}</button>
+        
+        
       </div>
+    }
+      
     </header>
   `,
   styles: `
@@ -158,4 +169,15 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     }
   `,
 })
-export class NavbarTopComponent {}
+export class NavbarTopComponent {
+  //getuserdetailsdt[0].UserName.slice(0,2).toUpperCase()
+  dt:any = of([]);
+  constructor(private cs:CommonService){
+
+  }
+  ob = (_:any) =>  Array.isArray(_)?_:[_];
+  ngOnInit(){
+    this.dt = this.cs.getuserdetails
+  }
+
+}
