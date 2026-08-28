@@ -141,7 +141,7 @@ export class LoginComponent {
           })
           .subscribe((r1: any) => {
             console.log(r1);
-            void that.router.navigate(['/mfe1']);
+            void that.router.navigate(['/payx']);
           });
       });
     }

@@ -173,7 +173,7 @@
               "target": "mfe1:esbuild:production"
             },
             "development": {
-              "target": "mfe1:esbuild:development",1
+              "target": "mfe1:esbuild:development",
               "dev": true
             }
           },
