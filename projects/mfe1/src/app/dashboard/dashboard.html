@@ -1,1 +1,6 @@
 <p>dashboard works!</p>
+@if (tblDT | async; as _tblDT) {
+  <div>
+    <pre>{{ _tblDT | json }}</pre>
+  </div>
+}

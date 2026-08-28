@@ -3,6 +3,7 @@ import { CommonService } from '../../../shared/common.service';
 import { AsyncPipe } from '@angular/common';
 import { forkJoin, map, mergeMap } from 'rxjs';
 import { MenuItem, MenuItemComponent } from './menu-item.component';
+import { Router } from '@angular/router';
 
 type ApiMenuItem = Omit<MenuItem, 'children'>;
 type TargetItem = {
@@ -62,7 +63,11 @@ type TargetItem = {
       <nav class="nav">
         @if (menuItems$ | async; as menuItems) {
           @for (item of templateMenuItems(menuItems); track item.ID) {
-            <app-menu-item [item]="item" [collapsed]="isCollapsed()" (navigate)="closeMobile()" />
+            <app-menu-item
+              [item]="item"
+              [collapsed]="isCollapsed()"
+              (navigate)="onNavigate($event)"
+            />
           }
         } @else {
           <p class="menu-status">Loading menu…</p>
@@ -334,6 +339,17 @@ export class NavbarVerticalComponent {
   readonly isCollapsed = signal(false);
   readonly isMobileOpen = signal(false);
   getuserdetailsdt: any;
+  private readonly router = inject(Router);
+
+  onNavigate(item: MenuItem): void {
+    console.log(item.MENU_LINK);
+    void this.router.navigate([item.MENU_LINK], {
+      queryParams: { menuId: new Date().getTime() },
+      state: { props: item },
+    });
+    this.closeMobile();
+  }
+
   templateMenuItems(items: MenuItem[]): MenuItem[] {
     const labels = [
       'Home',
@@ -455,7 +471,7 @@ export class NavbarVerticalComponent {
         .filter((target) => group.matches(target.DisplayName))
         .sort((a, b) => a.DisplayName.localeCompare(b.DisplayName))
         .map((target, index) => ({
-          ID: `target-${group.menuId}-${target.Id}`,
+          ID: target.Id,
           MENU_LABEL: target.DisplayName,
           MENU_LINK: '/payx/dashboard',
           TIP: 'sort',

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 
 export interface MenuItem {
   ID: string;
@@ -17,7 +16,7 @@ export interface MenuItem {
 @Component({
   selector: 'app-menu-item',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [],
 
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -30,7 +29,7 @@ export interface MenuItem {
         (click)="toggle()"
       >
         <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
-        <span class="menu-label">{{ item().MENU_LABEL }}</span>
+        <span class="menu-label">32 {{ item().MENU_LABEL }}</span>
         <span class="submenu-icon" aria-hidden="true">{{ isOpen() ? '⌃' : '⌄' }}</span>
       </button>
 
@@ -41,7 +40,11 @@ export interface MenuItem {
           [attr.aria-label]="item().MENU_LABEL + ' submenu'"
         >
           @for (child of item().children; track child.ID) {
-            <app-menu-item [item]="child" [collapsed]="collapsed()" (navigate)="navigate.emit()" />
+            <app-menu-item
+              [item]="child"
+              [collapsed]="collapsed()"
+              (navigate)="navigate.emit($event)"
+            />
           }
         </div>
       }
@@ -51,20 +54,15 @@ export interface MenuItem {
         [href]="item().MENU_LINK"
         target="_blank"
         rel="noopener noreferrer"
-        (click)="navigate.emit()"
+        (click)="navigate.emit(item())"
       >
         <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
-        <span class="menu-label">{{ item().MENU_LABEL }}</span>
+        <span class="menu-label">60 {{ item().MENU_LABEL }}</span>
       </a>
     } @else {
-      <a
-        class="nav-link"
-        [routerLink]="item().MENU_LINK"
-        routerLinkActive="active"
-        (click)="navigate.emit()"
-      >
+      <a class="nav-link" (click)="navigate.emit(item())">
         <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
-        <span class="menu-label">{{ item().MENU_LABEL }}</span>
+        <span class="menu-label">65 {{ item().MENU_LABEL }}</span>
       </a>
     }
   `,
@@ -104,7 +102,7 @@ export interface MenuItem {
 export class MenuItemComponent {
   readonly item = input.required<MenuItem>();
   readonly collapsed = input(false);
-  readonly navigate = output<void>();
+  readonly navigate = output<MenuItem>();
   readonly isOpen = signal(false);
 
   readonly hasChildren = () => this.item().children.length > 0;
