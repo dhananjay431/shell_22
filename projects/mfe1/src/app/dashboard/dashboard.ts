@@ -1,12 +1,34 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, forkJoin, map, of } from 'rxjs';
+import { filter, forkJoin, map, Observable, of } from 'rxjs';
 import { CommonService } from '../../../../shared/common.service';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
+
+interface TaskResponse {
+  data: Array<{
+    TaskId: string;
+    State: string;
+    DeliveryDate: string;
+    TaskData?: {
+      ApplicationData?: {
+        Invoice?: {
+          WORK_ITEM_NUMBER?: string;
+          INVOICE_NUMBER?: string;
+          VENDOR?: string;
+          COUNTRY?: string;
+          QUEUE?: string;
+          INVOICE_AMOUNT?: string;
+          CURRENCY?: string;
+        };
+      };
+    };
+  }>;
+  count: number;
+}
 
 @Component({
-  imports: [JsonPipe, AsyncPipe],
+  imports: [AsyncPipe, DatePipe],
   selector: 'app-dashboard',
   styleUrl: './dashboard.scss',
   templateUrl: './dashboard.html',
@@ -14,7 +36,13 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
 export class Dashboard {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
-  tblDT: any = of([]);
+  tblDT: Observable<TaskResponse> = of({ data: [], count: 0 });
+  readonly pageSize = 10;
+  currentPage = 0;
+  goToPage(page: number): void {
+    this.currentPage = page;
+    this.logNavigationState();
+  }
   constructor(private cs: CommonService) {
     this.router.events
       .pipe(
@@ -87,7 +115,7 @@ export class Dashboard {
               },
             },
             Cursor: {
-              '@position': 0,
+              '@position': this.currentPage * this.pageSize,
               '@numRows': 10,
               '@maxRows': 5000,
             },
@@ -164,7 +192,7 @@ export class Dashboard {
             },
           },
         )
-        .pipe(map((d) => 289)),
+        .pipe(map((d) => Number(d?.count ?? d?.total ?? (Array.isArray(d) ? d.length : 0)))),
     });
     console.log('Navigation state:', {
       state: {

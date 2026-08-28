@@ -1,6 +1,72 @@
-<p>dashboard works!</p>
-@if (tblDT | async; as _tblDT) {
-  <div>
-    <pre>{{ _tblDT | json }}</pre>
-  </div>
-}
+<section class="task-list">
+  <header class="task-list__header">
+    <div>
+      <h1>Assigned tasks</h1>
+      <p>Invoice work items assigned to your team</p>
+    </div>
+  </header>
+
+  @if (tblDT | async; as response) {
+    <div class="table-wrapper">
+      <table class="task-table">
+        <thead>
+          <tr>
+            <th>Work item</th>
+            <th>Invoice</th>
+            <th>Vendor</th>
+            <th>Country</th>
+            <th>Queue</th>
+            <th>Amount</th>
+            <th>Delivery date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (task of response.data ?? []; track task.TaskId) {
+            <tr>
+              <td>{{ task.TaskData?.ApplicationData?.Invoice?.WORK_ITEM_NUMBER || '—' }}</td>
+              <td>{{ task.TaskData?.ApplicationData?.Invoice?.INVOICE_NUMBER || '—' }}</td>
+              <td>{{ task.TaskData?.ApplicationData?.Invoice?.VENDOR || '—' }}</td>
+              <td>{{ task.TaskData?.ApplicationData?.Invoice?.COUNTRY || '—' }}</td>
+              <td>{{ task.TaskData?.ApplicationData?.Invoice?.QUEUE || '—' }}</td>
+              <td>
+                {{ task.TaskData?.ApplicationData?.Invoice?.INVOICE_AMOUNT || '0' }}
+                {{ task.TaskData?.ApplicationData?.Invoice?.CURRENCY || '' }}
+              </td>
+              <td>{{ task.DeliveryDate | date: 'dd MMM yyyy, HH:mm' }}</td>
+              <td>
+                <span class="status">{{ task.State }}</span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td class="empty" colspan="8">No assigned tasks found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="task-list__footer">
+      <span
+        >Showing {{ currentPage * pageSize + 1 }}–{{
+          currentPage * pageSize + (response.data?.length ?? 0)
+        }}
+        of {{ response.count ?? 0 }}</span
+      >
+      <div class="pagination">
+        <button type="button" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">
+          Previous
+        </button>
+        <span>Page {{ currentPage + 1 }}</span>
+        <button
+          type="button"
+          [disabled]="(currentPage + 1) * pageSize >= (response.count ?? 0)"
+          (click)="goToPage(currentPage + 1)"
+        >
+          Next
+        </button>
+      </div>
+    </footer>
+  }
+</section>
