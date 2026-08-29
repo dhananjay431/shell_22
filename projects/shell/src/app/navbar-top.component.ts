@@ -1,22 +1,28 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonService } from '../../../shared/common.service';
-import { of } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { debounceTime, forkJoin, last, map, mergeMap, of, tap } from 'rxjs';
+import { AsyncPipe, JsonPipe } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
 // {{i.UserName.slice(0,2).toUpperCase()}}
-@Component({
-  selector: 'app-navbar-top',
-  standalone: true,
-  imports: [AsyncPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <header class="topbar">
-      @if (dt | async; as _dt) {
-        <nav class="breadcrumb" aria-label="Breadcrumb">
+/* 
+  <nav class="breadcrumb" aria-label="Breadcrumb">
           <a href="#">Invoice Processing</a>
           <span class="separator" aria-hidden="true">/</span>
           <a href="#">SAP - MIRO</a>
           <span class="separator" aria-hidden="true">/</span>
           <span class="current" aria-current="page">FB-60</span>
+        </nav>
+         */
+@Component({
+  selector: 'app-navbar-top',
+  standalone: true,
+  imports: [AsyncPipe, JsonPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <header class="topbar">
+      @if (dt | async; as _dt) {
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="#">{{ ob(_dt)[0].link.MENU_LABEL }}</a>
         </nav>
 
         <div class="topbar-right">
@@ -25,7 +31,7 @@ import { AsyncPipe } from '@angular/common';
             <span class="notification-badge" aria-hidden="true">3</span>
           </button>
           <button class="user-avatar" type="button" aria-label="Open Priya Sharma profile">
-            {{ ob(_dt)[0].UserName.slice(0, 2).toUpperCase() }}
+            {{ ob(_dt)[0].user[0].UserName.slice(0, 2).toUpperCase() }}
           </button>
         </div>
       }
@@ -170,10 +176,22 @@ import { AsyncPipe } from '@angular/common';
 })
 export class NavbarTopComponent {
   //getuserdetailsdt[0].UserName.slice(0,2).toUpperCase()
-  dt: any = of([]);
+
+  router = inject(Router);
   constructor(private cs: CommonService) {}
   ob = (_: any) => (Array.isArray(_) ? _ : [_]);
+
+  fk() {
+    return forkJoin({
+      user: this.cs.getuserdetails,
+      link: of(history.state.props),
+    });
+  }
+  dt: any = of({ user: [], link: {} });
   ngOnInit() {
-    this.dt = this.cs.getuserdetails;
+    this.dt = this.router.events.pipe(
+      debounceTime(300),
+      mergeMap((d: any) => this.fk()),
+    );
   }
 }
