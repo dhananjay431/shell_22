@@ -6,7 +6,19 @@
     </div>
   </header>
 
-  <table datatable [dtOptions]="dtOptions" class="table table-striped"></table>
+  <article class="task-list__card p-2" aria-labelledby="task-table-title">
+    <header class="task-list__card-header">
+      <div>
+        <p class="task-list__eyebrow">Overview</p>
+        <h2 id="task-table-title">Task list</h2>
+      </div>
+      <span class="task-list__count">Assigned work</span>
+    </header>
+
+    <div class="table-wrapper">
+      <table datatable [dtOptions]="dtOptions" class="table table-striped"></table>
+    </div>
+  </article>
 
   <!-- <div class="column-options">
     <button type="button" (click)="showColumnOptions = !showColumnOptions">Show columns</button>

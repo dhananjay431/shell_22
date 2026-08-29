@@ -25,4 +25,61 @@
       <span class="dashboard__change">2 recently joined</span>
     </article>
   </div>
+
+  <article class="dashboard__table-card" aria-labelledby="recent-activity-title">
+    <header class="dashboard__table-header">
+      <div>
+        <p class="dashboard__eyebrow">Overview</p>
+        <h2 id="recent-activity-title">Recent activity</h2>
+      </div>
+      <span class="dashboard__table-count">4 records</span>
+    </header>
+
+    <div class="dashboard__table-wrapper">
+      <table class="dashboard__table">
+        <caption class="visually-hidden">
+          Recent invoice activity
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Reference</th>
+            <th scope="col">Vendor</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Status</th>
+            <th scope="col">Last updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">INV-1048</th>
+            <td>Northwind Supplies</td>
+            <td>$4,280.00</td>
+            <td><span class="dashboard__badge dashboard__badge--approved">Approved</span></td>
+            <td>Today, 10:24 AM</td>
+          </tr>
+          <tr>
+            <th scope="row">INV-1047</th>
+            <td>Contoso Services</td>
+            <td>$1,925.50</td>
+            <td><span class="dashboard__badge dashboard__badge--pending">Pending</span></td>
+            <td>Yesterday, 3:18 PM</td>
+          </tr>
+          <tr>
+            <th scope="row">INV-1046</th>
+            <td>Fabrikam Logistics</td>
+            <td>$8,640.75</td>
+            <td><span class="dashboard__badge dashboard__badge--review">In review</span></td>
+            <td>Yesterday, 11:06 AM</td>
+          </tr>
+          <tr>
+            <th scope="row">INV-1045</th>
+            <td>Adventure Works</td>
+            <td>$760.00</td>
+            <td><span class="dashboard__badge dashboard__badge--approved">Approved</span></td>
+            <td>22 Aug 2026</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
 </section>
