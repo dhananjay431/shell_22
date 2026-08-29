@@ -83,8 +83,10 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "projects/shell/public/css/dataTables.bootstrap5.min.css",
               "projects/shell/src/styles.scss"
             ],
+
             "polyfills": ["es-module-shims"]
           },
           "configurations": {

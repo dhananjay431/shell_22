@@ -3,8 +3,8 @@
 }
 
 .dashboard {
-  padding: 2rem;
-  color: #172033;
+  padding: 0.5rem;
+  color: var(--vuexy-heading);
 }
 
 .dashboard__header {
@@ -18,7 +18,7 @@
 .dashboard__eyebrow,
 .dashboard__label {
   margin: 0;
-  color: #65718a;
+  color: var(--vuexy-muted);
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -33,14 +33,14 @@ h1 {
 .dashboard__intro,
 .dashboard__change {
   margin: 0;
-  color: #65718a;
+  color: var(--vuexy-body);
 }
 
 .dashboard__status {
   padding: 0.5rem 0.75rem;
   border-radius: 999px;
-  background: #e7f7ed;
-  color: #19733b;
+  background: #ddf6e8;
+  color: #10502c;
   font-size: 0.85rem;
 }
 
@@ -53,11 +53,11 @@ h1 {
 .dashboard__card {
   display: grid;
   gap: 0.65rem;
-  padding: 1.5rem;
-  border: 1px solid #e1e6ef;
-  border-radius: 0.75rem;
-  background: #fff;
-  box-shadow: 0 0.25rem 1rem rgb(23 32 51 / 6%);
+  padding: 1.25rem;
+  border: 1px solid var(--vuexy-border);
+  border-radius: 0.5rem;
+  background: var(--vuexy-paper);
+  box-shadow: 0 0.2rem 0.75rem rgb(47 43 61 / 6%);
 }
 
 .dashboard__card strong {

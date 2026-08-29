@@ -11,6 +11,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import { DataTablesModule } from 'angular-datatables';
+
 import { CommonService } from '../../../../shared/common.service';
 
 interface TableHeader {
@@ -26,7 +28,8 @@ interface TableHeader {
 }
 
 @Component({
-  imports: [AsyncPipe, DatePipe],
+  imports: [DataTablesModule],
+  // imports: [AsyncPipe, DatePipe, DataTablesModule],
   selector: 'app-dashboard',
   styleUrl: './dashboard.scss',
   templateUrl: './dashboard.html',
@@ -38,6 +41,40 @@ export class Dashboard {
   readonly pageSize = 10;
   currentPage = 0;
   showColumnOptions = false;
+  readonly tblDT = combineLatest([
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map(() => history.state?.props?.ID ?? ''),
+      startWith(history.state?.props?.ID ?? ''),
+    ),
+    this.page$,
+  ]).pipe(
+    map(([targetId, page]) => ({ targetId, page })),
+    switchMap(({ targetId, page }) => {
+      const query = this.createQuery(targetId, page * this.pageSize);
+      return forkJoin({
+        data: this.cs.ajax(
+          'GetHumanTasks.NOTF_TASK_INSTANCE',
+          'http://schemas.cordys.com/notification/workflow/1.0',
+          query,
+        ),
+        count: this.cs
+          .ajax('GetHumanTasks', 'http://schemas.cordys.com/notification/workflow/1.0', {
+            '@countOnly': 'true',
+            Query: query.Query,
+          })
+          .pipe(
+            map((d: any) => {
+              return Number(d.Count ?? 0);
+            }),
+          ),
+      });
+    }),
+    tap((d: any) => {
+      console.log('data=>', d);
+    }),
+  );
+
   readonly allHeaders: TableHeader[] = [
     {
       name: 'select',
@@ -85,161 +122,161 @@ export class Dashboard {
       sort: false,
       db_sort: true,
     },
-    {
-      name: 'Classifications',
-      displayKey: 'Classifications',
-      index: 5,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'PO Number',
-      displayKey: 'PO Number',
-      index: 6,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Vendor Name',
-      displayKey: 'Vendor Name',
-      index: 7,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Company Code',
-      displayKey: 'Company Code',
-      index: 8,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Invoice Amount',
-      displayKey: 'Invoice Amount',
-      index: 9,
-      isSelected: true,
-      type: 'number',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Currency',
-      displayKey: 'Currency',
-      index: 10,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'ERP Due Date',
-      displayKey: 'ERP Due Date',
-      index: 11,
-      isSelected: true,
-      type: 'date',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Due Date',
-      displayKey: 'Due Date',
-      index: 12,
-      isSelected: true,
-      type: 'date',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Received Date',
-      displayKey: 'Received Date',
-      index: 13,
-      isSelected: true,
-      type: 'date',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Assignee',
-      displayKey: 'Assignee',
-      index: 14,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Delegated To',
-      displayKey: 'Delegated To',
-      index: 15,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Queue',
-      displayKey: 'Queue',
-      index: 16,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Team',
-      displayKey: 'Team',
-      index: 17,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Completed By',
-      displayKey: 'Completed By',
-      index: 18,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-      displayOnlyIn: 'completedTask',
-    },
-    {
-      name: 'Completed On',
-      displayKey: 'Completed On',
-      index: 19,
-      isSelected: true,
-      type: 'date',
-      sort: false,
-      db_sort: true,
-      displayOnlyIn: 'completedTask',
-    },
-    {
-      name: 'Source',
-      displayKey: 'Source',
-      index: 20,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
-    {
-      name: 'Initiator',
-      displayKey: 'Initiator',
-      index: 21,
-      isSelected: true,
-      type: 'string',
-      sort: false,
-      db_sort: true,
-    },
+    // {
+    //   name: 'Classifications',
+    //   displayKey: 'Classifications',
+    //   index: 5,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'PO Number',
+    //   displayKey: 'PO Number',
+    //   index: 6,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Vendor Name',
+    //   displayKey: 'Vendor Name',
+    //   index: 7,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Company Code',
+    //   displayKey: 'Company Code',
+    //   index: 8,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Invoice Amount',
+    //   displayKey: 'Invoice Amount',
+    //   index: 9,
+    //   isSelected: true,
+    //   type: 'number',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Currency',
+    //   displayKey: 'Currency',
+    //   index: 10,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'ERP Due Date',
+    //   displayKey: 'ERP Due Date',
+    //   index: 11,
+    //   isSelected: true,
+    //   type: 'date',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Due Date',
+    //   displayKey: 'Due Date',
+    //   index: 12,
+    //   isSelected: true,
+    //   type: 'date',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Received Date',
+    //   displayKey: 'Received Date',
+    //   index: 13,
+    //   isSelected: true,
+    //   type: 'date',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Assignee',
+    //   displayKey: 'Assignee',
+    //   index: 14,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Delegated To',
+    //   displayKey: 'Delegated To',
+    //   index: 15,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Queue',
+    //   displayKey: 'Queue',
+    //   index: 16,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Team',
+    //   displayKey: 'Team',
+    //   index: 17,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Completed By',
+    //   displayKey: 'Completed By',
+    //   index: 18,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    //   displayOnlyIn: 'completedTask',
+    // },
+    // {
+    //   name: 'Completed On',
+    //   displayKey: 'Completed On',
+    //   index: 19,
+    //   isSelected: true,
+    //   type: 'date',
+    //   sort: false,
+    //   db_sort: true,
+    //   displayOnlyIn: 'completedTask',
+    // },
+    // {
+    //   name: 'Source',
+    //   displayKey: 'Source',
+    //   index: 20,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
+    // {
+    //   name: 'Initiator',
+    //   displayKey: 'Initiator',
+    //   index: 21,
+    //   isSelected: true,
+    //   type: 'string',
+    //   sort: false,
+    //   db_sort: true,
+    // },
   ];
   tableHeaders = this.allHeaders.filter((header) => header.isSelected);
 
@@ -290,49 +327,73 @@ export class Dashboard {
     };
     return values[header.name];
   }
-
+  dtOptions: any;
   ngOnInit() {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      serverSide: true,
+      ajax: (dataTablesParameters: any, callback: any) => {
+        console.log(dataTablesParameters);
+        combineLatest([
+          this.router.events.pipe(
+            filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+            map(() => history.state?.props?.ID ?? ''),
+            startWith(history.state?.props?.ID ?? ''),
+          ),
+          this.page$,
+        ])
+          .pipe(
+            map(([targetId, page]) => ({ targetId, page })),
+            switchMap(({ targetId, page }) => {
+              const query = this.createQuery(targetId, page * this.pageSize);
+              return forkJoin({
+                data: this.cs.ajax(
+                  'GetHumanTasks.NOTF_TASK_INSTANCE',
+                  'http://schemas.cordys.com/notification/workflow/1.0',
+                  query,
+                ),
+                count: this.cs
+                  .ajax('GetHumanTasks', 'http://schemas.cordys.com/notification/workflow/1.0', {
+                    '@countOnly': 'true',
+                    Query: query.Query,
+                  })
+                  .pipe(
+                    map((d: any) => {
+                      return Number(d.Count ?? 0);
+                    }),
+                  ),
+              });
+            }),
+            tap((d: any) => {
+              console.log('data=>', d);
+            }),
+          )
+          .subscribe((resp: any) => {
+            console.log('sadf=>', resp);
+            callback({
+              recordsTotal: resp.count,
+              recordsFiltered: resp.count,
+              data: resp.data,
+            });
+          });
+      },
+      columns: [
+        {
+          title: 'ID',
+          data: 'ActivityId',
+        },
+      ],
+    };
+
     fetch('/config/inbox.config.json')
       .then((j) => j.json())
       .then((r) => {
         console.log('=>', r);
       });
   }
-  readonly tblDT = combineLatest([
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map(() => history.state?.props?.ID ?? ''),
-      startWith(history.state?.props?.ID ?? ''),
-    ),
-    this.page$,
-  ]).pipe(
-    map(([targetId, page]) => ({ targetId, page })),
-    switchMap(({ targetId, page }) => {
-      const query = this.createQuery(targetId, page * this.pageSize);
-      return forkJoin({
-        data: this.cs.ajax(
-          'GetHumanTasks.NOTF_TASK_INSTANCE',
-          'http://schemas.cordys.com/notification/workflow/1.0',
-          query,
-        ),
-        count: this.cs
-          .ajax('GetHumanTasks', 'http://schemas.cordys.com/notification/workflow/1.0', {
-            '@countOnly': 'true',
-            Query: query.Query,
-          })
-          .pipe(
-            map((d: any) => {
-              return Number(d.Count ?? 0);
-            }),
-          ),
-      });
-    }),
-    tap((d: any) => {
-      console.log('data=>', d);
-    }),
-  );
 
   goToPage(page: number): void {
+    debugger;
     if (page < 0 || page === this.currentPage) return;
     this.currentPage = page;
     this.page$.next(page);

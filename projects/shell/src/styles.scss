@@ -1,3 +1,40 @@
+:root {
+  --vuexy-primary: #7367f0;
+  --vuexy-primary-soft: #eeedff;
+  --vuexy-body-bg: #f8f7fa;
+  --vuexy-paper: #fff;
+  --vuexy-heading: #2f2b3d;
+  --vuexy-body: #6d6b77;
+  --vuexy-muted: #a5a3ae;
+  --vuexy-border: #e6e6e8;
+  --vuexy-shadow: 0 0.2rem 0.75rem rgb(47 43 61 / 8%);
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--vuexy-body-bg);
+  color: var(--vuexy-body);
+  font-family:
+    'Public Sans',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  font-size: 0.9375rem;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
 .shell-layout {
   display: flex;
 }

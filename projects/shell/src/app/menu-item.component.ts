@@ -75,6 +75,8 @@ export interface MenuItem {
       display: flex;
       align-items: center;
       gap: 0.7rem;
+      text-decoration: none;
+      cursor: pointer;
     }
     .menu-button {
       width: 100%;
@@ -86,7 +88,8 @@ export interface MenuItem {
       width: 1.25rem;
       flex: 0 0 1.25rem;
       text-align: center;
-      font-size: 1.1rem;
+      color: var(--vuexy-muted);
+      font-size: 1rem;
     }
     .submenu-icon {
       margin-left: auto;

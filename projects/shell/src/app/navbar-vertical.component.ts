@@ -106,13 +106,13 @@ type TargetItem = {
     .sidebar {
       position: relative;
       z-index: 1031;
-      width: 210px;
-      flex: 0 0 210px;
+      width: 250px;
+      flex: 0 0 250px;
       flex-shrink: 0;
       height: 100vh;
       min-height: calc(100vh - 56px);
       background: #fff;
-      border-right: 1px solid rgb(15 30 20 / 8%);
+      border-right: 1px solid var(--vuexy-border);
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -121,8 +121,8 @@ type TargetItem = {
         transform 0.2s ease;
     }
     .sidebar.collapsed {
-      width: 56px;
-      flex-basis: 56px;
+      width: 68px;
+      flex-basis: 68px;
     }
     .logo {
       display: flex;
@@ -136,7 +136,7 @@ type TargetItem = {
       width: 32px;
       height: 32px;
       border-radius: 8px;
-      background: #16a34a;
+      background: var(--vuexy-primary);
       color: #fff;
       display: grid;
       place-items: center;
@@ -151,7 +151,7 @@ type TargetItem = {
     .logo-sub,
     .ai-meta,
     .user-details small {
-      color: #8a978e;
+      color: var(--vuexy-muted);
       font-size: 10px;
     }
     .sidebar-collapse {
@@ -169,7 +169,7 @@ type TargetItem = {
       display: block !important;
     }
     ::ng-deep .nav-link {
-      color: #5b6b61;
+      color: var(--vuexy-body);
       font-size: 12px;
       border-radius: 6px;
       padding: 10px 14px;
@@ -177,19 +177,19 @@ type TargetItem = {
       transition: all 0.15s;
     }
     ::ng-deep .nav-link:hover {
-      background: #eef3f0;
-      color: #131b16;
+      background: var(--vuexy-primary-soft);
+      color: var(--vuexy-primary);
     }
     ::ng-deep .nav-link.active {
-      background: transparent;
-      color: #5b6b61;
-      font-weight: 400;
+      background: var(--vuexy-primary-soft);
+      color: var(--vuexy-primary);
+      font-weight: 600;
     }
     ::ng-deep .menu-button {
       background: transparent;
     }
     ::ng-deep .menu-icon {
-      color: #718078;
+      color: var(--vuexy-muted);
       font-size: 14px;
     }
     ::ng-deep .submenu-icon {
@@ -215,14 +215,14 @@ type TargetItem = {
     }
     .ai-widget,
     .sidebar-footer {
-      border-top: 1px solid rgb(15 30 20 / 8%);
+      border-top: 1px solid var(--vuexy-border);
       padding: 10px 12px;
     }
     .ai-chat-bubble {
-      background: #eef3f0;
+      background: var(--vuexy-primary-soft);
       border-radius: 8px 8px 8px 2px;
       padding: 8px 9px;
-      color: #5b6b61;
+      color: var(--vuexy-body);
       font-size: 10px;
       line-height: 1.5;
       margin-bottom: 6px;
@@ -244,7 +244,7 @@ type TargetItem = {
       color: #fff;
       font-size: 11px;
       font-weight: 700;
-      background: #0d9488;
+      background: var(--vuexy-primary);
     }
     .ai-meta {
       margin-bottom: 3px;
@@ -258,18 +258,18 @@ type TargetItem = {
       margin-right: 3px;
     }
     .ask-button {
-      color: #16a34a;
+      color: var(--vuexy-primary);
       font-size: 10.5px;
     }
     .footer-chevron {
       margin-left: auto;
-      color: #8a978e;
+      color: var(--vuexy-muted);
     }
     .sidebar-toggle {
-      border: 1px solid #cbd5e1;
+      border: 1px solid var(--vuexy-border);
       border-radius: 0.35rem;
-      color: #334155;
-      background: white;
+      color: var(--vuexy-heading);
+      background: var(--vuexy-paper);
       cursor: pointer;
     }
     .desktop-toggle {
@@ -298,8 +298,8 @@ type TargetItem = {
         top: 0;
         bottom: 0;
         left: 0;
-        width: 240px;
-        flex-basis: 240px;
+        width: 250px;
+        flex-basis: 250px;
         min-height: 100vh;
         transform: translateX(-100%);
         box-shadow: 0 0 1rem rgb(15 23 42 / 15%);
@@ -308,8 +308,8 @@ type TargetItem = {
         transform: translateX(0);
       }
       .sidebar.collapsed {
-        width: 240px;
-        flex-basis: 240px;
+        width: 250px;
+        flex-basis: 250px;
       }
       .sidebar.collapsed .logo-labels,
       .sidebar.collapsed .sidebar-hide,
