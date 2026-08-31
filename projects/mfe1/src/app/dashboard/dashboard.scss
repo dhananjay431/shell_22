@@ -107,6 +107,11 @@
   margin-bottom: 0 !important;
 }
 
+.table-wrapper ::ng-deep .dt-layout-table thead th,
+.table-wrapper ::ng-deep .dt-layout-table tbody td {
+  font-size: 12px;
+}
+
 /* Keep the length/search controls and pagination fixed below the scrolling
    table body. */
 .table-wrapper ::ng-deep .dt-layout-row {

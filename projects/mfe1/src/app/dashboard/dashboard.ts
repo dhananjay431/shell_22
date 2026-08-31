@@ -132,7 +132,7 @@ export class Dashboard {
         {
           title: 'SLA',
           data: 'SLA',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: (data: any, type: any, row: any) => {
             console.log(data);
             return data || '';
@@ -141,7 +141,7 @@ export class Dashboard {
         {
           title: 'Work Item Number',
           data: 'TaskData.ApplicationData.Invoice.WORK_ITEM_NUMBER',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: (data: any, type: any, row: any) => {
             console.log(data, type, row);
             return data || '';
@@ -150,7 +150,7 @@ export class Dashboard {
         {
           title: 'Status',
           data: 'TaskData.ApplicationData.Invoice.WORK_ITEM_STATUS',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: (data: any, type: any, row: any) => {
             return data || '';
           },
@@ -158,7 +158,7 @@ export class Dashboard {
         {
           title: 'Invoice Number',
           data: 'TaskData.ApplicationData.Invoice.INVOICE_NUMBER',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -166,7 +166,7 @@ export class Dashboard {
         {
           title: 'Classifications',
           data: 'TaskData.ApplicationData.Invoice.CLASSIFICATIONS',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -174,7 +174,7 @@ export class Dashboard {
         {
           title: 'PO Number',
           data: 'TaskData.ApplicationData.Invoice.PO_NUMBER',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -182,7 +182,7 @@ export class Dashboard {
         {
           title: 'Vendor Name',
           data: 'TaskData.ApplicationData.Invoice.VENDOR',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -190,7 +190,7 @@ export class Dashboard {
         {
           title: 'Company Code',
           data: 'TaskData.ApplicationData.Invoice.COMPANY_CODE',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -198,7 +198,7 @@ export class Dashboard {
         {
           title: 'Invoice Amount',
           data: 'TaskData.ApplicationData.Invoice.INVOICE_AMOUNT',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -206,7 +206,7 @@ export class Dashboard {
         {
           title: 'Currency',
           data: 'TaskData.ApplicationData.Invoice.CURRENCY',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -214,7 +214,7 @@ export class Dashboard {
         {
           title: 'ERP Due Date',
           data: 'TaskData.ApplicationData.Invoice.ERP_DUE_DATE',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: (data: any, type: any, row: any) => {
             return this.formatDate(data);
           },
@@ -222,7 +222,7 @@ export class Dashboard {
         {
           title: 'Due Date',
           data: 'TaskData.ApplicationData.Invoice.SLA_OverDue',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: (data: any, type: any, row: any) => {
             return this.formatDate(data);
           },
@@ -230,7 +230,7 @@ export class Dashboard {
         {
           title: 'Received Date',
           data: 'DeliveryDate',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: (data: any, type: any, row: any) => {
             return this.formatDate(data);
           },
@@ -238,7 +238,7 @@ export class Dashboard {
         {
           title: 'Assignee',
           data: 'Assignee.@displayName',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -246,7 +246,7 @@ export class Dashboard {
         {
           title: 'Delegated To',
           data: 'DelegatedToUser.@displayName',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -254,7 +254,7 @@ export class Dashboard {
         {
           title: 'Queue',
           data: 'TaskData.ApplicationData.Invoice.QUEUE',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -262,7 +262,7 @@ export class Dashboard {
         {
           title: 'Team',
           data: 'TaskData.ApplicationData.Invoice.TEAM',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data || '';
           },
@@ -270,7 +270,7 @@ export class Dashboard {
         // {
         //   title: 'Completed By',
         //   data: 'CompletedByUser.@displayName',
-        //   className: 'text-nowrap',
+        //   className: 'text-nowrap p-1',
         //   render: function (data: any, type: any, row: any) {
         //     return data || '';
         //   },
@@ -278,7 +278,7 @@ export class Dashboard {
         // {
         //   title: 'Completed On',
         //   data: 'CompletionDate',
-        //   className: 'text-nowrap',
+        //   className: 'text-nowrap p-1',
         //   render: function (data: any, type: any, row: any) {
         //     return data || '';
         //   },
@@ -286,7 +286,7 @@ export class Dashboard {
         {
           title: 'Source',
           data: 'TaskData.ApplicationData.Invoice.SOURCE',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data;
           },
@@ -294,7 +294,7 @@ export class Dashboard {
         {
           title: 'Initiator',
           data: 'TaskData.ApplicationData.Invoice.INITIATOR',
-          className: 'text-nowrap',
+          className: 'text-nowrap p-1',
           render: function (data: any, type: any, row: any) {
             return data;
           },
@@ -317,7 +317,7 @@ export class Dashboard {
           return {
             title: column.name,
             data: config.taskDataNode.join('.'),
-            className: 'text-nowrap',
+            className: 'text-nowrap p-1',
             render: (data: unknown) =>
               column.type === 'date' ? this.formatDate(data) : (data ?? ''),
           };
