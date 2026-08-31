@@ -1,6 +1,18 @@
 .task-list {
   padding: 1.5rem;
   color: #243447;
+  box-sizing: border-box;
+  width: calc(100vw - 249px);
+  max-width: calc(100vw - 249px);
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+@media (max-width: 767.98px) {
+  .task-list {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 .task-list__header {
@@ -23,6 +35,10 @@
   border-radius: 0.75rem;
   background: #fff;
   box-shadow: 0 0.2rem 0.75rem rgb(23 32 51 / 6%);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .task-list__card-header {
@@ -55,7 +71,54 @@
 }
 
 .table-wrapper {
-  overflow-x: auto;
+  /* Keep DataTables controls, especially pagination, outside the scroll area. */
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* DataTables creates these layout elements around the table. The table has
+   nowrap columns, so allowing these flex items to shrink is essential to
+   prevent the card from becoming wider than its containing page. */
+.table-wrapper ::ng-deep .dt-container,
+.table-wrapper ::ng-deep .dt-layout-row,
+.table-wrapper ::ng-deep .dt-layout-cell,
+.table-wrapper ::ng-deep .dt-layout-table {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.table-wrapper ::ng-deep .dt-layout-table {
+  width: 100%;
+  overflow: auto;
+  // max-height: min(60vh, 36rem);
+  overscroll-behavior: contain;
+}
+
+.table-wrapper ::ng-deep .dt-layout-table > div {
+  min-width: 100%;
+  width: max-content;
+}
+
+.table-wrapper ::ng-deep .dt-layout-table table {
+  width: max-content !important;
+  min-width: 100%;
+  margin-bottom: 0 !important;
+}
+
+/* Keep the length/search controls and pagination fixed below the scrolling
+   table body. */
+.table-wrapper ::ng-deep .dt-layout-row {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.table-wrapper ::ng-deep .dt-layout-row:last-child {
+  position: relative;
+  z-index: 1;
+  background: #fff;
 }
 
 .column-options {

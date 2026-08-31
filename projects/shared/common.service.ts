@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import { from, Observable, shareReplay } from 'rxjs';
 
 /**
  * Shared application state that can be consumed by the shell and remotes.
@@ -45,6 +45,23 @@ export class CommonService {
       ? request$.pipe(shareReplay({ bufferSize: 1, refCount: true }))
       : request$;
   }
+  fetch(url:any,useShareReplay = false): Observable<any> {
+    const request$ =new Observable<any>((subscriber) => {
+      fetch(url)
+      .then((j) => j.json())
+      .then((res:any)=>{
+        subscriber.next(res);
+        subscriber.complete();
+      },(err:any)=>{
+        subscriber.error(err);
+      })
+    })
+    return useShareReplay
+      ? request$.pipe(shareReplay({ bufferSize: 1, refCount: true }))
+      : request$;
+  }
+
+  inbox_config_json = this.fetch("/config/inbox.config.json",true);
 
   getuserdetails = this.ajax(
     'GetUserDetails.User',

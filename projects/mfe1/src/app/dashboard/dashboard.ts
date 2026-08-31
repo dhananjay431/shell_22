@@ -23,6 +23,11 @@ import { CommonService } from '../../../../shared/common.service';
   templateUrl: './dashboard.html',
 })
 export class Dashboard {
+  private readonly dateFormatter = new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
   private readonly router = inject(Router);
   private readonly cs = inject(CommonService);
   private readonly page$ = new BehaviorSubject(0);
@@ -64,12 +69,22 @@ export class Dashboard {
   );
 
   dtOptions: any;
+
+  private formatDate(value: unknown): string {
+    if (!value) {
+      return '';
+    }
+
+    const date = value instanceof Date ? value : new Date(String(value));
+
+    return Number.isNaN(date.getTime()) ? '' : this.dateFormatter.format(date);
+  }
+
   ngOnInit() {
     this.dtOptions = {
       pagingType: 'full_numbers',
       serverSide: true,
       ajax: (dataTablesParameters: any, callback: any) => {
-        console.log(dataTablesParameters);
         combineLatest([
           this.router.events.pipe(
             filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -81,7 +96,7 @@ export class Dashboard {
           .pipe(
             map(([targetId, page]) => ({ targetId, page })),
             switchMap(({ targetId, page }) => {
-              const query = this.createQuery(targetId, page * this.pageSize);
+              const query = this.createQuery(targetId, dataTablesParameters);
               return forkJoin({
                 data: this.cs.ajax(
                   'GetHumanTasks.NOTF_TASK_INSTANCE',
@@ -115,20 +130,205 @@ export class Dashboard {
       },
       columns: [
         {
-          title: 'ID',
-          data: 'ActivityId',
+          title: 'SLA',
+          data: 'SLA',
+          className: 'text-nowrap',
+          render: (data: any, type: any, row: any) => {
+            console.log(data);
+            return data || '';
+          },
+        },
+        {
+          title: 'Work Item Number',
+          data: 'TaskData.ApplicationData.Invoice.WORK_ITEM_NUMBER',
+          className: 'text-nowrap',
+          render: (data: any, type: any, row: any) => {
+            console.log(data, type, row);
+            return data || '';
+          },
+        },
+        {
+          title: 'Status',
+          data: 'TaskData.ApplicationData.Invoice.WORK_ITEM_STATUS',
+          className: 'text-nowrap',
+          render: (data: any, type: any, row: any) => {
+            return data || '';
+          },
+        },
+        {
+          title: 'Invoice Number',
+          data: 'TaskData.ApplicationData.Invoice.INVOICE_NUMBER',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'Classifications',
+          data: 'TaskData.ApplicationData.Invoice.CLASSIFICATIONS',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'PO Number',
+          data: 'TaskData.ApplicationData.Invoice.PO_NUMBER',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'Vendor Name',
+          data: 'TaskData.ApplicationData.Invoice.VENDOR',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'Company Code',
+          data: 'TaskData.ApplicationData.Invoice.COMPANY_CODE',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'Invoice Amount',
+          data: 'TaskData.ApplicationData.Invoice.INVOICE_AMOUNT',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'Currency',
+          data: 'TaskData.ApplicationData.Invoice.CURRENCY',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'ERP Due Date',
+          data: 'TaskData.ApplicationData.Invoice.ERP_DUE_DATE',
+          className: 'text-nowrap',
+          render: (data: any, type: any, row: any) => {
+            return this.formatDate(data);
+          },
+        },
+        {
+          title: 'Due Date',
+          data: 'TaskData.ApplicationData.Invoice.SLA_OverDue',
+          className: 'text-nowrap',
+          render: (data: any, type: any, row: any) => {
+            return this.formatDate(data);
+          },
+        },
+        {
+          title: 'Received Date',
+          data: 'DeliveryDate',
+          className: 'text-nowrap',
+          render: (data: any, type: any, row: any) => {
+            return this.formatDate(data);
+          },
+        },
+        {
+          title: 'Assignee',
+          data: 'Assignee.@displayName',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'Delegated To',
+          data: 'DelegatedToUser.@displayName',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'Queue',
+          data: 'TaskData.ApplicationData.Invoice.QUEUE',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        {
+          title: 'Team',
+          data: 'TaskData.ApplicationData.Invoice.TEAM',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data || '';
+          },
+        },
+        // {
+        //   title: 'Completed By',
+        //   data: 'CompletedByUser.@displayName',
+        //   className: 'text-nowrap',
+        //   render: function (data: any, type: any, row: any) {
+        //     return data || '';
+        //   },
+        // },
+        // {
+        //   title: 'Completed On',
+        //   data: 'CompletionDate',
+        //   className: 'text-nowrap',
+        //   render: function (data: any, type: any, row: any) {
+        //     return data || '';
+        //   },
+        // },
+        {
+          title: 'Source',
+          data: 'TaskData.ApplicationData.Invoice.SOURCE',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data;
+          },
+        },
+        {
+          title: 'Initiator',
+          data: 'TaskData.ApplicationData.Invoice.INITIATOR',
+          className: 'text-nowrap',
+          render: function (data: any, type: any, row: any) {
+            return data;
+          },
         },
       ],
     };
 
-    fetch('/config/inbox.config.json')
-      .then((j) => j.json())
-      .then((r) => {
-        console.log('=>', r);
-      });
+    this.cs.inbox_config_json.subscribe((r: any) => {
+      const columnsToDisplay = r.Inbox.InboxColumnsToDisplay;
+      const dataPopulateConfig = r.Inbox.InboxDataPopulateConfiguration;
+
+      const columns = columnsToDisplay
+        .map((column: any) => {
+          const config = dataPopulateConfig.find((item: any) => item.columnName === column.name);
+
+          if (!config) {
+            return null;
+          }
+
+          return {
+            title: column.name,
+            data: config.taskDataNode.join('.'),
+            className: 'text-nowrap',
+            render: (data: unknown) =>
+              column.type === 'date' ? this.formatDate(data) : (data ?? ''),
+          };
+        })
+        .filter(Boolean);
+      console.log('columns=>', columns);
+      this.dtOptions.columns = columns;
+    });
   }
 
-  private createQuery(targetId: string, position: number): any {
+  private createQuery(targetId: string, dt: any): any {
     return {
       Query: {
         Select: {
@@ -164,12 +364,12 @@ export class Dashboard {
               { '@field': 'SHOW_BUSINESS_ATTRIBUTES', Value: 'true' },
               { '@field': 'Target', Value: `team:${targetId}` },
               { '@field': 'SHOW_NON_WORKABLE_ITEMS', Value: 'false' },
-              { '@field': 'RETURN_TASK_DATA', Value: 'false' },
+              { '@field': 'RETURN_TASK_DATA', Value: 'true' },
             ],
           },
         },
         OrderBy: { Property: { '@direction': 'desc', text: 'DeliveryDate' } },
-        Cursor: { '@position': position, '@numRows': this.pageSize, '@maxRows': 5000 },
+        Cursor: { '@position': dt.start, '@numRows': dt.length, '@maxRows': 5000 },
       },
     };
   }

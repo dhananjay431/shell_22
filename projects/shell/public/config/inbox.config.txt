@@ -1,0 +1,651 @@
+{
+   "Inbox":{
+      "InboxColumnsToDisplay":[
+        {
+          "name":"select"
+        },
+         {
+            "name":"SLA",
+            "type":"icon"
+         },
+         {
+            "name":"Work Item Number",
+            "type":"string"
+         },
+         {
+            "name":"Status",
+            "type":"string",
+            "value":"Status"
+         },
+         {
+            "name":"Invoice Number",
+            "type":"string"
+         },
+         {
+            "name":"Classifications",
+            "type":"string"
+         },
+         {
+            "name":"PO Number",
+            "type":"string"
+         },
+         {
+            "name":"Vendor Name",
+            "type":"string"
+         },
+         {
+            "name":"Company Code",
+            "type":"string"
+         },
+         {
+            "name":"Invoice Amount",
+            "type":"number"
+         },
+         {
+            "name":"Currency",
+            "type":"string"
+         },
+         {
+            "name":"ERP Due Date",
+            "type":"date"
+         },
+         {
+            "name":"Due Date",
+            "type":"date"
+         },
+          {
+            "name":"Received Date",
+            "type":"date"
+         },
+         {
+            "name":"Assignee",
+            "type":"string"
+         },
+         {
+            "name":"Delegated To",
+            "type":"string"
+         },
+         {
+            "name":"Queue",
+            "type":"string"
+         },
+         {
+            "name":"Team",
+            "type":"string"
+         },
+         {
+            "name":"Completed By",
+            "type":"string",
+            "displayOnlyIn":"completedTask"
+         },
+         {
+            "name":"Completed On",
+            "type":"date",
+            "displayOnlyIn":"completedTask"
+         },
+         {
+            "name":"Source",
+            "type":"string"
+         },
+         {
+            "name":"Initiator",
+            "type":"string"
+         }
+
+      ],
+	  "InboxDataPopulateConfiguration":[
+          {
+            "columnName":"Received Date",
+            "taskDataNode":[
+               "DeliveryDate"
+            ]
+         },
+          {
+            "columnName":"SLA",
+            "taskDataNode":[
+               "SLA"
+            ]
+         },
+         {
+            "columnName":"Assignee",
+            "taskDataNode":[
+               "Assignee",
+               "@displayName"
+            ]
+         },
+         {
+            "columnName":"State",
+            "taskDataNode":[
+               "State"
+            ]
+         },
+         {
+            "columnName":"TaskId",
+            "taskDataNode":[
+               "TaskId"
+            ]
+         },
+         {
+            "columnName":"ERP Due Date",
+            "taskDataNode":[ 
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "ERP_DUE_DATE"
+            ]
+         },
+         {
+            "columnName":"Due Date",
+            "taskDataNode":[ 
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "SLA_OverDue"
+            ]
+         },
+         {
+            "columnName":"Delivery Date",
+            "taskDataNode":[
+               "DeliveryDate"
+            ]
+         },
+          {
+            "columnName":"Start Date",
+            "taskDataNode":[
+               "StartDate"
+            ]
+         },
+         {
+            "columnName":"SLA_NoDue",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "SLA_NoDue"
+            ]
+         },
+         {
+            "columnName":"SLA_NearingDue",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "SLA_NearingDue"
+            ]
+         },
+         {
+            "columnName":"SLA_OverDue",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "SLA_OverDue"
+            ]
+         },
+         {
+            "columnName":"SLA_Due",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "SLA_Due"
+            ]
+         },
+         {
+            "columnName":"Delegated To",
+            "taskDataNode":[
+               "DelegatedToUser",
+               "@displayName"
+            ]
+         },
+         {
+            "columnName":"Work Item Number",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "WORK_ITEM_NUMBER"
+            ]
+         },
+         {
+            "columnName":"Invoice Number",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "INVOICE_NUMBER"
+            ]
+         },
+         {
+            "columnName":"Queue",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "QUEUE"
+            ]
+         },
+         {
+            "columnName":"PO Number",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "PO_NUMBER"
+            ]
+         },
+         {
+            "columnName":"Status",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "WORK_ITEM_STATUS"
+            ]
+         },
+         {
+            "columnName":"Team",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "TEAM"
+            ]
+         },
+          {
+            "columnName":"Completed By",
+             "taskDataNode":[
+              "CompletedByUser",
+               "@displayName"
+            ]
+         },
+         {
+            "columnName":"Completed On",
+             "taskDataNode":[
+               "CompletionDate"
+            ]
+         },
+         {
+            "columnName":"Source",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "SOURCE"
+            ]
+         },
+         {
+            "columnName":"Initiator",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "INITIATOR"
+            ]
+         },
+         {
+            "columnName":"Company Code",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "COMPANY_CODE"
+            ]
+         },
+         {
+            "columnName":"Vendor Name",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "VENDOR"
+            ]
+         },
+         {
+            "columnName":"Invoice Amount",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "INVOICE_AMOUNT"
+            ]
+         },
+         {
+            "columnName":"Currency",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "CURRENCY"
+            ]
+         },
+         {
+            "columnName":"Classifications",
+            "taskDataNode":[
+               "TaskData",
+               "ApplicationData",
+               "Invoice",
+               "CLASSIFICATIONS"
+            ]
+         }
+
+
+      ],
+	  
+      "InboxCustomDataPopulateConfiguration":[
+          {
+            "columnName":"Received Date",
+            "taskDataNode":[
+               "DeliveryDate"
+            ]
+         },
+          {
+            "columnName":"SLA",
+            "taskDataNode":[
+               "SLA"
+            ]
+         },
+         {
+            "columnName":"Assignee",
+            "taskDataNode":[
+               "Assignee"
+              
+            ]
+         },
+         {
+            "columnName":"State",
+            "taskDataNode":[
+               "State"
+            ]
+         },
+         {
+            "columnName":"TaskId",
+            "taskDataNode":[
+               "TaskId"
+            ]
+         },
+         {
+            "columnName":"ERP Due Date",
+            "taskDataNode":[ 
+               "ERP_DUE_DATE"
+            ]
+         },
+         {
+            "columnName":"Due Date",
+            "taskDataNode":[ 
+              "SLA_OverDue"
+            ]
+         },
+         {
+            "columnName":"Delivery Date",
+            "taskDataNode":[
+               "DeliveryDate"
+            ]
+         },
+          {
+            "columnName":"Start Date",
+            "taskDataNode":[
+               "StartDate"
+            ]
+         },
+         {
+            "columnName":"SLA_NoDue",
+            "taskDataNode":[
+               "SLA_NoDue"
+            ]
+         },
+         {
+            "columnName":"SLA_NearingDue",
+            "taskDataNode":[
+              "SLA_NearingDue"
+            ]
+         },
+         {
+            "columnName":"SLA_OverDue",
+            "taskDataNode":[
+              "SLA_OverDue"
+            ]
+         },
+         {
+            "columnName":"SLA_Due",
+            "taskDataNode":[
+             "SLA_Due"
+            ]
+         },
+         {
+            "columnName":"Delegated To",
+            "taskDataNode":[
+               "DelegatedToUser"
+               
+            ]
+         },
+         {
+            "columnName":"Work Item Number",
+            "taskDataNode":[
+               "WORK_ITEM_NUMBER"
+            ]
+         },
+         {
+            "columnName":"Invoice Number",
+            "taskDataNode":[
+               "INVOICE_NUMBER"
+            ]
+         },
+         {
+            "columnName":"Queue",
+            "taskDataNode":[
+              "QUEUE"
+            ]
+         },
+         {
+            "columnName":"PO Number",
+            "taskDataNode":[
+              "PO_NUMBER"
+            ]
+         },
+         {
+            "columnName":"Status",
+            "taskDataNode":[
+              "WORK_ITEM_STATUS"
+            ]
+         },
+         {
+            "columnName":"Team",
+            "taskDataNode":[
+              "TEAM"
+            ]
+         },
+         
+         {
+            "columnName":"Source",
+            "taskDataNode":[
+              "SOURCE"
+            ]
+         },
+         {
+            "columnName":"Initiator",
+            "taskDataNode":[
+              "INITIATOR"
+            ]
+         },
+         {
+            "columnName":"Company Code",
+            "taskDataNode":[
+              "COMPANY_CODE"
+            ]
+         },
+         {
+            "columnName":"Vendor Name",
+            "taskDataNode":[
+              "VENDOR"
+            ]
+         },
+         {
+            "columnName":"Invoice Amount",
+            "taskDataNode":[
+               "INVOICE_AMOUNT"
+            ]
+         },
+         {
+            "columnName":"Currency",
+            "taskDataNode":[
+              "CURRENCY"
+            ]
+         },
+         {
+            "columnName":"Classifications",
+            "taskDataNode":[
+              "CLASSIFICATIONS"
+            ]
+         }
+
+
+      ],
+     
+     
+     "InboxTaskRoute":{
+         "fixedRouteText":"transaction-details",
+         "fixedRouteText_forTouchless":"overview",         
+         "dynamicValueFromColumn":"Work Item Number"
+      }
+   },
+   "Filter":{
+      "dueFilters":[
+         {
+            "name":"Over Due",
+            "TaskIdentifier": "TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+            "filtercondition":[
+               {
+                  "LT":{
+                     "@field":"TaskIdentifier.SLA_OverDue",
+                     "Value":""
+                  }
+               }
+            ],
+            "countIdentifier":"OVER_DUE"
+         },
+         {
+            "name":"No Due",
+            "TaskIdentifier": "TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+            "filtercondition":[
+             {
+                "Or":
+                { "GE":{
+                    "@field": "TaskIdentifier.SLA_NearingDue",
+                    "Value":""
+                  },
+                  "And":{
+                      "IsNotNull": {
+                        "@field": "TaskIdentifier.SLA_NoDue"
+                      },
+                      "IsNull": [
+                        {
+                          "@field": "TaskIdentifier.SLA_NearingDue"
+                        },{
+                          "@field": "TaskIdentifier.SLA_Due"
+                        },
+                        {
+                          "@field": "TaskIdentifier.SLA_OverDue"                        
+                        }
+                      ]
+                  }
+                }
+              }
+            ],
+            "countIdentifier":"NO_DUE"
+         },
+         {
+            "name":"Nearing Due",
+            "TaskIdentifier": "TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+            "filtercondition":[
+               {
+                  "LT":{
+                     "@field": "TaskIdentifier.SLA_NearingDue",
+                     "Value":""
+                  }
+               },
+               {
+                  "GE":{
+                     "@field": "TaskIdentifier.SLA_Due",
+                     "Value":""
+                  }
+               }
+            ],
+            "countIdentifier":"NEAR_DUE"
+          },
+          {
+            "name":"Due",
+            "TaskIdentifier": "TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+            "filtercondition":[
+               {
+                  "LT":{
+                     "@field": "TaskIdentifier.SLA_Due",
+                     "Value":""
+                  }
+               },
+               {
+                  "GE":{
+                     "@field": "TaskIdentifier.SLA_OverDue",
+                     "Value":""
+                  }
+               }
+            ],
+            "countIdentifier":"DUE"
+          }
+      ],
+      "status": {
+        "TaskIdentifier": "TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+        "FieldName": "TaskIdentifier.WORK_ITEM_STATUS",
+        "ID":  ["201","202","203","204","205","206","207","208","209","210","211","212","213","214","215","216","217","218","219","220","221","222","223","224","225","226","227","228","229","230","231"]
+      }
+   },
+   "Search":{
+      "searchConditions":[
+         {
+            "nameToDisplay":"Work Item Number",
+            "taskIdentifierID":"TaskIdentifier:AFBA7617-9E17-A1EB-AC27-78B17B32780D",
+            "taskIdentifierName":"TaskIdentifier.WORK_ITEM_NUMBER"
+         },
+         {
+            "nameToDisplay":"Work Item Status",
+            "taskIdentifierID":"TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+            "taskIdentifierName":"TaskIdentifier.WORK_ITEM_STATUS"
+         },
+         {
+            "nameToDisplay":"Invoice Number",
+            "taskIdentifierID":"TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+            "taskIdentifierName":"TaskIdentifier.INVOICE_NUMBER"
+         },
+         {
+            "nameToDisplay":"PO Number",
+            "taskIdentifierID":"TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+            "taskIdentifierName":"TaskIdentifier.PO_NUMBER"
+         },
+         {
+            "nameToDisplay":"Initiator",
+            "taskIdentifierID":"TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+            "taskIdentifierName":"TaskIdentifier.INITIATOR"
+         },
+         {
+            "nameToDisplay":"Queue",
+            "taskIdentifierID":"TaskIdentifier:BB975EEF-B5A4-A1EB-9BE0-49FB5859B83D",
+            "taskIdentifierName":"TaskIdentifier.QUEUE"
+         }
+      ]
+   },
+   "Actions":{
+    "buttons":   [{ "action": "CLAIM", "tooltip": "Claim Task", "icon": "add_circle" },
+    { "action": "REVOKE", "tooltip": "Revoke Claim", "icon": "remove_circle" },
+    { "action": "DELEGATE", "tooltip": "Delegate", "icon": "group_add" },
+    { "action": "FORWARD", "tooltip": "Forward", "icon": "forward" },
+    { "action": "ASSIGN", "tooltip": "Assign Task", "icon": "people" },
+    { "action": "AutoDelegate", "tooltip": "Auto Delegate", "icon": "work" },
+    { "action": "Export", "tooltip": "Export", "icon": "file_download" },
+    { "action": "APPROVAL", "tooltip": "Bulk Approval", "icon": "check_circle" }
+    ],
+    "Bulk_Approval_Config": { 
+      "spinnerDelayForEachWorkItem": "1500",
+      "maxWorkItemsLimitPerTransaction":"10"
+    }
+     }
+}
