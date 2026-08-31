@@ -21,7 +21,7 @@ import { NavigationEnd, Router } from '@angular/router';
   template: `
     <header class="topbar p-1 m-1">
       @if (dt | async; as _dt) {
-        <nav class="breadcrumb" aria-label="Breadcrumb">
+        <nav class="breadcrumb m-0 p-0" aria-label="Breadcrumb">
           <a href="#">{{ ob(_dt)[0].link.MENU_LABEL }}</a>
         </nav>
 
@@ -43,7 +43,6 @@ import { NavigationEnd, Router } from '@angular/router';
     }
 
     .topbar {
-      min-height: 58px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -66,6 +65,8 @@ import { NavigationEnd, Router } from '@angular/router';
 
     .breadcrumb {
       min-width: 0;
+      height: 100%;
+      align-items: center;
       gap: 8px;
       white-space: nowrap;
       overflow: hidden;
@@ -73,6 +74,7 @@ import { NavigationEnd, Router } from '@angular/router';
 
     .breadcrumb a {
       overflow: hidden;
+      font-weight: 700;
       color: var(--vuexy-body);
       text-overflow: ellipsis;
       text-decoration: none;
@@ -88,6 +90,7 @@ import { NavigationEnd, Router } from '@angular/router';
 
     .current {
       overflow: hidden;
+      font-weight: 700;
       color: var(--vuexy-heading);
       text-overflow: ellipsis;
     }
