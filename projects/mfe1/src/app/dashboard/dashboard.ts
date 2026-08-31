@@ -199,6 +199,12 @@ export class Dashboard {
       serverSide: true,
       pageLength: 10,
       lengthMenu: [15, 20, 25, 30],
+      layout: {
+        topStart: null,
+        // topEnd: null,
+        bottomStart: ['pageLength', 'info'],
+        bottomEnd: 'paging',
+      },
       drawCallback: () => {
         this.bindSelectionCheckboxes();
         this.placeTaskActions();

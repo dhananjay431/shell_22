@@ -22,7 +22,7 @@ export interface MenuItem {
   template: `
     @if (hasChildren()) {
       <button
-        class="nav-link menu-button"
+        class="nav-link menu-button p-0"
         type="button"
         [attr.aria-expanded]="isOpen()"
         [attr.aria-controls]="submenuId()"
@@ -30,7 +30,9 @@ export interface MenuItem {
       >
         <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
         <span class="menu-label"> {{ item().MENU_LABEL }}</span>
-        <span class="submenu-icon" aria-hidden="true">{{ isOpen() ? '⌃' : '⌄' }}</span>
+        <span class="submenu-icon" aria-hidden="true">
+          <i [class]="isOpen() ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down'"></i>
+        </span>
       </button>
 
       @if (isOpen() && !collapsed()) {
@@ -50,7 +52,7 @@ export interface MenuItem {
       }
     } @else if (isExternalLink()) {
       <a
-        class="nav-link"
+        class="nav-link p-0"
         [href]="item().MENU_LINK"
         target="_blank"
         rel="noopener noreferrer"
@@ -60,9 +62,9 @@ export interface MenuItem {
         <span class="menu-label"> {{ item().MENU_LABEL }}</span>
       </a>
     } @else {
-      <a class="nav-link" (click)="navigate.emit(item())">
-        <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
-        <span class="menu-label"> {{ item().MENU_LABEL }}</span>
+      <a class="nav-link p-0" (click)="navigate.emit(item())">
+        <span class="menu-icon" aria-hidden="true">&nbsp;&nbsp;&nbsp;</span>
+        <span class="menu-label">{{ item().MENU_LABEL }}</span>
       </a>
     }
   `,
@@ -92,6 +94,11 @@ export interface MenuItem {
       font-size: 1rem;
     }
     .submenu-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1rem;
+      line-height: 1;
       margin-left: auto;
     }
     .submenu {
