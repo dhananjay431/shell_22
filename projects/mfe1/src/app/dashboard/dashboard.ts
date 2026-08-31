@@ -1,17 +1,8 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import {
-  BehaviorSubject,
-  combineLatest,
-  filter,
-  forkJoin,
-  map,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
-import { DataTablesModule } from 'angular-datatables';
+import { filter, forkJoin, map } from 'rxjs';
+import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 
 import { CommonService } from '../../../../shared/common.service';
 
@@ -23,6 +14,9 @@ import { CommonService } from '../../../../shared/common.service';
   templateUrl: './dashboard.html',
 })
 export class Dashboard {
+  @ViewChild(DataTableDirective, { static: false })
+  private dataTableDirective?: DataTableDirective;
+
   private readonly dateFormatter = new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',
@@ -30,43 +24,7 @@ export class Dashboard {
   });
   private readonly router = inject(Router);
   private readonly cs = inject(CommonService);
-  private readonly page$ = new BehaviorSubject(0);
-  readonly pageSize = 10;
-  currentPage = 0;
-  showColumnOptions = false;
-  readonly tblDT = combineLatest([
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map(() => history.state?.props?.ID ?? ''),
-      startWith(history.state?.props?.ID ?? ''),
-    ),
-    this.page$,
-  ]).pipe(
-    map(([targetId, page]) => ({ targetId, page })),
-    switchMap(({ targetId, page }) => {
-      const query = this.createQuery(targetId, page * this.pageSize);
-      return forkJoin({
-        data: this.cs.ajax(
-          'GetHumanTasks.NOTF_TASK_INSTANCE',
-          'http://schemas.cordys.com/notification/workflow/1.0',
-          query,
-        ),
-        count: this.cs
-          .ajax('GetHumanTasks', 'http://schemas.cordys.com/notification/workflow/1.0', {
-            '@countOnly': 'true',
-            Query: query.Query,
-          })
-          .pipe(
-            map((d: any) => {
-              return Number(d.Count ?? 0);
-            }),
-          ),
-      });
-    }),
-    tap((d: any) => {
-      console.log('data=>', d);
-    }),
-  );
+  private targetId = history.state?.props?.ID ?? '';
 
   dtOptions: any;
 
@@ -80,53 +38,64 @@ export class Dashboard {
     return Number.isNaN(date.getTime()) ? '' : this.dateFormatter.format(date);
   }
 
+  private formatBadge(value: unknown, modifier: string): string {
+    const label = String(value ?? '').trim();
+
+    return label
+      ? `<span class="availability-badge availability-badge--${modifier}">${label}</span>`
+      : '';
+  }
+
   ngOnInit() {
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const nextTargetId = history.state?.props?.ID ?? '';
+
+        if (nextTargetId === this.targetId) {
+          return;
+        }
+
+        this.targetId = nextTargetId;
+        void this.reloadDataTable();
+      });
+
     this.dtOptions = {
       pagingType: 'full_numbers',
       serverSide: true,
+      pageLength: 10,
+      lengthMenu: [15, 20, 25, 30],
       ajax: (dataTablesParameters: any, callback: any) => {
-        combineLatest([
-          this.router.events.pipe(
-            filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-            map(() => history.state?.props?.ID ?? ''),
-            startWith(history.state?.props?.ID ?? ''),
+        const query = this.createQuery(this.targetId, dataTablesParameters);
+
+        forkJoin({
+          data: this.cs.ajax(
+            'GetHumanTasks.NOTF_TASK_INSTANCE',
+            'http://schemas.cordys.com/notification/workflow/1.0',
+            query,
           ),
-          this.page$,
-        ])
-          .pipe(
-            map(([targetId, page]) => ({ targetId, page })),
-            switchMap(({ targetId, page }) => {
-              const query = this.createQuery(targetId, dataTablesParameters);
-              return forkJoin({
-                data: this.cs.ajax(
-                  'GetHumanTasks.NOTF_TASK_INSTANCE',
-                  'http://schemas.cordys.com/notification/workflow/1.0',
-                  query,
-                ),
-                count: this.cs
-                  .ajax('GetHumanTasks', 'http://schemas.cordys.com/notification/workflow/1.0', {
-                    '@countOnly': 'true',
-                    Query: query.Query,
-                  })
-                  .pipe(
-                    map((d: any) => {
-                      return Number(d.Count ?? 0);
-                    }),
-                  ),
-              });
-            }),
-            tap((d: any) => {
-              console.log('data=>', d);
-            }),
-          )
-          .subscribe((resp: any) => {
-            console.log('sadf=>', resp);
+          count: this.cs
+            .ajax('GetHumanTasks', 'http://schemas.cordys.com/notification/workflow/1.0', {
+              '@countOnly': 'true',
+              Query: query.Query,
+            })
+            .pipe(map((response: any) => Number(response.Count ?? 0))),
+        }).subscribe({
+          next: (response: any) => {
             callback({
-              recordsTotal: resp.count,
-              recordsFiltered: resp.count,
-              data: resp.data,
+              recordsTotal: response.count,
+              recordsFiltered: response.count,
+              data: response.data,
             });
-          });
+          },
+          error: () => {
+            callback({
+              recordsTotal: 0,
+              recordsFiltered: 0,
+              data: [],
+            });
+          },
+        });
       },
       columns: [
         {
@@ -143,8 +112,9 @@ export class Dashboard {
           data: 'TaskData.ApplicationData.Invoice.WORK_ITEM_NUMBER',
           className: 'text-nowrap p-1',
           render: (data: any, type: any, row: any) => {
-            console.log(data, type, row);
-            return data || '';
+            return `
+              <span class="availability-badge availability-badge--in-progress">${data || ''}</span>
+            `;
           },
         },
         {
@@ -167,16 +137,16 @@ export class Dashboard {
           title: 'Classifications',
           data: 'TaskData.ApplicationData.Invoice.CLASSIFICATIONS',
           className: 'text-nowrap p-1',
-          render: function (data: any, type: any, row: any) {
-            return data || '';
+          render: (data: any) => {
+            return this.formatBadge(data, 'classification');
           },
         },
         {
           title: 'PO Number',
           data: 'TaskData.ApplicationData.Invoice.PO_NUMBER',
           className: 'text-nowrap p-1',
-          render: function (data: any, type: any, row: any) {
-            return data || '';
+          render: (data: any) => {
+            return this.formatBadge(data, 'po-number');
           },
         },
         {
@@ -295,8 +265,8 @@ export class Dashboard {
           title: 'Initiator',
           data: 'TaskData.ApplicationData.Invoice.INITIATOR',
           className: 'text-nowrap p-1',
-          render: function (data: any, type: any, row: any) {
-            return data;
+          render: (data: any) => {
+            return this.formatBadge(data, 'initiator');
           },
         },
       ],
@@ -319,13 +289,30 @@ export class Dashboard {
             data: config.taskDataNode.join('.'),
             className: 'text-nowrap p-1',
             render: (data: unknown) =>
-              column.type === 'date' ? this.formatDate(data) : (data ?? ''),
+              column.type === 'date'
+                ? this.formatDate(data)
+                : column.name === 'Classifications'
+                  ? this.formatBadge(data, 'classification')
+                  : column.name === 'PO Number'
+                    ? this.formatBadge(data, 'po-number')
+                    : column.name === 'Initiator'
+                      ? this.formatBadge(data, 'initiator')
+                      : (data ?? ''),
           };
         })
         .filter(Boolean);
       console.log('columns=>', columns);
       this.dtOptions.columns = columns;
     });
+  }
+
+  private async reloadDataTable(): Promise<void> {
+    if (!this.dataTableDirective) {
+      return;
+    }
+
+    const dataTable = await this.dataTableDirective.dtInstance;
+    dataTable.ajax.reload(null, true);
   }
 
   private createQuery(targetId: string, dt: any): any {
