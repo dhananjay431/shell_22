@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { from, Observable, shareReplay } from 'rxjs';
+import { defer, Observable, finalize, shareReplay } from 'rxjs';
 
 /**
  * Shared application state that can be consumed by the shell and remotes.
@@ -11,6 +11,7 @@ declare var $: any;
 @Injectable({ providedIn: 'root' })
 export class CommonService {
   private readonly message = signal('');
+  private activeAjaxRequests = 0;
 
   readonly message$ = this.message.asReadonly();
 
@@ -21,47 +22,72 @@ export class CommonService {
   clearMessage(): void {
     this.message.set('');
   }
+
   ajax(method: any, namespace: any, parameters: any, useShareReplay = false): Observable<any> {
-    method = method.split('.');
-    const request$ = new Observable<any>((subscriber) => {
-      $.cordys.ajax({
-        url: '/com.eibus.web.soap.Gateway.wcp',
-        showLoadingIndicator: false,
-        method: method[0],
-        namespace: namespace,
-        parameters: parameters,
-        success: function (data: any, textStatus: any, jqXHR: any) {
-          const res = method[1] !== undefined ? $.cordys.json.findObjects(data, method[1]) : data;
-          subscriber.next(res);
-          subscriber.complete();
-        },
-        error: function (response: any, status: any, errorText: any) {
-          subscriber.error([response, status, errorText]);
-        },
-      });
+    const [operation, resultPath] = method.split('.');
+    const request$ = defer(() => {
+      this.showLoader();
+
+      return new Observable<any>((subscriber) => {
+        $.cordys.ajax({
+          url: '/com.eibus.web.soap.Gateway.wcp',
+          showLoadingIndicator: false,
+          method: operation,
+          namespace,
+          parameters,
+          success: (data: any) => {
+            const result =
+              resultPath !== undefined ? $.cordys.json.findObjects(data, resultPath) : data;
+            subscriber.next(result);
+            subscriber.complete();
+          },
+          error: (response: any, status: any, errorText: any) => {
+            subscriber.error([response, status, errorText]);
+          },
+        });
+      }).pipe(finalize(() => this.hideLoader()));
     });
 
     return useShareReplay
       ? request$.pipe(shareReplay({ bufferSize: 1, refCount: true }))
       : request$;
   }
-  fetch(url:any,useShareReplay = false): Observable<any> {
-    const request$ =new Observable<any>((subscriber) => {
+
+  private showLoader(): void {
+    this.activeAjaxRequests += 1;
+
+    if ($('.loader').length === 0) {
+      $('body').append("<div id='ajax-loader' class='loader'></div>");
+    }
+  }
+
+  private hideLoader(): void {
+    this.activeAjaxRequests = Math.max(0, this.activeAjaxRequests - 1);
+
+    if (this.activeAjaxRequests === 0) {
+      $('#ajax-loader').remove();
+    }
+  }
+  fetch(url: any, useShareReplay = false): Observable<any> {
+    const request$ = new Observable<any>((subscriber) => {
       fetch(url)
-      .then((j) => j.json())
-      .then((res:any)=>{
-        subscriber.next(res);
-        subscriber.complete();
-      },(err:any)=>{
-        subscriber.error(err);
-      })
-    })
+        .then((j) => j.json())
+        .then(
+          (res: any) => {
+            subscriber.next(res);
+            subscriber.complete();
+          },
+          (err: any) => {
+            subscriber.error(err);
+          },
+        );
+    });
     return useShareReplay
       ? request$.pipe(shareReplay({ bufferSize: 1, refCount: true }))
       : request$;
   }
 
-  inbox_config_json = this.fetch("/config/inbox.config.json",true);
+  inbox_config_json = this.fetch('/config/inbox.config.json', true);
 
   getuserdetails = this.ajax(
     'GetUserDetails.User',
