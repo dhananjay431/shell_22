@@ -1,5 +1,81 @@
 <section class="task-list p-1">
   <article class="task-list__card p-2" aria-labelledby="task-table-title">
+    <ng-template #taskActions>
+      <nav class="task-actions" aria-label="Task actions">
+        <button
+          type="button"
+          class="btn btn-primary btn-sm rounded-circle"
+          title="Claim Task"
+          aria-label="Claim Task"
+          (click)="claimTask()"
+        >
+          <i class="fa-solid fa-2xs fa-canvas-square fa-plus"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm rounded-circle"
+          title="Revoke Claim"
+          aria-label="Revoke Claim"
+          (click)="revokeClaim()"
+        >
+          <i class="fa-solid fa-2xs fa-canvas-square fa-minus"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm rounded-circle"
+          title="Delegate"
+          aria-label="Delegate"
+          (click)="delegate()"
+        >
+          <i class="fa-solid fa-2xs fa-canvas-square fa-user-plus"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm rounded-circle"
+          title="Forward"
+          aria-label="Forward"
+          (click)="forward()"
+        >
+          <i class="fa-solid fa-2xs fa-canvas-square fa-share"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm rounded-circle"
+          title="Assign Task"
+          aria-label="Assign Task"
+          (click)="assignTask()"
+        >
+          <i class="fa-solid fa-2xs fa-canvas-square fa-user-check"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm rounded-circle"
+          title="Auto Delegate"
+          aria-label="Auto Delegate"
+          (click)="autoDelegate()"
+        >
+          <i class="fa-solid fa-2xs fa-canvas-square fa-arrows-rotate"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm rounded-circle"
+          title="Export"
+          aria-label="Export"
+          (click)="exportTasks()"
+        >
+          <i class="fa-solid fa-2xs fa-canvas-square fa-file-export"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm rounded-circle"
+          title="Bulk Approval"
+          aria-label="Bulk Approval"
+          (click)="bulkApproval()"
+        >
+          <i class="fa-solid fa-2xs fa-canvas-square fa-list-check"></i>
+        </button>
+      </nav>
+    </ng-template>
     <div class="table-wrapper">
       <table datatable [dtOptions]="dtOptions" class="table table-striped mb-3git"></table>
     </div>

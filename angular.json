@@ -84,6 +84,7 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "projects/shell/public/css/dataTables.bootstrap5.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "projects/shell/src/styles.scss"
             ],
 
@@ -205,7 +206,10 @@
                 "input": "projects/mfe1/public"
               }
             ],
-            "styles": ["projects/mfe1/src/styles.scss"],
+            "styles": [
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "projects/mfe1/src/styles.scss"
+            ],
             "polyfills": ["es-module-shims"]
           },
           "configurations": {

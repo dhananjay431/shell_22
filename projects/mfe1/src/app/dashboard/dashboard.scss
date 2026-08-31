@@ -41,6 +41,41 @@
   min-width: 0;
 }
 
+.task-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  padding: 0.25rem 0;
+}
+
+.task-actions__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  border: 1px solid #d0d5dd;
+  border-radius: 50%;
+  background: #fff;
+  color: #344054;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.task-actions__button:hover,
+.task-actions__button:focus-visible {
+  border-color: var(--vuexy-primary);
+  color: var(--vuexy-primary);
+}
+
+.task-actions__button:focus-visible {
+  outline: 2px solid var(--vuexy-primary);
+  outline-offset: 2px;
+}
+
 .task-list__card-header {
   display: flex;
   align-items: center;

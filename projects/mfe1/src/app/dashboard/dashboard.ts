@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, forkJoin, map } from 'rxjs';
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
@@ -14,6 +14,9 @@ import { CommonService } from '../../../../shared/common.service';
   templateUrl: './dashboard.html',
 })
 export class Dashboard {
+  @ViewChild('taskActions', { static: true })
+  private taskActionsTemplate?: TemplateRef<unknown>;
+
   @ViewChild(DataTableDirective, { static: false })
   private dataTableDirective?: DataTableDirective;
 
@@ -28,6 +31,43 @@ export class Dashboard {
 
   dtOptions: any;
   private readonly selectedTaskIds = new Set<string>();
+
+  private runTaskAction(action: string): void {
+    const taskIds = [...this.selectedTaskIds];
+    console.info(`${action} requested`, { taskIds });
+  }
+
+  claimTask(): void {
+    this.runTaskAction('Claim Task');
+  }
+
+  revokeClaim(): void {
+    this.runTaskAction('Revoke Claim');
+  }
+
+  delegate(): void {
+    this.runTaskAction('Delegate');
+  }
+
+  forward(): void {
+    this.runTaskAction('Forward');
+  }
+
+  assignTask(): void {
+    this.runTaskAction('Assign Task');
+  }
+
+  autoDelegate(): void {
+    this.runTaskAction('Auto Delegate');
+  }
+
+  exportTasks(): void {
+    this.runTaskAction('Export');
+  }
+
+  bulkApproval(): void {
+    this.runTaskAction('Bulk Approval');
+  }
 
   private getTaskId(row: any, rowIndex: number): string {
     return String(
@@ -105,6 +145,19 @@ export class Dashboard {
     }
   }
 
+  private placeTaskActions(): void {
+    const layoutEnd = document.querySelector('.table-wrapper .dt-layout-end');
+    const template = this.taskActionsTemplate;
+
+    if (!layoutEnd || !template || layoutEnd.querySelector('.task-actions')) {
+      return;
+    }
+
+    const view = template.createEmbeddedView(null);
+    view.detectChanges();
+    view.rootNodes.forEach((node) => layoutEnd.appendChild(node));
+  }
+
   private formatDate(value: unknown): string {
     if (!value) {
       return '';
@@ -141,11 +194,15 @@ export class Dashboard {
       });
 
     this.dtOptions = {
+      searching: false,
       pagingType: 'full_numbers',
       serverSide: true,
       pageLength: 10,
       lengthMenu: [15, 20, 25, 30],
-      drawCallback: () => this.bindSelectionCheckboxes(),
+      drawCallback: () => {
+        this.bindSelectionCheckboxes();
+        this.placeTaskActions();
+      },
       ajax: (dataTablesParameters: any, callback: any) => {
         const query = this.createQuery(this.targetId, dataTablesParameters);
 
