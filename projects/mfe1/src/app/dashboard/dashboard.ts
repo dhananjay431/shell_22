@@ -27,6 +27,83 @@ export class Dashboard {
   private targetId = history.state?.props?.ID ?? '';
 
   dtOptions: any;
+  private readonly selectedTaskIds = new Set<string>();
+
+  private getTaskId(row: any, rowIndex: number): string {
+    return String(
+      row?.ID ?? row?.TaskId ?? row?.TaskID ?? row?.TaskInstanceID ?? `row-${rowIndex}`,
+    );
+  }
+
+  private escapeAttribute(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  private selectionColumn() {
+    return {
+      title: '<input class="select-all-checkbox" type="checkbox" aria-label="Select all tasks">',
+      data: null,
+      orderable: false,
+      searchable: false,
+      className: 'text-nowrap p-1 task-selection-cell',
+      render: (_data: any, _type: any, row: any, meta: any) => {
+        const id = this.getTaskId(row, meta.row);
+        const checked = this.selectedTaskIds.has(id) ? ' checked' : '';
+
+        return `<input class="task-checkbox" type="checkbox" data-task-id="${this.escapeAttribute(id)}" aria-label="Select task"${checked}>`;
+      },
+    };
+  }
+
+  private updateHeaderCheckbox(table: Element): void {
+    const header = table.querySelector<HTMLInputElement>('.select-all-checkbox');
+    const rows = Array.from(table.querySelectorAll<HTMLInputElement>('.task-checkbox'));
+    const selected = rows.filter((checkbox) => checkbox.checked).length;
+
+    if (header) {
+      header.checked = rows.length > 0 && selected === rows.length;
+      header.indeterminate = selected > 0 && selected < rows.length;
+    }
+  }
+
+  private bindSelectionCheckboxes(): void {
+    const table = document.querySelector('.table-wrapper table');
+
+    if (!table) {
+      return;
+    }
+
+    table.querySelectorAll<HTMLInputElement>('.task-checkbox').forEach((checkbox) => {
+      checkbox.onchange = () => {
+        const id = checkbox.dataset['taskId'];
+
+        if (id) {
+          checkbox.checked ? this.selectedTaskIds.add(id) : this.selectedTaskIds.delete(id);
+          this.updateHeaderCheckbox(table);
+        }
+      };
+    });
+
+    const header = table.querySelector<HTMLInputElement>('.select-all-checkbox');
+    if (header) {
+      header.onchange = () => {
+        table.querySelectorAll<HTMLInputElement>('.task-checkbox').forEach((checkbox) => {
+          checkbox.checked = header.checked;
+          const id = checkbox.dataset['taskId'];
+
+          if (id) {
+            header.checked ? this.selectedTaskIds.add(id) : this.selectedTaskIds.delete(id);
+          }
+        });
+        this.updateHeaderCheckbox(table);
+      };
+      this.updateHeaderCheckbox(table);
+    }
+  }
 
   private formatDate(value: unknown): string {
     if (!value) {
@@ -47,6 +124,9 @@ export class Dashboard {
   }
 
   ngOnInit() {
+    this.cs.inbox_config_json.subscribe((r: any) => {
+      console.log('r=>', r);
+    });
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -65,6 +145,7 @@ export class Dashboard {
       serverSide: true,
       pageLength: 10,
       lengthMenu: [15, 20, 25, 30],
+      drawCallback: () => this.bindSelectionCheckboxes(),
       ajax: (dataTablesParameters: any, callback: any) => {
         const query = this.createQuery(this.targetId, dataTablesParameters);
 
@@ -98,6 +179,7 @@ export class Dashboard {
         });
       },
       columns: [
+        this.selectionColumn(),
         {
           title: 'SLA',
           data: 'SLA',
@@ -302,7 +384,7 @@ export class Dashboard {
         })
         .filter(Boolean);
       console.log('columns=>', columns);
-      this.dtOptions.columns = columns;
+      this.dtOptions.columns = [this.selectionColumn(), ...columns];
     });
   }
 

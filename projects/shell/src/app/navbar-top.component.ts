@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonService } from '../../../shared/common.service';
 import { debounceTime, forkJoin, last, map, mergeMap, of, tap } from 'rxjs';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 // {{i.UserName.slice(0,2).toUpperCase()}}
 /* 
@@ -16,10 +16,10 @@ import { NavigationEnd, Router } from '@angular/router';
 @Component({
   selector: 'app-navbar-top',
   standalone: true,
-  imports: [AsyncPipe, JsonPipe],
+  imports: [AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <header class="topbar">
+    <header class="topbar p-1 m-1">
       @if (dt | async; as _dt) {
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <a href="#">{{ ob(_dt)[0].link.MENU_LABEL }}</a>
