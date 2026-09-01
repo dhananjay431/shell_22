@@ -24,7 +24,9 @@ import { NavbarVerticalComponent } from './navbar-vertical.component';
   `,
   styles: `
     .shell-main {
-      width: 100%;
+      flex: 1 1 auto;
+      width: auto;
+      min-width: 0;
     }
   `,
 })

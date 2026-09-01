@@ -2,8 +2,8 @@
   padding: 1.5rem;
   color: #243447;
   box-sizing: border-box;
-  width: calc(100vw - 249px);
-  max-width: calc(100vw - 249px);
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
   overflow-x: hidden;
 }
@@ -30,14 +30,14 @@
 }
 
 .task-list__card {
-  overflow: hidden;
+  // overflow: hidden;
   border: 1px solid #e4e7ec;
   border-radius: 0.75rem;
   background: #fff;
   box-shadow: 0 0.2rem 0.75rem rgb(23 32 51 / 6%);
   box-sizing: border-box;
   width: 100%;
-  max-width: 100%;
+  //max-width: calc(100% - 250px);
   min-width: 0;
 }
 
@@ -47,6 +47,40 @@
   justify-content: flex-end;
   gap: 0.3rem;
   padding: 0.25rem 0;
+}
+
+.task-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.task-filters select {
+  width: 12rem;
+}
+
+.task-filters input {
+  width: 14rem;
+}
+
+.task-filters button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+@media (max-width: 767.98px) {
+  .task-filters {
+    width: 100%;
+  }
+
+  .task-filters select,
+  .task-filters input {
+    flex: 1 1 10rem;
+    width: auto;
+  }
 }
 
 .task-actions__button {

@@ -1,5 +1,6 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, forkJoin, map } from 'rxjs';
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
@@ -7,7 +8,7 @@ import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 import { CommonService } from '../../../../shared/common.service';
 
 @Component({
-  imports: [DataTablesModule],
+  imports: [DataTablesModule, FormsModule],
   // imports: [AsyncPipe, DatePipe, DataTablesModule],
   selector: 'app-dashboard',
   styleUrl: './dashboard.scss',
@@ -16,6 +17,9 @@ import { CommonService } from '../../../../shared/common.service';
 export class Dashboard {
   @ViewChild('taskActions', { static: true })
   private taskActionsTemplate?: TemplateRef<unknown>;
+
+  @ViewChild('taskFilters', { static: true })
+  private taskFiltersTemplate?: TemplateRef<unknown>;
 
   @ViewChild(DataTableDirective, { static: false })
   private dataTableDirective?: DataTableDirective;
@@ -30,6 +34,18 @@ export class Dashboard {
   private targetId = history.state?.props?.ID ?? '';
 
   dtOptions: any;
+  readonly taskIdentifierOptions = [
+    { nameToDisplay: 'Work Item Number', taskIdentifierName: 'TaskIdentifier.WORK_ITEM_NUMBER' },
+    { nameToDisplay: 'Work Item Status', taskIdentifierName: 'TaskIdentifier.WORK_ITEM_STATUS' },
+    { nameToDisplay: 'Invoice Number', taskIdentifierName: 'TaskIdentifier.INVOICE_NUMBER' },
+    { nameToDisplay: 'PO Number', taskIdentifierName: 'TaskIdentifier.PO_NUMBER' },
+    { nameToDisplay: 'Initiator', taskIdentifierName: 'TaskIdentifier.INITIATOR' },
+    { nameToDisplay: 'Queue', taskIdentifierName: 'TaskIdentifier.QUEUE' },
+  ];
+  selectedTaskIdentifier = '';
+  taskFilterText = '';
+  private appliedTaskIdentifier = '';
+  private appliedTaskFilterText = '';
   private readonly selectedTaskIds = new Set<string>();
 
   private runTaskAction(action: string): void {
@@ -158,6 +174,34 @@ export class Dashboard {
     view.rootNodes.forEach((node) => layoutEnd.appendChild(node));
   }
 
+  private placeTaskFilters(): void {
+    const layoutStart = document.querySelector('.table-wrapper .task-filter-slot');
+    const template = this.taskFiltersTemplate;
+
+    if (!layoutStart || !template || layoutStart.querySelector('.task-filters')) {
+      return;
+    }
+
+    const view = template.createEmbeddedView(null);
+    view.detectChanges();
+    view.rootNodes.forEach((node) => layoutStart.appendChild(node));
+  }
+
+  searchTasks(): void {
+    this.appliedTaskIdentifier = this.selectedTaskIdentifier;
+    this.appliedTaskFilterText = this.taskFilterText.trim();
+    console.log(this.appliedTaskIdentifier, this.appliedTaskFilterText);
+    // void this.reloadDataTable();
+  }
+
+  resetTaskSearch(): void {
+    this.selectedTaskIdentifier = '';
+    this.taskFilterText = '';
+    this.appliedTaskIdentifier = '';
+    this.appliedTaskFilterText = '';
+    void this.reloadDataTable();
+  }
+
   private formatDate(value: unknown): string {
     if (!value) {
       return '';
@@ -200,7 +244,7 @@ export class Dashboard {
       pageLength: 10,
       lengthMenu: [15, 20, 25, 30],
       layout: {
-        topStart: null,
+        topStart: { div: { className: 'task-filter-slot' } },
         // topEnd: null,
         bottomStart: ['pageLength', 'info'],
         bottomEnd: 'paging',
@@ -208,6 +252,7 @@ export class Dashboard {
       drawCallback: () => {
         this.bindSelectionCheckboxes();
         this.placeTaskActions();
+        this.placeTaskFilters();
       },
       ajax: (dataTablesParameters: any, callback: any) => {
         const query = this.createQuery(this.targetId, dataTablesParameters);
@@ -458,7 +503,7 @@ export class Dashboard {
   }
 
   private createQuery(targetId: string, dt: any): any {
-    return {
+    const result = {
       Query: {
         Select: {
           QueryableObject: 'TASK_INSTANCE',
@@ -501,5 +546,17 @@ export class Dashboard {
         Cursor: { '@position': dt.start, '@numRows': dt.length, '@maxRows': 5000 },
       },
     };
+
+    const filterValue = this.appliedTaskFilterText;
+    if (this.appliedTaskIdentifier && filterValue) {
+      const fieldName = this.appliedTaskIdentifier.replace('TaskIdentifier.', '');
+      const existingFilters = result.Query.Filters.And.EQ;
+      existingFilters.push({
+        '@field': `TaskData.ApplicationData.Invoice.${fieldName}`,
+        Value: filterValue,
+      });
+    }
+
+    return result;
   }
 }

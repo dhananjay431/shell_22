@@ -76,6 +76,37 @@
         </button>
       </nav>
     </ng-template>
+    <ng-template #taskFilters>
+      <form class="task-filters" (submit)="$event.preventDefault(); searchTasks()">
+        <label class="visually-hidden" for="task-filter-field">Filter field</label>
+        <select
+          id="task-filter-field"
+          class="form-select form-select-sm"
+          [(ngModel)]="selectedTaskIdentifier"
+          name="taskIdentifier"
+        >
+          <option value="">Select filter</option>
+          @for (option of taskIdentifierOptions; track option.taskIdentifierName) {
+            <option [value]="option.taskIdentifierName">{{ option.nameToDisplay }}</option>
+          }
+        </select>
+        <label class="visually-hidden" for="task-filter-text">Filter value</label>
+        <input
+          id="task-filter-text"
+          class="form-control form-control-sm"
+          type="text"
+          [(ngModel)]="taskFilterText"
+          name="taskFilterText"
+          placeholder="Search value"
+        />
+        <button type="submit" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="resetTaskSearch()">
+          <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+        </button>
+      </form>
+    </ng-template>
     <div class="table-wrapper">
       <table datatable [dtOptions]="dtOptions" class="table table-striped mb-3git"></table>
     </div>
