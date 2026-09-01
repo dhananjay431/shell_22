@@ -1,12 +1,39 @@
 <section class="task-list p-1">
   <article class="task-list__card p-2" aria-labelledby="task-table-title">
+    <div class="card multi-color-bar-card" style="width: 250px">
+      <div class="multi-color-bar-legend" aria-label="Task count legend">
+        <span class="multi-color-bar-legend__item"
+          ><span
+            class="multi-color-bar-legend__swatch multi-color-bar-legend__swatch--total"
+            aria-hidden="true"
+          ></span
+          >Total</span
+        >
+        <span class="multi-color-bar-legend__item"
+          ><span
+            class="multi-color-bar-legend__swatch multi-color-bar-legend__swatch--assigned"
+            aria-hidden="true"
+          ></span
+          >Assigned</span
+        >
+        <span class="multi-color-bar-legend__item"
+          ><span
+            class="multi-color-bar-legend__swatch multi-color-bar-legend__swatch--unassigned"
+            aria-hidden="true"
+          ></span
+          >Unassigned</span
+        >
+        <span class="multi-color-bar-legend__item"
+          ><span
+            class="multi-color-bar-legend__swatch multi-color-bar-legend__swatch--sla"
+            aria-hidden="true"
+          ></span
+          >SLA</span
+        >
+      </div>
+      <div id="c-bar-multi-color"></div>
+    </div>
 
-    <div class="card" style="width:250px">
-            <h3>Multi-Color Bar</h3>
-            <div  id="c-bar-multi-color"></div>
-            
-          </div>
-     
     <ng-template #taskActions>
       <nav class="task-actions" aria-label="Task actions">
         <button
