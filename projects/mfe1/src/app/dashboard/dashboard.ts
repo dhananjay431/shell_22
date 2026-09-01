@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, TemplateRef, ViewChild, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, forkJoin, map } from 'rxjs';
@@ -43,6 +43,40 @@ export class Dashboard {
     { nameToDisplay: 'Queue', taskIdentifierName: 'TaskIdentifier.QUEUE' },
   ];
   selectedTaskIdentifier = '';
+  readonly summaryCards = signal<any[]>([
+    {
+      key: 'total',
+      label: 'Total',
+      icon: 'fa-file-lines',
+      chartId: 'c-bar-total',
+      value: 0,
+      percentage: '100%',
+    },
+    {
+      key: 'assigned',
+      label: 'Assigned',
+      icon: 'fa-user-check',
+      chartId: 'c-bar-assigned',
+      value: 0,
+      percentage: '0%',
+    },
+    {
+      key: 'unassigned',
+      label: 'Unassigned',
+      icon: 'fa-user-clock',
+      chartId: 'c-bar-unassigned',
+      value: 0,
+      percentage: '0%',
+    },
+    {
+      key: 'sla',
+      label: 'SLA Breach',
+      icon: 'fa-triangle-exclamation',
+      chartId: 'c-bar-sla',
+      value: 0,
+      percentage: '0%',
+    },
+  ]);
   taskFilterText = '';
   private appliedTaskIdentifier = '';
   private appliedTaskFilterText = '';
@@ -221,9 +255,9 @@ export class Dashboard {
   }
 
   ngOnInit() {
-    this.cs.getalltargets_TaskCountRequired.subscribe((resp: any) => {
-      console.log('getalltargets_TaskCountRequired=>', resp);
-    });
+    // this.cs.getalltargets_TaskCountRequired.subscribe((resp: any) => {
+    //   console.log('getalltargets_TaskCountRequired=>', resp);
+    // });
     this.cs.inbox_config_json.subscribe((r: any) => {
       console.log('r=>', r);
     });
@@ -260,7 +294,9 @@ export class Dashboard {
       },
       ajax: (dataTablesParameters: any, callback: any) => {
         const query = this.createQuery(this.targetId, dataTablesParameters);
-
+        function generateRandomArray(min: any, max: any, length = 10) {
+          return Array.from({ length }, () => Math.floor(Math.random() * (max - min + 1)) + min);
+        }
         forkJoin({
           data: this.cs.ajax(
             'GetHumanTasks.NOTF_TASK_INSTANCE',
@@ -273,12 +309,16 @@ export class Dashboard {
               Query: query.Query,
             })
             .pipe(map((response: any) => Number(response.Count ?? 0))),
-          taskcount: this.cs.getalltargets_TaskCountRequired.pipe(
-            map((dt1: any) => _.find(dt1, (d: any) => d.Id == history.state.props.ID)),
+          taskcount: this.cs.getalltargets_TaskCountRequired().pipe(
+            map((dt1: any) => {
+              // console.log('dt1=>', dt1, history.state.props.ID);
+              return _.find(dt1, (d: any) => d.Id == history.state.props.ID);
+            }),
           ),
         })
           .pipe(
             map((d: any) => {
+              console.log('forkJoin response=>', d);
               const states = _.get(d, 'taskcount.TaskStates.State', []);
               const currentDate = new Date();
 
@@ -316,24 +356,33 @@ sla : 9
 taskcount : 0
 unassigned : 36
  */
-              this.cs.render(
-                'c-bar-multi-color',
-                this.cs.sparkline(
-                  'bar',
-                  [
-                    response.taskcount.total,
-                    response.taskcount.assigned,
-                    response.taskcount.unassigned,
-                    response.taskcount.sla,
-                  ],
-                  {
-                    colors: ['#2196F3', '#4CAF50', '#FF9800', '#F44336'],
-                    tooltip: true,
-                  },
-                ),
-              );
-
-              debugger;
+              const total = response.taskcount.total;
+              const colors: Record<string, string> = {
+                total: '#1468e8',
+                assigned: '#159957',
+                unassigned: '#ff8308',
+                sla: '#ed2424',
+              };
+              const updatedCards = this.summaryCards().map((card: any) => {
+                card.value = response.taskcount[card.key];
+                card.percentage =
+                  card.key === 'total' || total === 0
+                    ? card.key === 'total'
+                      ? '100%'
+                      : '0%'
+                    : `${((card.value / total) * 100).toFixed(2)}%`;
+                this.cs.render(
+                  card.chartId,
+                  this.cs.sparkline('bar', generateRandomArray(0, card.value, 50), {
+                    colors: [colors[card.key]],
+                    tooltip: false,
+                    // height: 80,
+                  }),
+                );
+                return card;
+              });
+              this.summaryCards.set(updatedCards);
+              console.log('summaryCards=>', updatedCards);
               callback({
                 recordsTotal: response.count,
                 recordsFiltered: response.count,

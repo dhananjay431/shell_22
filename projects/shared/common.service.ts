@@ -99,24 +99,24 @@ export class CommonService {
     'GetAllTargets.Target',
     'http://schemas.cordys.com/notification/workflow/1.0',
     {},
-    true
+    true,
   );
-  getalltargets_TaskCountRequired = this.ajax(
-    'GetAllTargets.Target',
-    'http://schemas.cordys.com/notification/workflow/1.0',
-    { TaskCountRequired: "true" },
-    true
-  );
+  getalltargets_TaskCountRequired() {
+    return this.ajax(
+      'GetAllTargets.Target',
+      'http://schemas.cordys.com/notification/workflow/1.0',
+      { TaskCountRequired: 'true' },
+      false,
+    );
+  }
   render(id: any, svg: any) {
     var el = document.getElementById(id);
     if (el) el.innerHTML = svg;
   }
 
-
-  sparkline(type:any,data: any, obj: any) {
-    return Sparkline[type](data, obj)
+  sparkline(type: any, data: any, obj: any) {
+    return Sparkline[type](data, obj);
   }
-
 }
 /* 
 <SOAP:Envelope xmlns:SOAP='http://schemas.xmlsoap.org/soap/envelope/'>
