@@ -248,7 +248,6 @@ export class Dashboard {
           data: 'SLA',
           className: 'text-nowrap p-1',
           render: (data: any, type: any, row: any) => {
-            console.log(data);
             return data || '';
           },
         },
@@ -417,38 +416,36 @@ export class Dashboard {
       ],
     };
 
-    this.cs.inbox_config_json.subscribe((r: any) => {
-      const columnsToDisplay = r.Inbox.InboxColumnsToDisplay;
-      const dataPopulateConfig = r.Inbox.InboxDataPopulateConfiguration;
+    // this.cs.inbox_config_json.subscribe((r: any) => {
 
-      const columns = columnsToDisplay
-        .map((column: any) => {
-          const config = dataPopulateConfig.find((item: any) => item.columnName === column.name);
-
-          if (!config) {
-            return null;
-          }
-
-          return {
-            title: column.name,
-            data: config.taskDataNode.join('.'),
-            className: 'text-nowrap p-1',
-            render: (data: unknown) =>
-              column.type === 'date'
-                ? this.formatDate(data)
-                : column.name === 'Classifications'
-                  ? this.formatBadge(data, 'classification')
-                  : column.name === 'PO Number'
-                    ? this.formatBadge(data, 'po-number')
-                    : column.name === 'Initiator'
-                      ? this.formatBadge(data, 'initiator')
-                      : (data ?? ''),
-          };
-        })
-        .filter(Boolean);
-      console.log('columns=>', columns);
-      this.dtOptions.columns = [this.selectionColumn(), ...columns];
-    });
+    // const columnsToDisplay = r.Inbox.InboxColumnsToDisplay;
+    // const dataPopulateConfig = r.Inbox.InboxDataPopulateConfiguration;
+    // const columns = columnsToDisplay
+    //   .map((column: any) => {
+    //     const config = dataPopulateConfig.find((item: any) => item.columnName === column.name);
+    //     if (!config) {
+    //       return null;
+    //     }
+    //     return {
+    //       title: column.name,
+    //       data: config.taskDataNode.join('.'),
+    //       className: 'text-nowrap p-1',
+    //       render: (data: unknown) =>
+    //         column.type === 'date'
+    //           ? this.formatDate(data)
+    //           : column.name === 'Classifications'
+    //             ? this.formatBadge(data, 'classification')
+    //             : column.name === 'PO Number'
+    //               ? this.formatBadge(data, 'po-number')
+    //               : column.name === 'Initiator'
+    //                 ? this.formatBadge(data, 'initiator')
+    //                 : (data ?? ''),
+    //     };
+    //   })
+    //   .filter(Boolean);
+    // console.log('columns=>', columns);
+    // this.dtOptions.columns = [this.selectionColumn(), ...columns];
+    // });
   }
 
   private async reloadDataTable(): Promise<void> {
