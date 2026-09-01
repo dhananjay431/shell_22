@@ -12,6 +12,16 @@ import { NavigationEnd, Router } from '@angular/router';
           <span class="separator" aria-hidden="true">/</span>
           <span class="current" aria-current="page">FB-60</span>
         </nav>
+
+
+        // 
+        <nav class="breadcrumb m-0 p-0" aria-label="Breadcrumb">
+          <a href="#">{{ _dt | json }}</a>
+          <span class="separator" aria-hidden="true">/</span>
+          <a href="#">{{ ob(_dt).parentMenuLabel }}</a>
+          <span class="separator" aria-hidden="true">/</span>
+          <a href="#">{{ ob(_dt)[0].link.MENU_LABEL }}</a>
+        </nav>
          */
 @Component({
   selector: 'app-navbar-top',
@@ -21,8 +31,13 @@ import { NavigationEnd, Router } from '@angular/router';
   template: `
     <header class="topbar p-1 m-1">
       @if (dt | async; as _dt) {
-        <nav class="breadcrumb m-0 p-0" aria-label="Breadcrumb">
-          <a href="#">{{ ob(_dt)[0].link.MENU_LABEL }}</a>
+        <nav class="breadcrumb m-0 p-0 ps-2" aria-label="Breadcrumb">
+          <span>Dashboard</span>
+          <span class="separator" aria-hidden="true">/</span>
+          <span>{{ ob(_dt)[0].parentMenuLabel }}</span>
+          <span class="separator" aria-hidden="true">/</span>
+
+          <span>{{ ob(_dt)[0].link.MENU_LABEL }}</span>
         </nav>
 
         <div class="topbar-right">
@@ -188,6 +203,7 @@ export class NavbarTopComponent {
     return forkJoin({
       user: this.cs.getuserdetails,
       link: of(history.state.props),
+      parentMenuLabel: of(history.state.parentMenuLabel),
     });
   }
   dt: any = of({ user: [], link: {} });

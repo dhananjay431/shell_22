@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonService } from '../../../shared/common.service';
 import { AsyncPipe } from '@angular/common';
-import { forkJoin, map, mergeMap } from 'rxjs';
-import { MenuItem, MenuItemComponent } from './menu-item.component';
+import { forkJoin, map, mergeMap, tap } from 'rxjs';
+import { MenuItem, MenuItemComponent, MenuNavigationEvent } from './menu-item.component';
 import { Router } from '@angular/router';
 
 type ApiMenuItem = Omit<MenuItem, 'children'>;
@@ -341,11 +341,13 @@ export class NavbarVerticalComponent {
   getuserdetailsdt: any;
   private readonly router = inject(Router);
 
-  onNavigate(item: MenuItem): void {
-    console.log(item.MENU_LINK);
-    void this.router.navigate([item.MENU_LINK], {
+  onNavigate(event: MenuNavigationEvent): void {
+    const item = event.item;
+
+    // console.log(item.MENU_LINK);
+    void this.router.navigate(item.MENU_LINK.split('/').filter(Boolean), {
       queryParams: { menuId: new Date().getTime() },
-      state: { props: item },
+      state: { props: item, parentMenuLabel: event.parentMenuLabel },
     });
     this.closeMobile();
   }
@@ -411,6 +413,9 @@ export class NavbarVerticalComponent {
         ),
       ),
     ),
+    tap((d: any) => {
+      console.log('log=>', d);
+    }),
   );
 
   private addTargetSubmenus(items: ApiMenuItem[], targets: TargetItem[]): ApiMenuItem[] {

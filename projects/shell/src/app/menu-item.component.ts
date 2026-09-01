@@ -13,6 +13,11 @@ export interface MenuItem {
   children: MenuItem[];
 }
 
+export interface MenuNavigationEvent {
+  item: MenuItem;
+  parentMenuLabel?: string;
+}
+
 @Component({
   selector: 'app-menu-item',
   standalone: true,
@@ -44,6 +49,7 @@ export interface MenuItem {
           @for (child of item().children; track child.ID) {
             <app-menu-item
               [item]="child"
+              [parentMenuLabel]="item().MENU_LABEL"
               [collapsed]="collapsed()"
               (navigate)="navigate.emit($event)"
             />
@@ -56,13 +62,16 @@ export interface MenuItem {
         [href]="item().MENU_LINK"
         target="_blank"
         rel="noopener noreferrer"
-        (click)="navigate.emit(item())"
+        (click)="navigate.emit({ item: item(), parentMenuLabel: parentMenuLabel() })"
       >
         <span class="menu-icon" aria-hidden="true">{{ iconFor(item().TIP) }}</span>
         <span class="menu-label"> {{ item().MENU_LABEL }}</span>
       </a>
     } @else {
-      <a class="nav-link p-0" (click)="navigate.emit(item())">
+      <a
+        class="nav-link p-0"
+        (click)="navigate.emit({ item: item(), parentMenuLabel: parentMenuLabel() })"
+      >
         <span class="menu-icon" aria-hidden="true">&nbsp;&nbsp;&nbsp;</span>
         <span class="menu-label">{{ item().MENU_LABEL }}</span>
       </a>
@@ -111,8 +120,9 @@ export interface MenuItem {
 })
 export class MenuItemComponent {
   readonly item = input.required<MenuItem>();
+  readonly parentMenuLabel = input<string | undefined>();
   readonly collapsed = input(false);
-  readonly navigate = output<MenuItem>();
+  readonly navigate = output<MenuNavigationEvent>();
   readonly isOpen = signal(false);
 
   readonly hasChildren = () => this.item().children.length > 0;
