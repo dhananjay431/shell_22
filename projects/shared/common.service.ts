@@ -7,7 +7,7 @@ import { defer, Observable, finalize, shareReplay } from 'rxjs';
  * The service deliberately has no dependency on either application so it can
  * be reused by independently built Native Federation projects.
  */
-declare var $: any;
+declare var $: any, Sparkline: any, _: any;
 @Injectable({ providedIn: 'root' })
 export class CommonService {
   private readonly message = signal('');
@@ -99,6 +99,32 @@ export class CommonService {
     'GetAllTargets.Target',
     'http://schemas.cordys.com/notification/workflow/1.0',
     {},
-    true,
+    true
   );
+  getalltargets_TaskCountRequired = this.ajax(
+    'GetAllTargets.Target',
+    'http://schemas.cordys.com/notification/workflow/1.0',
+    { TaskCountRequired: "true" },
+    true
+  );
+  render(id: any, svg: any) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = svg;
+  }
+
+
+  sparkline(type:any,data: any, obj: any) {
+    return Sparkline[type](data, obj)
+  }
+
 }
+/* 
+<SOAP:Envelope xmlns:SOAP='http://schemas.xmlsoap.org/soap/envelope/'>
+    <SOAP:Body>
+        <GetAllTargets xmlns='http://schemas.cordys.com/notification/workflow/1.0'>
+            <TaskCountRequired>true</TaskCountRequired>
+        </GetAllTargets>
+    </SOAP:Body>
+</SOAP:Envelope>
+
+ */

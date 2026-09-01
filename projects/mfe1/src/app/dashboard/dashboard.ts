@@ -6,7 +6,7 @@ import { filter, forkJoin, map } from 'rxjs';
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 
 import { CommonService } from '../../../../shared/common.service';
-
+declare var _: any;
 @Component({
   imports: [DataTablesModule, FormsModule],
   // imports: [AsyncPipe, DatePipe, DataTablesModule],
@@ -221,9 +221,13 @@ export class Dashboard {
   }
 
   ngOnInit() {
+    this.cs.getalltargets_TaskCountRequired.subscribe((resp: any) => {
+      console.log('getalltargets_TaskCountRequired=>', resp);
+    });
     this.cs.inbox_config_json.subscribe((r: any) => {
       console.log('r=>', r);
     });
+
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -241,7 +245,7 @@ export class Dashboard {
       searching: false,
       pagingType: 'full_numbers',
       serverSide: true,
-      pageLength: 10,
+      pageLength: 15,
       lengthMenu: [15, 20, 25, 30],
       layout: {
         topStart: { div: { className: 'task-filter-slot' } },
@@ -269,22 +273,81 @@ export class Dashboard {
               Query: query.Query,
             })
             .pipe(map((response: any) => Number(response.Count ?? 0))),
-        }).subscribe({
-          next: (response: any) => {
-            callback({
-              recordsTotal: response.count,
-              recordsFiltered: response.count,
-              data: response.data,
-            });
-          },
-          error: () => {
-            callback({
-              recordsTotal: 0,
-              recordsFiltered: 0,
-              data: [],
-            });
-          },
-        });
+          taskcount: this.cs.getalltargets_TaskCountRequired.pipe(
+            map((dt1: any) => _.find(dt1, (d: any) => d.Id == history.state.props.ID)),
+          ),
+        })
+          .pipe(
+            map((d: any) => {
+              const states = _.get(d, 'taskcount.TaskStates.State', []);
+              const currentDate = new Date();
+
+              const overdueTasks = _.filter(_.get(d, 'data', []), (task: any) => {
+                const overdueDate = _.find(
+                  _.get(task, 'BusinessAttributes.Attribute', []),
+                  (attribute: any) => _.get(attribute, '@name') === 'SLA_OverDue',
+                )?.text;
+
+                return overdueDate ? currentDate > new Date(`${overdueDate}Z`) : false;
+              });
+
+              d.taskcount = {
+                total: Number(_.get(d, 'count', 0)),
+                assigned: Number(
+                  _.find(states, (state: any) => state.Name === 'ASSIGNED')?.Count ?? 0,
+                ),
+                unassigned: Number(
+                  _.find(states, (state: any) => state.Name === 'CREATED')?.Count ?? 0,
+                ),
+                sla: Number(overdueTasks.length),
+              };
+
+              return d;
+            }),
+          )
+          .subscribe({
+            next: (response: any) => {
+              console.log('response=>', response);
+
+              /* 
+taskcount : 
+assigned : 148
+sla : 9
+taskcount : 0
+unassigned : 36
+ */
+              this.cs.render(
+                'c-bar-multi-color',
+                this.cs.sparkline(
+                  'bar',
+                  [
+                    response.taskcount.total,
+                    response.taskcount.assigned,
+                    response.taskcount.unassigned,
+                    response.taskcount.sla,
+                  ],
+                  {
+                    colors: ['#2196F3', '#4CAF50', '#FF9800', '#F44336'],
+                    tooltip: true,
+                  },
+                ),
+              );
+
+              debugger;
+              callback({
+                recordsTotal: response.count,
+                recordsFiltered: response.count,
+                data: response.data,
+              });
+            },
+            error: () => {
+              callback({
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: [],
+              });
+            },
+          });
       },
       columns: [
         this.selectionColumn(),
@@ -546,6 +609,10 @@ export class Dashboard {
         Cursor: { '@position': dt.start, '@numRows': dt.length, '@maxRows': 5000 },
       },
     };
+
+    // <Like field="TaskIdentifier.WORK_ITEM_NUMBER">
+    //                         <Value>%GABAP0000000003115%</Value>
+    //                     </Like>
 
     const filterValue = this.appliedTaskFilterText;
     if (this.appliedTaskIdentifier && filterValue) {
