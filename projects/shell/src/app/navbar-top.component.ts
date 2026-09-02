@@ -3,26 +3,7 @@ import { CommonService } from '../../../shared/common.service';
 import { debounceTime, forkJoin, last, map, mergeMap, of, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
-// {{i.UserName.slice(0,2).toUpperCase()}}
-/* 
-  <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="#">Invoice Processing</a>
-          <span class="separator" aria-hidden="true">/</span>
-          <a href="#">SAP - MIRO</a>
-          <span class="separator" aria-hidden="true">/</span>
-          <span class="current" aria-current="page">FB-60</span>
-        </nav>
 
-
-        // 
-        <nav class="breadcrumb m-0 p-0" aria-label="Breadcrumb">
-          <a href="#">{{ _dt | json }}</a>
-          <span class="separator" aria-hidden="true">/</span>
-          <a href="#">{{ ob(_dt).parentMenuLabel }}</a>
-          <span class="separator" aria-hidden="true">/</span>
-          <a href="#">{{ ob(_dt)[0].link.MENU_LABEL }}</a>
-        </nav>
-         */
 @Component({
   selector: 'app-navbar-top',
   standalone: true,
@@ -32,12 +13,12 @@ import { NavigationEnd, Router } from '@angular/router';
     <header class="topbar p-1 m-1">
       @if (dt | async; as _dt) {
         <nav class="breadcrumb m-0 p-0 ps-2" aria-label="Breadcrumb">
-          <span>Dashboard</span>
+          <span class="fw-bold"> {{ lab() }}</span>
           <span class="separator" aria-hidden="true">/</span>
-          <span>{{ ob(_dt)[0].parentMenuLabel }}</span>
+          <span class="fw-bold">{{ ob(_dt)[0].parentMenuLabel }}</span>
           <span class="separator" aria-hidden="true">/</span>
 
-          <span>{{ ob(_dt)[0].link.MENU_LABEL }}</span>
+          <span class="fw-bold">{{ ob(_dt)[0].link.MENU_LABEL }}</span>
         </nav>
 
         <div class="topbar-right">
@@ -199,6 +180,9 @@ export class NavbarTopComponent {
   constructor(private cs: CommonService) {}
   ob = (_: any) => (Array.isArray(_) ? _ : [_]);
 
+  lab() {
+    return location.pathname.split('/').at(-1);
+  }
   fk() {
     return forkJoin({
       user: this.cs.getuserdetails,
