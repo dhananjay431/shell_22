@@ -37,6 +37,7 @@
     "@softarc/native-federation-orchestrator": "^4.6.0",
     "@types/jquery": "^4.0.1",
     "prettier": "^3.8.1",
+    "sass": "1.77.6",
     "typescript": "~6.0.2"
   }
 }
