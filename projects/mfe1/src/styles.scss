@@ -20,3 +20,78 @@ body {
     'Segoe UI',
     sans-serif;
 }
+
+/* Use the configured application color for Bootstrap primary actions. */
+.task-actions .btn.btn-primary,
+.task-filters .btn.btn-primary,
+.theme-settings .btn.btn-primary,
+.btn.btn-primary {
+  background-color: var(--vuexy-primary) !important;
+  border-color: var(--vuexy-primary) !important;
+  color: #fff !important;
+}
+
+.task-actions .btn.btn-primary:hover,
+.task-actions .btn.btn-primary:focus,
+.task-actions .btn.btn-primary:active,
+.task-filters .btn.btn-primary:hover,
+.task-filters .btn.btn-primary:focus,
+.task-filters .btn.btn-primary:active,
+.theme-settings .btn.btn-primary:hover,
+.theme-settings .btn.btn-primary:focus,
+.theme-settings .btn.btn-primary:active,
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:active {
+  background-color: var(--vuexy-primary) !important;
+  border-color: var(--vuexy-primary) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 0.2rem var(--vuexy-primary-soft);
+}
+
+/* Keep DataTables controls in sync with the selected application theme. */
+.dataTables_wrapper,
+.dt-container {
+  --dt-theme-primary: var(--vuexy-primary);
+  --dt-theme-primary-soft: var(--vuexy-primary-soft);
+}
+
+.dataTables_wrapper table.dataTable thead tr,
+.dt-container table.dataTable thead tr {
+  background-color: var(--dt-theme-primary);
+  color: #fff;
+}
+
+.dataTables_wrapper table.dataTable thead th,
+.dt-container table.dataTable thead th {
+  background-color: var(--dt-theme-primary);
+  border-color: var(--dt-theme-primary);
+  color: #fff;
+}
+
+.dataTables_wrapper .pagination .page-item.active .page-link,
+.dataTables_wrapper .dt-paging-button.active .page-link,
+.dataTables_wrapper .dt-paging-button.current,
+.dt-container .pagination .page-item.active .page-link,
+.dt-container .dt-paging-button.active .page-link,
+.dt-container .dt-paging-button.current {
+  background-color: var(--dt-theme-primary) !important;
+  border-color: var(--dt-theme-primary) !important;
+  color: #fff !important;
+}
+
+.dataTables_wrapper .pagination .page-link:hover,
+.dataTables_wrapper .dt-paging-button .page-link:hover,
+.dt-container .pagination .page-link:hover,
+.dt-container .dt-paging-button .page-link:hover {
+  background-color: var(--dt-theme-primary-soft);
+  border-color: var(--dt-theme-primary);
+  color: var(--dt-theme-primary);
+}
+
+.dataTables_wrapper .pagination .page-link:focus,
+.dataTables_wrapper .dt-paging-button .page-link:focus,
+.dt-container .pagination .page-link:focus,
+.dt-container .dt-paging-button .page-link:focus {
+  box-shadow: 0 0 0 0.2rem var(--dt-theme-primary-soft);
+}

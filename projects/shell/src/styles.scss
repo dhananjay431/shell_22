@@ -1,6 +1,11 @@
+@import '../../../node_modules/bootstrap/scss/bootstrap';
 :root {
   --vuexy-primary: #7367f0;
   --vuexy-primary-soft: #eeedff;
+  --bs-primary: var(--vuexy-primary);
+  --bs-primary-rgb: 115, 103, 240;
+  --bs-link-color: var(--vuexy-primary);
+  --bs-link-hover-color: var(--vuexy-primary);
   --vuexy-body-bg: #f8f7fa;
   --vuexy-paper: #fff;
   --vuexy-heading: #2f2b3d;
@@ -28,6 +33,39 @@ body {
     'Segoe UI',
     sans-serif;
   font-size: 0.9375rem;
+}
+
+/* Bootstrap Sass is compiled once, so use CSS variables for runtime themes. */
+.btn-primary {
+  --bs-btn-bg: var(--vuexy-primary);
+  --bs-btn-border-color: var(--vuexy-primary);
+  --bs-btn-hover-bg: var(--vuexy-primary);
+  --bs-btn-hover-border-color: var(--vuexy-primary);
+  --bs-btn-active-bg: var(--vuexy-primary);
+  --bs-btn-active-border-color: var(--vuexy-primary);
+  background-color: var(--vuexy-primary) !important;
+  border-color: var(--vuexy-primary) !important;
+  color: #fff !important;
+}
+
+.dt-container table.dataTable thead tr,
+.dataTables_wrapper table.dataTable thead tr,
+.dt-container table.dataTable thead th,
+.dataTables_wrapper table.dataTable thead th {
+  background-color: var(--vuexy-primary) !important;
+  border-color: var(--vuexy-primary) !important;
+  color: #fff !important;
+}
+
+.dt-container .dt-paging-button.current,
+.dt-container .dt-paging-button.current:hover,
+.dataTables_wrapper .dt-paging-button.current,
+.dataTables_wrapper .dt-paging-button.current:hover,
+.dt-container .page-item.active .page-link,
+.dataTables_wrapper .page-item.active .page-link {
+  background-color: var(--vuexy-primary) !important;
+  border-color: var(--vuexy-primary) !important;
+  color: #fff !important;
 }
 
 button,

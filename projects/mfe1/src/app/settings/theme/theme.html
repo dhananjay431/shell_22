@@ -1,1 +1,65 @@
-<p>theme works!</p>
+<section class="theme-settings" aria-labelledby="theme-settings-title">
+  <header class="theme-settings__header">
+    <div>
+      <p class="eyebrow">Appearance</p>
+      <h1 id="theme-settings-title">Theme configuration</h1>
+      <p class="subtitle">Customize the colors used throughout the application.</p>
+    </div>
+    <span class="status" role="status">{{ appliedThemeName }} applied</span>
+  </header>
+
+  <article class="theme-card">
+    <h2>Presets</h2>
+    <div class="preset-grid">
+      @for (preset of presetThemes; track preset.name) {
+        <button
+          type="button"
+          class="preset"
+          [class.preset--selected]="theme.primary === preset.primary"
+          (click)="selectPreset(preset)"
+        >
+          <span class="preset__swatch" [style.background-color]="preset.primary"></span>
+          <span>{{ preset.name }}</span>
+        </button>
+      }
+    </div>
+  </article>
+
+  <article class="theme-card">
+    <div class="theme-card__heading">
+      <div>
+        <h2>Custom colors</h2>
+        <p>Choose a color for each part of the application theme.</p>
+      </div>
+      <label class="theme-name">
+        Theme name
+        <input type="text" [(ngModel)]="theme.name" maxlength="40" />
+      </label>
+    </div>
+
+    <div class="color-grid">
+      @for (color of colorFields; track color.key) {
+        <label class="color-field">
+          <span>{{ color.label }}</span>
+          <span class="color-field__control">
+            <input type="color" [(ngModel)]="theme[color.key]" [name]="color.key" />
+            <code>{{ theme[color.key] }}</code>
+          </span>
+        </label>
+      }
+    </div>
+
+    <div class="preview" [style.background-color]="theme.bodyBackground">
+      <div class="preview__bar" [style.background-color]="theme.primary"></div>
+      <div class="preview__content">
+        <strong [style.color]="theme.heading">Live preview</strong>
+        <span [style.color]="theme.body">Your selected colors will apply across the project.</span>
+      </div>
+    </div>
+
+    <footer class="theme-card__actions">
+      <button type="button" class="btn btn-light" (click)="resetTheme()">Reset</button>
+      <button type="button" class="btn btn-primary" (click)="applyTheme()">Apply theme</button>
+    </footer>
+  </article>
+</section>

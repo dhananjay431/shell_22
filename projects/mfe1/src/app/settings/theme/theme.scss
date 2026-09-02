@@ -1,0 +1,28 @@
+.theme-settings { max-width: 980px; margin: 0 auto; padding: 2rem; color: var(--vuexy-body); }
+.theme-settings__header, .theme-card__heading, .theme-card__actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.eyebrow { margin: 0 0 .35rem; color: var(--vuexy-primary); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+h1, h2 { color: var(--vuexy-heading); margin-top: 0; }
+h1 { margin-bottom: .4rem; font-size: 1.75rem; }
+h2 { margin-bottom: 1rem; font-size: 1.1rem; }
+.subtitle, .theme-card p { margin: 0; color: var(--vuexy-muted); }
+.status { padding: .45rem .75rem; border-radius: 999px; background: var(--vuexy-primary-soft); color: var(--vuexy-primary); font-size: .8rem; font-weight: 600; }
+.theme-card { margin-top: 1.5rem; padding: 1.5rem; border: 1px solid var(--vuexy-border); border-radius: .75rem; background: var(--vuexy-paper); box-shadow: 0 4px 16px rgba(47, 43, 61, .05); }
+.preset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .75rem; }
+.preset { display: flex; align-items: center; gap: .65rem; padding: .8rem; border: 1px solid var(--vuexy-border); border-radius: .5rem; background: var(--vuexy-paper); color: var(--vuexy-body); cursor: pointer; text-align: left; }
+.preset--selected { border-color: var(--vuexy-primary); box-shadow: 0 0 0 2px var(--vuexy-primary-soft); }
+.preset__swatch { width: 1.25rem; height: 1.25rem; border-radius: 50%; }
+.theme-name, .color-field { display: flex; flex-direction: column; gap: .4rem; color: var(--vuexy-heading); font-size: .85rem; font-weight: 600; }
+.theme-name input { min-width: 190px; }
+input[type='text'] { padding: .55rem .7rem; border: 1px solid var(--vuexy-border); border-radius: .35rem; color: var(--vuexy-body); background: var(--vuexy-paper); }
+.color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; }
+.color-field__control { display: flex; align-items: center; gap: .6rem; }
+input[type='color'] { width: 2.25rem; height: 2.25rem; padding: .15rem; border: 1px solid var(--vuexy-border); border-radius: .35rem; background: var(--vuexy-paper); cursor: pointer; }
+code { color: var(--vuexy-body); font-size: .8rem; }
+.preview { display: flex; align-items: stretch; gap: 1rem; margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--vuexy-border); border-radius: .5rem; }
+.preview__bar { width: .35rem; border-radius: 1rem; }
+.preview__content { display: flex; flex-direction: column; gap: .35rem; }
+.theme-card__actions { justify-content: flex-end; margin-top: 1.5rem; }
+.btn { padding: .6rem 1rem; border: 0; border-radius: .35rem; cursor: pointer; font-weight: 600; }
+.btn-primary { background: var(--vuexy-primary); color: #fff; }
+.btn-light { background: var(--vuexy-primary-soft); color: var(--vuexy-primary); }
+@media (max-width: 640px) { .theme-settings { padding: 1rem; } .theme-settings__header, .theme-card__heading { align-items: flex-start; flex-direction: column; } }
