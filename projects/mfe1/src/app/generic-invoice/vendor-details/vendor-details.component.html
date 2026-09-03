@@ -1,0 +1,197 @@
+<div class="card" id="503">
+  <div class="card-head" style="cursor: pointer; user-select: none" (click)="toggleCanvas()">
+    <div class="card-title">
+      <i class="material-icons-outlined db-small-icon" style="color: var(--accent)">dashboard</i>
+      Invoice Canvas
+      <span style="font-size: 10.5px; color: var(--text3); font-weight: 400"
+        >(AI Extracted &amp; Validated)</span
+      >
+    </div>
+    <i
+      class="material-icons-outlined"
+      id="canvas-chev"
+      style="color: var(--accent); font-size: 15px"
+      >{{ isCanvasExpanded ? 'expand_less' : 'expand_more' }}</i
+    >
+  </div>
+  <div id="canvas-body" *ngIf="isCanvasExpanded">
+    <!-- Toolbar -->
+    <div class="canvas-toolbar" onclick="event.stopPropagation()">
+      <button class="hold-btn" style="padding: 3px 8px; font-size: 11px" (click)="zoomOut()">
+        <i class="material-icons-outlined db-small-icon">remove</i>
+      </button>
+      <span style="font-size: 11.5px; color: var(--text2); min-width: 34px; text-align: center"
+        >{{ zoomLevel }}%</span
+      >
+      <button class="hold-btn" style="padding: 3px 8px; font-size: 11px" (click)="zoomIn()">
+        <i class="material-icons-outlined db-small-icon">add</i>
+      </button>
+      <button class="hold-btn" style="padding: 3px 8px; font-size: 11px" type="button">
+        <i class="material-icons-outlined db-small-icon">download</i>
+      </button>
+      <div class="toolbar-sep"></div>
+      <div class="toggle-wrap">
+        <div
+          class="toggle"
+          id="lbl-toggle"
+          [class.on]="showLabels"
+          [class.off]="!showLabels"
+          (click)="toggleLabels()"
+        >
+          <div class="knob"></div>
+        </div>
+        <span style="font-size: 11.5px; color: var(--text1)">Show Labels</span>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="toggle-wrap">
+        <div
+          class="toggle"
+          id="edit-toggle"
+          [class.on]="editFields"
+          [class.off]="!editFields"
+          (click)="toggleEditFields()"
+        >
+          <div class="knob"></div>
+        </div>
+        <span style="font-size: 11.5px; color: var(--text1)"
+          ><i class="material-icons-outlined" style="font-size: 12px; margin-right: 2px">edit</i
+          >Edit Fields</span
+        >
+      </div>
+      <button
+        class="btn"
+        id="save-edits-btn"
+        style="
+          display: none;
+          padding: 3px 9px;
+          font-size: 11px;
+          background: var(--accent);
+          color: #fff;
+          border-color: var(--accent);
+        "
+        onclick="t('Edited values saved to extraction record', 't-success')"
+      >
+        <i class="material-icons-outlined" style="font-size: 12px">save</i> Save Edits
+      </button>
+      <div class="toolbar-sep"></div>
+      <div class="conf-legend">
+        <div class="conf-legend-item">
+          <i class="material-icons-outlined" style="color: var(--success); font-size: 12px"
+            >check_circle</i
+          >High (≥95%)
+        </div>
+        <div class="conf-legend-item" style="color: var(--amber)">
+          <i class="material-icons-outlined" style="font-size: 12px">remove_circle_outline</i>Medium
+          (80-94%)
+        </div>
+        <div class="conf-legend-item" style="color: var(--red)">
+          <i class="material-icons-outlined" style="font-size: 12px">cancel</i>Low &lt;80%)
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────── WHITE INVOICE DOCUMENT ──────── -->
+    <div #canvasWrap class="canvas-wrap">
+      <div class="pdf-status">{{ status }}</div>
+    </div>
+    <div id="all-badges" class="all-badges agent-badges" *ngIf="showLabels">
+      <div
+        *ngFor="let agent of agentBadges"
+        class="db-agent-badge hl-badge-source"
+        [ngClass]="agent.themeClass"
+        [class.hl-active]="ss.selectedAgentSignal() === agent.key"
+        (click)="highlightCanvasSection(agent.key)"
+        [title]="'Click to highlight ' + agent.label"
+      >
+        <div class="ab-head">
+          <div
+            class="ab-av"
+            [style.background]="agent.background"
+            [style.border]="'1px solid ' + agent.border"
+          >
+            <i
+              class="material-icons-outlined"
+              [style.color]="agent.color"
+              style="font-size: 10px"
+              >{{ agent.icon }}</i
+            >
+          </div>
+          <div class="ab-name" [style.color]="agent.color">
+            {{ agent.label }}
+          </div>
+        </div>
+        <div class="ab-time">{{ agent.timeLabel }}</div>
+        <div class="ab-score-row">
+          <span>{{ agent.scoreLabel }}:</span
+          ><strong [style.color]="agent.color">{{ agent.score }}</strong>
+        </div>
+        <div class="ab-pointer"></div>
+      </div>
+    </div>
+    <div class="field-popup" *ngIf="fieldPopup as popup">
+      <div class="popup-head">
+        <div class="popup-title">{{ popup.title }}</div>
+        <div class="popup-head-actions">
+          <span class="score-pill" [ngClass]="'sp-' + popup.level">
+            {{ popup.confidence }}% ({{ popup.level | titlecase }})
+          </span>
+          <button
+            type="button"
+            class="popup-close"
+            aria-label="Close popup"
+            (click)="closeFieldPopup()"
+          >
+            <i class="material-icons-outlined">close</i>
+          </button>
+        </div>
+      </div>
+      <div class="popup-content">
+        <div class="popup-label">Extracted Value</div>
+        <div class="popup-value-row">
+          <div class="popup-value">{{ popup.value || '—' }}</div>
+          <i class="material-icons-outlined" aria-hidden="true">receipt_long</i>
+        </div>
+        <div class="popup-label">Confidence</div>
+        <div class="popup-confidence" [ngClass]="'confidence-' + popup.level">
+          <i class="material-icons-outlined">
+            {{
+              popup.level === 'low'
+                ? 'cancel'
+                : popup.level === 'medium'
+                  ? 'remove_circle_outline'
+                  : 'check_circle'
+            }}
+          </i>
+          <span>{{ popup.confidence }}% ({{ popup.level | titlecase }})</span>
+        </div>
+        <div class="popup-label">Validated By</div>
+        <div class="validated-by">
+          <span><i class="material-icons-outlined">check_circle</i>Extraction Agent</span>
+          <span><i class="material-icons-outlined">check_circle</i>PO Match Agent</span>
+        </div>
+        <div class="popup-label">Source in Invoice</div>
+        <div class="popup-source">
+          <textarea
+            *ngIf="editFields; else readOnlySource"
+            class="popup-source-edit"
+            rows="3"
+            [(ngModel)]="popup.value"
+            aria-label="Edit extracted value"
+          ></textarea>
+          <ng-template #readOnlySource>
+            <span>{{ popup.value || '—' }}</span>
+          </ng-template>
+        </div>
+        <div class="popup-updated">Last Updated by AI</div>
+        <div class="popup-actions">
+          <button type="button" class="btn" (click)="closeFieldPopup()">Cancel</button>
+          <button type="button" class="btn confirm-button" (click)="confirmFieldValue()">
+            Confirm Value
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /canvas-wrap -->
+  </div>
+  <!-- /canvas-body -->
+</div>

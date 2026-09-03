@@ -287,6 +287,19 @@ export class Dashboard {
         bottomStart: ['pageLength', 'info'],
         bottomEnd: 'paging',
       },
+      rowCallback: (row: Node) => {
+        const workItemNumber = (row as HTMLElement).querySelector<HTMLElement>('.work-item-number');
+
+        if (workItemNumber) {
+          workItemNumber.onclick = () => {
+            void this.router.navigate([
+              '/payx/generic-invoice/' + workItemNumber.dataset['workItemNumber'],
+            ]);
+          };
+        }
+
+        return row;
+      },
       drawCallback: () => {
         this.bindSelectionCheckboxes();
         this.placeTaskActions();
@@ -412,9 +425,18 @@ unassigned : 36
           title: 'Work Item Number',
           data: 'TaskData.ApplicationData.Invoice.WORK_ITEM_NUMBER',
           className: 'text-nowrap p-1',
-          render: (data: any, type: any, row: any) => {
+          render: (data: any) => {
+            const workItemNumber = String(data ?? '');
+            const escapedWorkItemNumber = this.escapeAttribute(workItemNumber);
+
             return `
-              <span class="availability-badge availability-badge--in-progress">${data || ''}</span>
+              <span
+                class="availability-badge availability-badge--in-progress work-item-number"
+                data-work-item-number="${escapedWorkItemNumber}"
+                role="button"
+                tabindex="0"
+                aria-label="Open Work Item Number ${escapedWorkItemNumber}"
+              >${escapedWorkItemNumber}</span>
             `;
           },
         },

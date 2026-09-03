@@ -1,0 +1,13 @@
+<div>
+  <div class="agent-tabs">
+    <button type="button" class="agent-tab-btn" [class.active]="activeAgentTab === 'agent-canvas-tab'" (click)="switchAgentTab('agent-canvas-tab')">
+      <i class="ti ti-cpu" style="font-size: 13px"></i> Agent Canvas
+    </button>
+    <button type="button" class="agent-tab-btn" [class.active]="activeAgentTab === 'field-edit-tab'" (click)="switchAgentTab('field-edit-tab')">
+      <i class="ti ti-forms" style="font-size: 13px"></i> Field Edit
+      <span class="tab-badge" id="field-edit-badge">2</span>
+    </button>
+  </div>
+  <app-agent-canvas-tab *ngIf="activeAgentTab === 'agent-canvas-tab'"></app-agent-canvas-tab>
+  <app-field-edit-tab *ngIf="activeAgentTab === 'field-edit-tab'"></app-field-edit-tab>
+</div>

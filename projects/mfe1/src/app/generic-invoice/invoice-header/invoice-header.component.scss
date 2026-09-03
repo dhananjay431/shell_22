@@ -1,0 +1,65 @@
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #e3e8f5;
+    border-radius: 12px;
+}
+
+.eyebrow {
+    margin: 0 0 6px;
+    color: #5666c9;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.muted {
+    margin: 6px 0 0;
+    color: #6f7891;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    border: 0;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.primary {
+    color: #fff;
+    background: #415bff;
+}
+
+.secondary {
+    color: #4150a4;
+    background: #eef1ff;
+}
+
+@media(max-width:600px) {
+    .invoice-header {
+        align-items: flex-start;
+        flex-direction: column
+    }
+
+    .actions {
+        width: 100%
+    }
+
+    button {
+        flex: 1
+    }
+}

@@ -1,0 +1,107 @@
+<div class="ws-card">
+  <div class="ws-head" onclick="toggleWS()">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <i class="ti ti-search" style="color: var(--accent); font-size: 15px"></i>
+      <span style="font-size: 13px; font-weight: 600">Investigation Workspace</span>
+      <span style="font-size: 11.5px; color: var(--text3); font-weight: 400"
+        >3-Way Match Details (PO + GR + Invoice)</span
+      >
+    </div>
+    <div style="display: flex; align-items: center; gap: 7px">
+      <span id="ws-label" style="font-size: 11.5px; color: var(--accent)">Collapse Workspace</span>
+      <i class="ti ti-chevron-up" id="ws-chev" style="color: var(--accent); font-size: 15px"></i>
+    </div>
+  </div>
+
+  <div class="ws-body" id="ws-body">
+    <!-- Left: Tab list -->
+    <div class="ws-tabs-col">
+      <div class="ws-tab active" (click)="setTab($event.currentTarget, 'tc-match')">
+        <i class="ti ti-table"></i>
+        <div>
+          <div>Line Items (4)</div>
+          <div class="ws-tab-sub">3-Way Match</div>
+        </div>
+      </div>
+      <div class="ws-tab" (click)="setTab($event.currentTarget, 'tc-multipo')">
+        <i class="ti ti-stack-2"></i>
+        <div>
+          <div>Multi-PO Grid</div>
+          <div class="ws-tab-sub">Bulk GR/IR Match</div>
+        </div>
+      </div>
+      <div class="ws-tab" (click)="setTab($event.currentTarget, 'tc-audit')">
+        <i class="ti ti-clock-history"></i>
+        <div>
+          <div>Audit Trail</div>
+          <div class="ws-tab-sub">15 Events</div>
+        </div>
+      </div>
+      <div class="ws-tab" (click)="setTab($event.currentTarget, 'tc-reason')">
+        <i class="ti ti-brain"></i>
+        <div>
+          <div>Agent Reasoning</div>
+          <div class="ws-tab-sub">Why it was validated</div>
+        </div>
+      </div>
+      <div class="ws-tab" (click)="setTab($event.currentTarget, 'tc-attach')">
+        <i class="ti ti-paperclip"></i>
+        <div>
+          <div>Attachments (3)</div>
+          <div class="ws-tab-sub">View all files</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center: Tab content -->
+    <div class="ws-content-col">
+      <!-- TAB: 3-Way Match -->
+      <div id="tc-match" style="display: block">
+        <app-line-items></app-line-items>
+      </div>
+
+      <!-- TAB: Multi-PO Grid (bulk GR/IR line item match) -->
+      <div id="tc-multipo" style="display: none">
+        <app-multi-po-grid></app-multi-po-grid>
+      </div>
+
+      <!-- TAB: Audit Trail -->
+      <div id="tc-audit" style="display: none">
+        <app-audit-trail></app-audit-trail>
+      </div>
+
+      <!-- TAB: Agent Reasoning -->
+      <div id="tc-reason" style="display: none">
+        <app-agent-reasoning></app-agent-reasoning>
+      </div>
+
+      <!-- TAB: Attachments -->
+      <div id="tc-attach" style="display: none">
+        <app-attachments></app-attachments>
+      </div>
+    </div>
+    <!-- /ws-content-col -->
+
+    <!-- Right: Exception Panel -->
+    <aside class="ws-right-col">
+      <div class="exc-head">Laundry - Price Variance</div>
+      <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 12px">
+        <div class="exc-amount">₹20.00</div>
+        <div style="font-size: 11px; color: var(--text3)">(6.67%)</div>
+      </div>
+      <div class="exc-section">
+        <div class="exc-label">Reason</div>
+        <div class="exc-value">Price variance exceeds tolerance limit of ₹10.00 (2.00%)</div>
+      </div>
+      <div class="exc-section">
+        <div class="exc-label">Suggested Action</div>
+        <div class="exc-value">Route to Procurement Manager</div>
+      </div>
+      <button class="exc-btn" onclick="t('Exception routed to Procurement Manager', 't-success')">
+        Route Exception
+      </button>
+      <button class="exc-btn-sec" onclick="t('Comment box opened', 't-info')">Add Comment</button>
+    </aside>
+  </div>
+  <!-- /ws-body -->
+</div>

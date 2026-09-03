@@ -1,0 +1,176 @@
+<table class="three-table">
+          <thead>
+            <tr>
+              <th rowspan="2" style="text-align: center; width: 22px">#</th>
+              <th rowspan="2" style="text-align: left">Description</th>
+              <th colspan="3" class="group-head th-inv">
+                Invoice (This Document)
+              </th>
+              <th colspan="3" class="group-head th-po">PO 4500001234</th>
+              <th colspan="3" class="group-head th-gr">GR 5500007890</th>
+              <th rowspan="2" style="text-align: right">Variance (₹)</th>
+              <th rowspan="2" style="text-align: left; padding-left: 8px">
+                Match Status
+              </th>
+              <th rowspan="2" style="text-align: center">Action</th>
+            </tr>
+            <tr>
+              <th class="td-inv">Qty</th>
+              <th class="td-inv">Rate (₹)</th>
+              <th class="td-inv">Amt (₹)</th>
+              <th class="td-po">Qty</th>
+              <th class="td-po">Rate (₹)</th>
+              <th class="td-po">Amt (₹)</th>
+              <th class="td-gr">Qty</th>
+              <th class="td-gr">Rate (₹)</th>
+              <th class="td-gr">Amt (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Room Tariff</td>
+              <td class="td-inv">1</td>
+              <td class="td-inv">6,500.00</td>
+              <td class="td-inv">6,500.00</td>
+              <td class="td-po">1</td>
+              <td class="td-po">6,500.00</td>
+              <td class="td-po">6,500.00</td>
+              <td class="td-gr">1</td>
+              <td class="td-gr">6,500.00</td>
+              <td class="td-gr">6,500.00</td>
+              <td>0.00</td>
+              <td style="text-align: left; padding-left: 8px">
+                <span class="matched-tag"
+                  ><i class="ti ti-circle-check" style="font-size: 10px"></i
+                  >Matched</span
+                >
+              </td>
+              <td style="text-align: center">
+                <i
+                  class="ti ti-info-circle action-icon"
+                  onclick="
+                    t(
+                      'Room Tariff: Exact 3-way match PO / GR / Invoice',
+                      't-success',
+                    )
+                  "
+                ></i>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Food &amp; Beverages</td>
+              <td class="td-inv">1</td>
+              <td class="td-inv">2,450.00</td>
+              <td class="td-inv">2,450.00</td>
+              <td class="td-po">1</td>
+              <td class="td-po">2,450.00</td>
+              <td class="td-po">2,450.00</td>
+              <td class="td-gr">1</td>
+              <td class="td-gr">2,450.00</td>
+              <td class="td-gr">2,450.00</td>
+              <td>0.00</td>
+              <td style="text-align: left; padding-left: 8px">
+                <span class="matched-tag"
+                  ><i class="ti ti-circle-check" style="font-size: 10px"></i
+                  >Matched</span
+                >
+              </td>
+              <td style="text-align: center">
+                <i
+                  class="ti ti-info-circle action-icon"
+                  onclick="
+                    t('Food &amp; Beverages: Exact 3-way match', 't-success')
+                  "
+                ></i>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Laundry</td>
+              <td class="td-inv">1</td>
+              <td class="td-inv">320.00</td>
+              <td class="td-inv">320.00</td>
+              <td class="td-po">1</td>
+              <td class="td-po var-amount">300.00</td>
+              <td class="td-po">300.00</td>
+              <td class="td-gr">1</td>
+              <td class="td-gr var-amount">300.00</td>
+              <td class="td-gr">300.00</td>
+              <td class="var-amount">20.00</td>
+              <td style="text-align: left; padding-left: 8px">
+                <span class="variance-tag"
+                  ><i class="ti ti-alert-triangle" style="font-size: 10px"></i
+                  >Price Variance</span
+                >
+              </td>
+              <td style="text-align: center">
+                <i
+                  class="ti ti-message-circle action-icon warn"
+                  onclick="
+                    t(
+                      'Laundry: ₹20 variance — routed to exception panel',
+                      't-warning',
+                    )
+                  "
+                ></i>
+              </td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Local Transport</td>
+              <td class="td-inv">1</td>
+              <td class="td-inv">742.60</td>
+              <td class="td-inv">742.60</td>
+              <td class="td-po">1</td>
+              <td class="td-po">742.60</td>
+              <td class="td-po">742.60</td>
+              <td class="td-gr">1</td>
+              <td class="td-gr">742.60</td>
+              <td class="td-gr">742.60</td>
+              <td>0.00</td>
+              <td style="text-align: left; padding-left: 8px">
+                <span class="matched-tag"
+                  ><i class="ti ti-circle-check" style="font-size: 10px"></i
+                  >Matched</span
+                >
+              </td>
+              <td style="text-align: center">
+                <i
+                  class="ti ti-info-circle action-icon"
+                  onclick="t('Local Transport: Exact 3-way match', 't-success')"
+                ></i>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" style="text-align: left; font-weight: 600">
+                Total
+              </td>
+              <td colspan="3" class="td-inv" style="font-weight: 600">
+                ₹10,012.60
+              </td>
+              <td colspan="3" class="td-po" style="font-weight: 600">
+                ₹9,992.60
+              </td>
+              <td colspan="3" class="td-gr" style="font-weight: 600">
+                ₹9,992.60
+              </td>
+              <td class="var-amount" style="font-weight: 700">₹20.00</td>
+              <td
+                colspan="2"
+                style="
+                  text-align: left;
+                  padding-left: 8px;
+                  color: var(--amber);
+                  font-size: 9.5px;
+                  font-weight: 600;
+                "
+              >
+                Total Variance
+              </td>
+            </tr>
+          </tfoot>
+        </table>

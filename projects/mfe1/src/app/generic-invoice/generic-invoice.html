@@ -1,1 +1,25 @@
-<p>generic-invoice works!</p>
+@if (so | async; as sdt) {
+  <div class="app invoice-app">
+    <main class="main content">
+      <div class="invoice-page">
+        <app-invoice-header [workitemno]="workItemNumber()"></app-invoice-header>
+
+        <app-invoice-details></app-invoice-details>
+
+        <div class="main-grid">
+          <main class="canvas-column">
+            <app-vendor-details></app-vendor-details>
+          </main>
+
+          <aside class="side-column">
+            <app-line-items></app-line-items>
+          </aside>
+        </div>
+
+        <section class="workspace-column">
+          <app-invoice-summary></app-invoice-summary>
+        </section>
+      </div>
+    </main>
+  </div>
+}
