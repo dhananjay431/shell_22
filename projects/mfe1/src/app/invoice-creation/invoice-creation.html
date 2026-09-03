@@ -1,1 +1,393 @@
-<p>invoice-creation works!</p>
+<!-- Form Card Container -->
+<div class="card shadow-sm border-0">
+
+  <!-- Card Header -->
+  <div class="card-header bg-white border-bottom px-4 pt-3 pb-3">
+
+    <!-- Title + Icon row - top -->
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <span class="d-inline-flex align-items-center justify-content-center rounded bg-primary text-white"
+            style="width: 32px; height: 32px; font-size: 13px; flex-shrink: 0;">
+        <i class="fa-solid fa-play"></i>
+      </span>
+      <h5 class="mb-0 fw-bold text-dark" style="font-size: 18px;">Create Manual Invoice</h5>
+    </div>
+
+    <!-- Header Details badge - below title -->
+    <span class="header-details-badge">
+      Header Details
+    </span>
+
+  </div>
+
+  <div class="card-body p-4">
+
+    <!-- Row 1: 4 Columns -->
+    <div class="row g-3 mb-2">
+      <!-- Col 1: Work Item Number -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="workItemNumber">Work Item Number</label>
+        <input type="text" class="form-control form-control-sm" id="workItemNumber" placeholder="Work item number" readonly>
+      </div>
+
+      <!-- Col 2: Invoice Number -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="invoiceNumber">Invoice Number</label>
+        <input type="text" class="form-control form-control-sm" id="invoiceNumber" placeholder="Enter invoice number">
+      </div>
+
+      <!-- Col 3: Invoice Date (with Calendar Popup) -->
+      <div class="col-lg-3 col-md-6 position-relative">
+        <label class="form-label fw-bold" for="invoiceDate">Invoice Date</label>
+        <div class="input-group input-group-sm">
+          <input type="text" class="form-control form-control-sm" id="invoiceDate" placeholder="dd/mm/yyyy"
+                 [(ngModel)]="invoiceDate"
+                 [class.is-invalid-date]="isInvoiceDateInvalid"
+                 (ngModelChange)="onInvoiceDateChange($event)"
+                 (blur)="validateInvoiceDate()">
+          <button class="btn btn-outline-secondary input-icon-btn btn-sm" type="button" title="Select Date"
+                  [class.is-invalid-date]="isInvoiceDateInvalid"
+                  (click)="toggleDatePicker()">
+            <i class="fa-regular fa-calendar"></i>
+          </button>
+        </div>
+        @if (isInvoiceDateInvalid) {
+          <div class="invalid-date-msg">Invoice Date is Invalid</div>
+        }
+
+        <!-- Custom Calendar Dropdown Popup -->
+        @if (showDatePicker) {
+          <div class="datepicker-backdrop" (click)="closeDatePicker()"></div>
+          <div class="custom-datepicker-popup shadow">
+            <div class="datepicker-header d-flex justify-content-between align-items-center px-3 pt-3 pb-1">
+              <span class="datepicker-title fw-bold">
+                {{ formattedPickerHeader }} <span class="arrow-down">▾</span>
+              </span>
+              <div class="datepicker-nav d-flex gap-1">
+                <button type="button" class="btn btn-sm btn-nav" (click)="prevMonth()" title="Previous Month">
+                  <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-nav" (click)="nextMonth()" title="Next Month">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="datepicker-month-subtitle px-3 pb-2 text-muted fw-semibold">
+              {{ currentMonthShort }}
+            </div>
+
+            <div class="datepicker-weekdays px-3 pb-2">
+              @for (day of weekDays; track $index) {
+                <span class="weekday">{{ day }}</span>
+              }
+            </div>
+
+            <div class="datepicker-days px-3 pb-3">
+              @for (day of pickerDays; track $index) {
+                @if (day === null) {
+                  <span class="day-cell empty"></span>
+                } @else {
+                  <button type="button" class="day-cell"
+                          [class.selected]="isDaySelected(day)"
+                          [class.disabled]="isDayDisabled(day)"
+                          [disabled]="isDayDisabled(day)"
+                          (click)="selectDay(day)">
+                    {{ day }}
+                  </button>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Col 4: Invoice Receipt Date -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="invoiceReceiptDate">Invoice Receipt Date</label>
+        <div class="input-group input-group-sm">
+          <input type="text" class="form-control form-control-sm" id="invoiceReceiptDate" placeholder="dd/mm/yyyy"
+                 [value]="todayFormatted" readonly>
+          <span class="input-group-text text-muted" title="Receipt Date">
+            <i class="fa-regular fa-calendar"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: 4 Columns -->
+    <div class="row g-3 mb-2">
+      <!-- Col 1: Company -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="company">Company</label>
+        <select class="form-select form-select-sm" id="company">
+          <option value="" disabled>Select Company</option>
+          <option selected>US19</option>
+        </select>
+      </div>
+
+      <!-- Col 2: Entity -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="entity">Entity</label>
+        <select class="form-select form-select-sm" id="entity">
+          <option value="" disabled>Select Entity</option>
+          <option selected>Olam Farming INC - Almonds</option>
+        </select>
+      </div>
+
+      <!-- Col 3: Product -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="product">Product</label>
+        <select class="form-select form-select-sm" id="product">
+          <option value="" disabled>Select Product</option>
+          <option selected>Almonds Golden Eagle</option>
+          <option>Almonds-Farming Chowchilla Ranch</option>
+          <option>Almonds-Farming Diego Ranch</option>
+          <option>Almonds-Farming KG Ranch</option>
+          <option>Almonds-Farming Stella Ranch</option>
+          <option>Almonds-Farming Nevada Ranch</option>
+          <option>Almonds-Farming Southern Star Ranch, Lucero Ranch</option>
+          <option>Almonds-Trading</option>
+          <option>Almonds</option>
+          <option>Almonds Lucero</option>
+          <option>Trading Walnut</option>
+          <option>Trading Pistachio</option>
+          <option>Almonds Lynx</option>
+          <option>Almonds Puma</option>
+        </select>
+      </div>
+
+      <!-- Col 4: Location -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="location">Location</label>
+        <select class="form-select form-select-sm" id="location">
+          <option value="" disabled>Select Location</option>
+          <option selected>Fresno</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Row 3: 4 Columns -->
+    <div class="row g-3 mb-2">
+      <!-- Col 1: Classification -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="classification">Classification</label>
+        <select class="form-select form-select-sm" id="classification"
+                [(ngModel)]="selectedClassification"
+                (ngModelChange)="onClassificationChange()">
+          <option value="" disabled selected>Select Classification</option>
+          <option value="PO">PO</option>
+          <option value="Non PO">Non PO</option>
+          <option value="Vendor Statement">Vendor Statement</option>
+          <option value="Internal Voices">Internal Voices</option>
+        </select>
+      </div>
+
+      <!-- Col 2: Invoice Type -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="invoiceType">Invoice Type</label>
+        <select class="form-select form-select-sm" id="invoiceType"
+                [(ngModel)]="selectedInvoiceType"
+                [disabled]="!selectedClassification">
+          <option value="" disabled selected>Select Invoice Type</option>
+          @for (type of filteredInvoiceTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Col 3: Vendor Code -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="vendorCode">Vendor Code</label>
+        <div class="input-group input-group-sm">
+          <input type="text" class="form-control form-control-sm" id="vendorCode" placeholder="Enter vendor code"
+                 [(ngModel)]="vendorCode" readonly>
+          <button class="btn btn-outline-secondary input-icon-btn btn-sm" type="button" title="Search Vendor"
+                  (click)="openVendorModal()">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Col 4: Vendor Name -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="vendorName">Vendor Name</label>
+        <input type="text" class="form-control form-control-sm" id="vendorName" placeholder="Vendor name"
+               [value]="vendorName" readonly>
+      </div>
+    </div>
+
+    <!-- Row 4: 4 Columns -->
+    <div class="row g-3 mb-2">
+      <!-- Col 1: Vendor Payment Terms -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="vendorPaymentTerms">Vendor Payment Terms</label>
+        <input type="text" class="form-control form-control-sm" id="vendorPaymentTerms" placeholder="Vendor payment terms"
+               [value]="vendorPaymentTerms" readonly>
+      </div>
+
+      <!-- Col 2: Country -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="country">Country</label>
+        <input type="text" class="form-control form-control-sm" id="country" placeholder="Country"
+               [value]="selectedCountry" readonly>
+      </div>
+
+      <!-- Col 3: Basic -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="basic">Basic</label>
+        <input type="text" class="form-control form-control-sm" id="basic" placeholder="Enter basic amount"
+               inputmode="decimal"
+               onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46">
+      </div>
+
+      <!-- Col 4: Total -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="total">Total</label>
+        <input type="text" class="form-control form-control-sm" id="total" placeholder="Enter total amount"
+               inputmode="decimal"
+               onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46">
+      </div>
+    </div>
+
+    <!-- Row 5: 4 Columns (Team in Col 1) -->
+    <div class="row g-3 mb-2">
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label fw-bold" for="team">Team</label>
+        <select class="form-select form-select-sm" id="team">
+          <option value="" disabled>Select Team</option>
+          <option>OCP_OIL_EU</option>
+          <option>AUS_OGA</option>
+          <option>US_Cashew</option>
+          <option>GA_OPG_Rush</option>
+          <option>GA_ORG</option>
+          <option>GA_ORG_RUSH</option>
+          <option>OCP_SG</option>
+          <option>RAFI_Reimbursements</option>
+          <option>SG_indexing</option>
+          <option>VN_Edible_Nuts</option>
+          <option>GA_OPG</option>
+          <option>GH_Grains</option>
+          <option>OCP_OIL_EU_Rush</option>
+          <option>OCP_PL_Non PO</option>
+          <option>OCP_PL_PO</option>
+          <option>US_SVI</option>
+          <option>GH_Tomato_Rush</option>
+          <option>US_Peanut</option>
+          <option selected>US_Almonds</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer with Create Work Item button -->
+  <div class="card-footer border-top py-3 px-4 d-flex justify-content-end">
+    <button type="button" class="btn btn-primary btn-create-work-item btn-sm">
+      Create Work Item
+    </button>
+  </div>
+
+  <!-- Vendor Search Modal Backdrop -->
+  @if (showVendorModal) {
+    <div class="vendor-modal-backdrop" (click)="closeVendorModal()"></div>
+
+    <!-- Vendor Search Modal -->
+    <div class="vendor-modal">
+      <div class="vendor-modal-dialog">
+        <!-- Modal Header -->
+        <div class="vendor-modal-header d-flex justify-content-between align-items-center px-4 py-2">
+          <h5 class="mb-0 fw-bold text-dark">Vendor Search</h5>
+          <button type="button" class="btn-close" (click)="closeVendorModal()" aria-label="Close"></button>
+        </div>
+
+        <!-- Search Fields (Underline style) -->
+        <div class="vendor-modal-search px-4 pt-3 pb-3 d-flex align-items-end gap-4 flex-wrap">
+          <div class="search-field">
+            <label class="form-label text-uppercase fw-bold mb-1">VENDOR CODE</label>
+            <input type="text" class="vendor-underline-input"
+                   [(ngModel)]="vendorSearchCode" placeholder="Enter vendor code">
+          </div>
+          <div class="search-field">
+            <label class="form-label text-uppercase fw-bold mb-1">VENDOR NAME</label>
+            <input type="text" class="vendor-underline-input"
+                   [(ngModel)]="vendorSearchName" placeholder="Enter vendor name">
+          </div>
+          <div class="ms-auto d-flex gap-2">
+            <button class="btn btn-search text-white px-4 fw-semibold"
+                    (click)="searchVendors()">Search</button>
+            <button class="btn btn-clear px-3 fw-semibold"
+                    (click)="clearVendorSearch()">Clear</button>
+          </div>
+        </div>
+
+        <!-- Pagination Controls Box -->
+        <div class="vendor-modal-pagination-box mx-4 my-2 d-flex align-items-center">
+          <span class="text-secondary small">Items per page:</span>
+          <select class="form-select form-select-sm pagination-select ms-2"
+                  [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange()">
+            <option [value]="5">5</option>
+            <option [value]="10">10</option>
+            <option [value]="25">25</option>
+          </select>
+          <span class="text-secondary small ms-4">
+            {{ paginationStart }} – {{ paginationEnd }} of {{ totalItems }}
+          </span>
+          <button class="btn btn-sm btn-link text-muted p-0 ms-4" (click)="prevPage()"
+                  [disabled]="currentPage === 1">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="btn btn-sm btn-link text-muted p-0 ms-3" (click)="nextPage()"
+                  [disabled]="currentPage === totalPages">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <!-- Results Table -->
+        <div class="vendor-modal-table">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr class="vendor-table-head">
+                  <th class="py-2 px-3">VENDOR CODE</th>
+                  <th class="py-2 px-3">VENDOR NAME</th>
+                  <th class="py-2 px-3">VENDOR_PAN</th>
+                  <th class="py-2 px-3">PAY TERM DESC</th>
+                  <th class="py-2 px-3">VENDOR DISCOUNT</th>
+                  <th class="py-2 px-3">VENDOR PAYMENT DAYS</th>
+                  <th class="py-2 px-3">COMPANY CODE</th>
+                  <th class="py-2 px-3">GSTIN</th>
+                  <th class="py-2 px-3">VENDOR ABN</th>
+                  <th class="py-2 px-3">VENDOR RECON ACCOUNT</th>
+                  <th class="py-2 px-3">ADDRESS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (vendor of paginatedVendors; track vendor.vendorCode) {
+                  <tr class="cursor-pointer" (click)="selectVendor(vendor)">
+                    <td class="py-2 px-3">{{ vendor.vendorCode }}</td>
+                    <td class="py-2 px-3 text-primary">{{ vendor.vendorName }}</td>
+                    <td class="py-2 px-3">{{ vendor.vendorPan }}</td>
+                    <td class="py-2 px-3">{{ vendor.payTermDesc }}</td>
+                    <td class="py-2 px-3">{{ vendor.vendorDiscount }}</td>
+                    <td class="py-2 px-3">{{ vendor.vendorPaymentDays }}</td>
+                    <td class="py-2 px-3">{{ vendor.companyCode }}</td>
+                    <td class="py-2 px-3">{{ vendor.gstin }}</td>
+                    <td class="py-2 px-3">{{ vendor.vendorAbn }}</td>
+                    <td class="py-2 px-3">{{ vendor.vendorReconAccount }}</td>
+                    <td class="py-2 px-3">{{ vendor.address }}</td>
+                  </tr>
+                }
+                @empty {
+                  <tr>
+                    <td colspan="11" class="text-center text-muted py-3">No vendors found</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,1 +1,98 @@
-<p>vn-rules works!</p>
+<div class="vn-rules-container">
+  <!-- Page Header Title -->
+  <div class="d-flex align-items-center gap-2 mb-3">
+    <span class="page-title-icon rounded d-inline-flex align-items-center justify-content-center text-white">
+      <i class="fa-solid fa-play"></i>
+    </span>
+    <h5 class="mb-0 fw-bold text-dark page-title">VN Rules</h5>
+  </div>
+
+  <!-- VN Rule Configuration Card -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+      <!-- Section Title in Theme Color -->
+      <h6 class="section-title fw-bold mb-4">VN Rule Configuration</h6>
+
+      <!-- 3 Dropdown Components Row -->
+      <div class="row g-3">
+        <!-- 1. Company Code Dropdown -->
+        <div class="col-lg-4 col-md-4 col-12">
+          <div class="custom-select-wrapper">
+            <select class="form-select custom-select"
+                    [(ngModel)]="selectedCompanyCode"
+                    (ngModelChange)="onCompanyCodeChange()">
+              <option value="" disabled selected>-- Select Company Code --</option>
+              @for (code of companyCodes; track code) {
+                <option [value]="code">{{ code }}</option>
+              }
+            </select>
+            <span class="custom-select-arrow">
+              <i class="fa-solid fa-caret-down"></i>
+            </span>
+          </div>
+        </div>
+
+        <!-- 2. Entity Type Dropdown -->
+        <div class="col-lg-4 col-md-4 col-12">
+          <div class="custom-select-wrapper">
+            <select class="form-select custom-select"
+                    [(ngModel)]="selectedEntityType"
+                    (ngModelChange)="onEntityTypeChange()"
+                    [disabled]="!selectedCompanyCode">
+              <option value="" disabled selected>-- Select Entity Type --</option>
+              @for (entity of availableEntityTypes; track entity) {
+                <option [value]="entity">{{ entity }}</option>
+              }
+            </select>
+            <span class="custom-select-arrow">
+              <i class="fa-solid fa-caret-down"></i>
+            </span>
+          </div>
+        </div>
+
+        <!-- 3. Expense Type Dropdown -->
+        <div class="col-lg-4 col-md-4 col-12">
+          <div class="custom-select-wrapper" [class.select-readonly]="selectedCompanyCode !== 'VN12'">
+            <select class="form-select custom-select"
+                    [(ngModel)]="selectedExpenseType"
+                    [disabled]="selectedCompanyCode !== 'VN12'">
+              <option value="" disabled selected>-- Select Expense Type --</option>
+              @for (expense of availableExpenseTypes; track expense) {
+                <option [value]="expense">{{ expense }}</option>
+              }
+            </select>
+            <span class="custom-select-arrow">
+              <i class="fa-solid fa-caret-down"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rules View Card / Placeholder -->
+  <div class="card shadow-sm border-0 rules-card">
+    <div class="card-body d-flex flex-column align-items-center justify-content-center rules-empty-state">
+      @if (showNoRulesState) {
+        <!-- No rules available for [Company Code] state -->
+        <div class="no-rules-icon mb-3">
+          <i class="fa-solid fa-circle-info"></i>
+        </div>
+        <p class="no-rules-title mb-2">
+          No rules are available for <strong>{{ selectedCompanyCode }}</strong>.
+        </p>
+        <p class="no-rules-subtitle mb-0">
+          Please select a different Company Code.
+        </p>
+      } @else {
+        <!-- Default initial / prompt state -->
+        <div class="empty-state-icon mb-3">
+          <i class="fa-solid fa-sliders"></i>
+        </div>
+        <p class="empty-state-text mb-0">
+          Select Company Code, Entity Type, and Expense Type to view rules.
+        </p>
+      }
+    </div>
+  </div>
+</div>

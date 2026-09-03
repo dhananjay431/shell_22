@@ -1,0 +1,648 @@
+// =============================================================================
+// Modern 4-Column Grid UI with Rounded Form Fields
+// =============================================================================
+
+:host {
+  display: block;
+  padding: 24px 32px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+}
+
+// =============================================================================
+// Page Header Title
+// =============================================================================
+
+.d-flex.align-items-center.gap-2.mb-3 {
+  span.rounded.bg-primary {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    background: linear-gradient(
+      135deg,
+      #0ea5e9 0%,
+      #2563eb 100%
+    ) !important;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: 13px;
+    }
+  }
+
+  h5 {
+    color: #111827;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+// =============================================================================
+// Header Details Badge
+// =============================================================================
+// Header Details Badge & Theme Buttons
+// =============================================================================
+
+.header-details-badge {
+  background-color: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+  color: #ffffff !important;
+  font-size: 12px;
+  border-radius: 20px !important;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 6px 14px !important;
+  box-shadow: 0 2px 6px rgba(var(--bs-primary-rgb, 115, 103, 240), 0.25);
+  display: inline-block;
+}
+
+.btn-create-work-item {
+  background: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+  background-color: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+  border-color: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 8px 32px !important;
+  font-weight: 600;
+  font-size: 13.5px;
+  transition: all 0.2s ease-in-out;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+    background-color: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+    border-color: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+    color: #ffffff !important;
+    opacity: 0.9;
+    box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb, 115, 103, 240), 0.35);
+  }
+}
+
+// =============================================================================
+// Main Form Card
+// =============================================================================
+
+.card {
+  background: #ffffff;
+  border-radius: 16px !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+}
+
+.card-header {
+  border-top-left-radius: 16px !important;
+  border-top-right-radius: 16px !important;
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+
+  h5 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+  }
+}
+
+.card-footer {
+  border-bottom-left-radius: 16px !important;
+  border-bottom-right-radius: 16px !important;
+  background-color: #ffffff !important;
+}
+
+.card-body {
+  // ---------------------------------------------------------------------------
+  // Form Labels
+  // ---------------------------------------------------------------------------
+
+  .form-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Rounded Form Controls & Selects (Bootstrap 5.3 sm sizing)
+  // ---------------------------------------------------------------------------
+
+  .form-control,
+  .form-select {
+    font-weight: 400;
+    color: #111827;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: var(--bs-border-radius-sm, 6px);
+    transition:
+      border-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
+
+    &::placeholder {
+      color: #9ca3af;
+      font-weight: 400;
+    }
+
+    &:focus {
+      border-color: var(--vuexy-primary, #17a2b8);
+      box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb, 23, 162, 184), 0.25);
+      outline: none;
+      background-color: #ffffff;
+    }
+
+    &[readonly],
+    &:disabled {
+      background-color: #f9fafb;
+      border-color: #e5e7eb;
+      color: #4b5563;
+      cursor: default;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Input Groups (Bootstrap 5.3 sm)
+  // ---------------------------------------------------------------------------
+
+  .input-group {
+    border-radius: var(--bs-border-radius-sm, 6px);
+
+    .form-control {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .input-icon-btn,
+    .input-group-text {
+      background-color: #ffffff;
+      border: 1px solid #d1d5db;
+      border-left: none;
+      border-top-right-radius: var(--bs-border-radius-sm, 6px);
+      border-bottom-right-radius: var(--bs-border-radius-sm, 6px);
+      color: #6b7280;
+      padding: 0.25rem 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+
+      i {
+        font-size: 13px;
+      }
+    }
+
+    .input-icon-btn {
+      &:hover {
+        background-color: #f3f4f6;
+        color: #111827;
+      }
+    }
+
+    &:focus-within {
+      .form-control {
+        border-color: #17a2b8;
+        box-shadow: none;
+      }
+
+      .input-icon-btn,
+      .input-group-text {
+        border-color: #17a2b8;
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Invalid Date State
+  // ---------------------------------------------------------------------------
+
+  .form-control.is-invalid-date,
+  .input-group .is-invalid-date,
+  .input-group .is-invalid-date + .input-icon-btn {
+    border-color: #ef4444 !important;
+    background-color: #fff5f5;
+  }
+
+  .invalid-date-msg {
+    color: #17a2b8;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-top: 5px;
+  }
+}
+
+// =============================================================================
+// Card Footer with Submit Button
+// =============================================================================
+
+.card-footer {
+  background-color: #f9fafb !important;
+  border-top: 1px solid #e5e7eb !important;
+  padding: 20px !important;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+
+  button.btn {
+    background: linear-gradient(
+      135deg,
+      #374151 0%,
+      #1f2937 100%
+    );
+    border: none;
+    border-radius: 10px;
+    padding: 12px 36px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+// =============================================================================
+// Custom Calendar Popup Dropdown
+// =============================================================================
+
+.datepicker-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1055;
+  background: transparent;
+}
+
+.custom-datepicker-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1060;
+  width: 300px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+  margin-top: 6px;
+  padding: 8px;
+  user-select: none;
+
+  .datepicker-header {
+    .datepicker-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #111827;
+
+      .arrow-down {
+        font-size: 11px;
+        color: #6b7280;
+        margin-left: 2px;
+      }
+    }
+
+    .btn-nav {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #6b7280;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+
+      &:hover {
+        color: #111827;
+        background-color: #f3f4f6;
+      }
+    }
+  }
+
+  .datepicker-month-subtitle {
+    font-size: 11.5px;
+    letter-spacing: 0.5px;
+    color: #9ca3af;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .datepicker-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    margin-bottom: 4px;
+
+    .weekday {
+      font-size: 12px;
+      font-weight: 700;
+      color: #9ca3af;
+    }
+  }
+
+  .datepicker-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+
+    .day-cell {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      transition: background-color 0.15s ease;
+
+      &:hover:not(.disabled):not(.selected) {
+        background-color: #f3f4f6;
+        color: #111827;
+      }
+
+      &.selected {
+        background: #1f2937;
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      &.disabled {
+        color: #d1d5db;
+        cursor: not-allowed;
+      }
+
+      &.empty {
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Vendor Search Modal
+// =============================================================================
+
+.vendor-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 1040;
+}
+
+.vendor-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
+  width: 95vw;
+  max-width: 1280px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.vendor-modal-dialog {
+  background-color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #d5dbdb;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+// =============================================================================
+// Vendor Modal Header
+// =============================================================================
+
+.vendor-modal-header {
+  background-color: #e2e8f0;
+  border-bottom: 1px solid #cbd5e1;
+  padding: 12px 20px !important;
+  flex-shrink: 0;
+
+  h5 {
+    color: #1e293b;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .btn-close {
+    font-size: 12px;
+  }
+}
+
+// =============================================================================
+// Vendor Modal Search
+// =============================================================================
+
+.vendor-modal-search {
+  flex-shrink: 0;
+  background-color: #ffffff;
+  padding: 18px 24px 12px !important;
+
+  .search-field {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+
+    label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+      letter-spacing: 0.3px;
+    }
+
+    .vendor-underline-input {
+      border: none;
+      border-bottom: 1.5px solid #94a3b8;
+      border-radius: 0;
+      background: transparent;
+      padding: 4px 0;
+      font-size: 13px;
+      color: #1e293b;
+      outline: none;
+      transition: border-color 0.15s ease;
+
+      &::placeholder {
+        color: #94a3b8;
+        font-size: 12.5px;
+      }
+
+      &:focus {
+        border-bottom-color: var(--vuexy-primary, #7367f0);
+      }
+    }
+  }
+
+  .btn-search {
+    background: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+    background-color: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff !important;
+    font-size: 13px;
+    height: 34px;
+    padding: 0 20px;
+    transition: all 0.2s ease-in-out;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+      background-color: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+      color: #ffffff !important;
+      opacity: 0.9;
+      box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb, 115, 103, 240), 0.35);
+    }
+  }
+
+  .btn-clear {
+    background-color: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 6px;
+    color: #334155;
+    font-size: 13px;
+    height: 34px;
+    padding: 0 16px;
+
+    &:hover {
+      background-color: #f1f5f9;
+      border-color: #94a3b8;
+    }
+  }
+}
+
+// =============================================================================
+// Vendor Modal Pagination
+// =============================================================================
+
+.vendor-modal-pagination-box {
+  flex-shrink: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: #ffffff;
+  padding: 6px 14px;
+  font-size: 12.5px;
+
+  .pagination-select {
+    width: 60px;
+    border: none;
+    border-bottom: 1.5px solid #94a3b8;
+    border-radius: 0;
+    padding: 2px 20px 2px 4px;
+    background-position: right 4px center;
+    font-size: 12.5px;
+    height: 28px;
+
+    &:focus {
+      border-bottom-color: var(--vuexy-primary, #7367f0);
+      box-shadow: none;
+    }
+  }
+
+  .btn-link {
+    text-decoration: none;
+    color: #64748b;
+    font-size: 12px;
+
+    &:hover:not(:disabled) {
+      color: #0f172a;
+    }
+
+    &:disabled {
+      color: #cbd5e1;
+    }
+  }
+}
+
+// =============================================================================
+// Vendor Modal Table
+// =============================================================================
+
+.vendor-modal-table {
+  flex: 1;
+  overflow: auto;
+  padding: 0 24px 16px !important;
+
+  table {
+    font-size: 12.5px;
+    white-space: nowrap;
+    margin-bottom: 0;
+
+    .vendor-table-head th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background-color: var(--vuexy-primary, var(--bs-primary, #7367f0)) !important;
+      color: #ffffff !important;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border: none;
+      padding: 10px 14px !important;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #e2e8f0;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f8fafc !important;
+      }
+
+      td {
+        border: none;
+        color: #334155;
+        padding: 9px 14px !important;
+
+        &.text-primary {
+          color: var(--vuexy-primary, #2563eb) !important;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Cursor
+// =============================================================================
+
+.cursor-pointer {
+  cursor: pointer;
+}
