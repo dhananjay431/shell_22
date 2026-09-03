@@ -28,6 +28,16 @@ import { NavbarVerticalComponent } from './navbar-vertical.component';
       width: auto;
       min-width: 0;
     }
+
+    .shell-content {
+      margin-top: 65px;
+    }
+
+    @media (max-width: 767.98px) {
+      .shell-content {
+        margin-top: 65px;
+      }
+    }
   `,
 })
 export class HomeComponent {}

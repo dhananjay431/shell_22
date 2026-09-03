@@ -102,15 +102,23 @@ type TargetItem = {
   styles: `
     :host {
       display: block;
+      flex: 0 0 250px;
+      width: 250px;
+      transition:
+        width 0.2s ease,
+        flex-basis 0.2s ease;
+    }
+    :host:has(.sidebar.collapsed) {
+      flex-basis: 68px;
+      width: 68px;
     }
     .sidebar {
-      position: relative;
+      position: fixed;
+      top: 0;
+      left: 0;
       z-index: 1031;
       width: 250px;
-      flex: 0 0 250px;
-      flex-shrink: 0;
       height: 100vh;
-      min-height: calc(100vh - 56px);
       background: #fff;
       border-right: 1px solid var(--vuexy-border);
       display: flex;
@@ -122,7 +130,6 @@ type TargetItem = {
     }
     .sidebar.collapsed {
       width: 68px;
-      flex-basis: 68px;
     }
     .logo {
       display: flex;
@@ -303,6 +310,11 @@ type TargetItem = {
         min-height: 100vh;
         transform: translateX(-100%);
         box-shadow: 0 0 1rem rgb(15 23 42 / 15%);
+      }
+      :host,
+      :host:has(.sidebar.collapsed) {
+        width: 0;
+        flex-basis: 0;
       }
       .sidebar.mobile-open {
         transform: translateX(0);

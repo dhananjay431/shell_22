@@ -36,14 +36,24 @@ import { NavigationEnd, Router } from '@angular/router';
   styles: `
     :host {
       display: block;
+      --sidebar-width: 250px;
+    }
+
+    :host-context(body:has(.sidebar.collapsed)) {
+      --sidebar-width: 68px;
     }
 
     .topbar {
+      position: fixed;
+      top: 1rem;
+      left: calc(var(--sidebar-width) + 1.5rem);
+      right: 1.5rem;
+      z-index: 1030;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      margin: 1rem 1.5rem 0;
+      margin: 0;
       padding: 0 1.25rem;
       border: 1px solid var(--vuexy-border);
       border-radius: 0.5rem;
@@ -158,8 +168,10 @@ import { NavigationEnd, Router } from '@angular/router';
 
     @media (max-width: 480px) {
       .topbar {
+        left: 0.75rem;
+        right: 0.75rem;
         padding: 0 0.75rem;
-        margin: 0.75rem;
+        margin: 0;
       }
 
       .breadcrumb {
@@ -169,6 +181,12 @@ import { NavigationEnd, Router } from '@angular/router';
       .breadcrumb a:first-child,
       .breadcrumb .separator:first-of-type {
         display: none;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .topbar {
+        left: 0.75rem;
       }
     }
   `,
